@@ -8,12 +8,15 @@ import (
 	"testing"
 )
 
-var client *gitee.Client
+var (
+	client *gitee.Client
+	ctx    context.Context
+)
 
-func TestGetUser(t *testing.T) {
+func init() {
 	token := "your gitee token"
 
-	ctx := context.Background()
+	ctx = context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
@@ -21,7 +24,9 @@ func TestGetUser(t *testing.T) {
 	tc := oauth2.NewClient(ctx, ts)
 
 	client = gitee.NewClient(tc)
+}
 
+func TestGetUser(t *testing.T) {
 	user, response, err := client.Users.Get(ctx, "")
 	fmt.Println(user)
 	fmt.Println(response)
@@ -29,17 +34,6 @@ func TestGetUser(t *testing.T) {
 }
 
 func TestGetUserKeys(t *testing.T) {
-	token := "your gitee token"
-
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-
-	tc := oauth2.NewClient(ctx, ts)
-
-	client = gitee.NewClient(tc)
-
 	var opts = &gitee.ListOptions{
 		Page:    1,
 		PerPage: 10,
@@ -51,17 +45,6 @@ func TestGetUserKeys(t *testing.T) {
 }
 
 func TestGetUserKey(t *testing.T) {
-	token := "your gitee token"
-
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-
-	tc := oauth2.NewClient(ctx, ts)
-
-	client = gitee.NewClient(tc)
-
 	keys, response, err := client.Users.GetUserKey(ctx, 3544397)
 	fmt.Println(keys)
 	fmt.Println(*response)
