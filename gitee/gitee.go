@@ -242,7 +242,20 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 	response := newResponse(resp)
 
 	err = CheckResponse(resp)
+	if err != nil { // 这里 特殊处理 AcceptedError 这种错误，提交 返回了
+		defer resp.Body.Close() // 这里就提前关闭了, 其他返回的 会在调用的 地方 func Do 里面关闭
 
+		aerr, ok := err.(*AcceptedError)
+		if ok {
+			b, readErr := ioutil.ReadAll(resp.Body)
+			if readErr != nil {
+				return response, readErr
+			}
+
+			aerr.Raw = b
+			err = aerr
+		}
+	}
 	return response, err
 }
 
