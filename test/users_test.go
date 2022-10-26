@@ -8,14 +8,9 @@ import (
 	"testing"
 )
 
-const (
-	testOrg  = "cve-manage-test"
-	testRepo = "config"
-)
-
 var client *gitee.Client
 
-func init() {
+func TestGetUser(t *testing.T) {
 	token := "your gitee token"
 
 	ctx := context.Background()
@@ -26,8 +21,9 @@ func init() {
 	tc := oauth2.NewClient(ctx, ts)
 
 	client = gitee.NewClient(tc)
-}
 
-func TestInit(t *testing.T) {
-	fmt.Println(client)
+	user, response, err := client.Users.Get(ctx, "")
+	fmt.Println(user)
+	fmt.Println(response)
+	fmt.Println(err)
 }
