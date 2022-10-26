@@ -49,3 +49,21 @@ func TestGetUserKeys(t *testing.T) {
 	fmt.Println(*response)
 	fmt.Println(err)
 }
+
+func TestGetUserKey(t *testing.T) {
+	token := "your gitee token"
+
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: token},
+	)
+
+	tc := oauth2.NewClient(ctx, ts)
+
+	client = gitee.NewClient(tc)
+
+	keys, response, err := client.Users.GetUserKey(ctx, 3544397)
+	fmt.Println(keys)
+	fmt.Println(*response)
+	fmt.Println(err)
+}
