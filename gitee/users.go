@@ -45,6 +45,15 @@ type User struct {
 	Email             *string    `json:"email,omitempty"`
 }
 
+// UserListOptions specifies optional parameters to the UsersService.ListAll
+// method.
+type UserListOptions struct {
+	// Note: Pagination is powered exclusively by the Since parameter,
+	// ListOptions.Page has no effect.
+	// ListOptions.PerPage controls an undocumented GitHub API parameter.
+	ListOptions
+}
+
 func (u User) String() string {
 	return Stringify(u)
 }
@@ -72,4 +81,36 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 	}
 
 	return uResp, resp, nil
+}
+
+type SshKey struct {
+	// 获取一个公钥
+	ID        *int64     `json:"id,omitempty"`
+	Key       *string    `json:"key,omitempty"`
+	Url       *string    `json:"url,omitempty"`
+	Title     *string    `json:"title,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+}
+
+func (k SshKey) String() string {
+	return Stringify(k)
+}
+func (s *UsersService) GetUserKeys(ctx context.Context, opts *ListOptions) ([]*SshKey, *Response, error) {
+	u, err := addOptions("user/keys", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var keys []*SshKey
+	resp, err := s.client.Do(ctx, req, &keys)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return keys, resp, nil
+
 }
