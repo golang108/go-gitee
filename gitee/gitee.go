@@ -128,6 +128,20 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	return req, nil
 }
 
+// sanitizeURL redacts the client_secret parameter from the URL which may be
+// exposed to the user.
+func sanitizeURL(uri *url.URL) *url.URL {
+	if uri == nil {
+		return nil
+	}
+	params := uri.Query()
+	if len(params.Get("client_secret")) > 0 {
+		params.Set("client_secret", "REDACTED")
+		uri.RawQuery = params.Encode()
+	}
+	return uri
+}
+
 // BareDo sends an API request and lets you handle the api response. If an error
 // or API Error occurs, the error will contain more information. Otherwise you
 // are supposed to read and close the response's Body. If rate limit is exceeded
@@ -141,6 +155,26 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		return nil, errNonNilContext
 	}
 	resp, err := c.client.Do(req)
+	if err != nil {
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
+
+		// If the error type is *url.Error, sanitize its URL before returning.
+		if e, ok := err.(*url.Error); ok {
+			if url, err := url.Parse(e.URL); err == nil {
+				e.URL = sanitizeURL(url).String()
+				return nil, e
+			}
+		}
+
+		return nil, err
+	}
+
 	response := newResponse(resp)
 	return response, err
 }
