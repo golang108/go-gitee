@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -142,6 +143,69 @@ func sanitizeURL(uri *url.URL) *url.URL {
 	return uri
 }
 
+type AcceptedError struct {
+	// Raw contains the response body.
+	Raw []byte
+}
+
+func (*AcceptedError) Error() string {
+	return "job scheduled on gitee side; try again later"
+}
+
+// Is returns whether the provided error equals this error.
+func (ae *AcceptedError) Is(target error) bool {
+	v, ok := target.(*AcceptedError)
+	if !ok {
+		return false
+	}
+	return bytes.Compare(ae.Raw, v.Raw) == 0
+}
+
+type Error struct {
+	Resource string `json:"resource"` // resource on which the error occurred
+	Field    string `json:"field"`    // field on which the error occurred
+	Code     string `json:"code"`     // validation error code
+	Message  string `json:"message"`  // Message describing the error. Errors with Code == "custom" will always have this set.
+}
+
+type ErrorResponse struct {
+	Response *http.Response // HTTP response that caused this error
+	Errors   []Error        `json:"errors"` // more detail on individual errors
+
+	Message string `json:"message"` // error message
+}
+
+func (r *ErrorResponse) Error() string {
+	return fmt.Sprintf("%v %v: %d %v %+v",
+		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.Response.StatusCode, r.Message, r.Errors)
+}
+
+func CheckResponse(r *http.Response) error {
+	if r.StatusCode == http.StatusAccepted { // = 202 equal to 202 Accepted.
+		return &AcceptedError{}
+	}
+	if c := r.StatusCode; 200 <= c && c <= 299 {
+		return nil
+	}
+
+	errorResponse := &ErrorResponse{Response: r}
+	data, err := ioutil.ReadAll(r.Body)
+	if err == nil && data != nil {
+		json.Unmarshal(data, errorResponse)
+	}
+
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(data))
+	switch {
+	case r.StatusCode == http.StatusUnauthorized: // 401 error
+		return errorResponse
+	case r.StatusCode == http.StatusForbidden: // 403 error
+		return errorResponse
+	default: // 以上几个报错, github 这里的报错会有 是由于api 接口访问频率限制等等
+		return errorResponse
+	}
+}
+
 // BareDo sends an API request and lets you handle the api response. If an error
 // or API Error occurs, the error will contain more information. Otherwise you
 // are supposed to read and close the response's Body. If rate limit is exceeded
@@ -176,6 +240,9 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 	}
 
 	response := newResponse(resp)
+
+	err = CheckResponse(resp)
+
 	return response, err
 }
 
