@@ -95,6 +95,9 @@ type SshKey struct {
 func (k SshKey) String() string {
 	return Stringify(k)
 }
+
+// 获取当前授权用户的sshkey，这个能获取多个的，一个列表
+// 列出授权用户的所有公钥 GET https://gitee.com/api/v5/user/keys
 func (s *UsersService) GetUserKeys(ctx context.Context, opts *ListOptions) ([]*SshKey, *Response, error) {
 	u, err := addOptions("user/keys", opts)
 	if err != nil {
