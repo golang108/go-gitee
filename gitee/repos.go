@@ -109,6 +109,25 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 	return branches, resp, nil
 }
 
+// GetBranch gets the specified branch for a repository.
+// 获取单个分支 GET https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var br = new(Branch)
+	resp, err := s.client.Do(ctx, req, br)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return br, resp, nil
+}
+
 func (c Commit) String() string {
 	return Stringify(c)
 }
