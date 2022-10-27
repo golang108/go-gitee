@@ -76,11 +76,26 @@ func NewClient(httpClient *http.Client) *Client {
 
 }
 
-// Response is a GitHub API response. This wraps the standard http.Response
-// returned from GitHub and provides convenient access to things like
+// Response is a gitee API response. This wraps the standard http.Response
+// returned from gitee and provides convenient access to things like
 // pagination links.
 type Response struct {
 	*http.Response
+
+	// These fields provide the page values for paginating through a set of
+	// results. Any or all of these may be set to the zero value for
+	// responses that are not part of a paginated set, or for which there
+	// are no additional pages.
+	//
+	// These fields support what is called "offset pagination" and should
+	// be used with the ListOptions struct.
+	NextPage  int
+	PrevPage  int
+	FirstPage int
+	LastPage  int
+
+	TotalCount int
+	TotalPage  int
 }
 
 // newResponse creates a new Response for the provided http.Response.
