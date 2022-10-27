@@ -50,3 +50,25 @@ func TestGetUserKey(t *testing.T) {
 	fmt.Println(*response)
 	fmt.Println(err)
 }
+
+func TestGetUserFollowers(t *testing.T) {
+	var opts = &gitee.ListOptions{
+		Page:    1,
+		PerPage: 10,
+	}
+	users, response, err := client.Users.GetUserFollowers(ctx, "y_project", opts)
+	fmt.Println(users)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestGetUserFollowers1(t *testing.T) {
+	var opts = &gitee.ListOptions{
+		Page:    1,
+		PerPage: 10,
+	}
+	users, response, err := client.Users.GetUserFollowers(ctx, "", opts)
+	fmt.Println(users)
+	fmt.Println(response)
+	fmt.Println(err)
+}
