@@ -58,8 +58,6 @@ func (u User) String() string {
 	return Stringify(u)
 }
 
-// Get fetches a user. Passing the empty string will fetch the authenticated
-// user.
 // 获取一个用户 GET https://gitee.com/api/v5/users/{username}
 // 获取授权用户的资料 GET https://gitee.com/api/v5/user
 func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, error) {
@@ -135,4 +133,34 @@ func (s *UsersService) GetUserKey(ctx context.Context, id int64) (*SshKey, *Resp
 	}
 
 	return keys, resp, nil
+}
+
+// 列出指定用户的关注者 GET https://gitee.com/api/v5/users/{username}/followers
+// 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers
+func (s *UsersService) GetUserFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/followers", user)
+	} else {
+		u = "user/followers"
+	}
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+
 }
