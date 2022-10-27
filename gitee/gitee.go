@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -102,8 +103,63 @@ type Response struct {
 // r must not be nil.
 func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
-
+	response.populatePageValues()
+	response.parseOther()
 	return response
+}
+
+func (r *Response) parseOther() {
+	if tc := r.Header.Get("Total_count"); tc != "" {
+		r.TotalCount, _ = strconv.Atoi(tc)
+	}
+	if tc := r.Header.Get("Total_page"); tc != "" {
+		r.TotalPage, _ = strconv.Atoi(tc)
+	}
+}
+
+// populatePageValues parses the HTTP Link response headers and populates the
+// various pagination link values in the Response.解析 响应头 里面 header 里面的 分页相关的值
+func (r *Response) populatePageValues() {
+	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
+		for _, link := range strings.Split(links[0], ",") {
+			segments := strings.Split(strings.TrimSpace(link), ";")
+			// link must at least have href and rel
+			if len(segments) < 2 {
+				continue
+			}
+			// ensure href is properly formatted
+			if !strings.HasPrefix(segments[0], "<") || !strings.HasSuffix(segments[0], ">") {
+				continue
+			}
+
+			// try to pull out page parameter
+			url, err := url.Parse(segments[0][1 : len(segments[0])-1])
+			if err != nil {
+				continue
+			}
+
+			q := url.Query()
+			page := q.Get("page")
+			perPage := q.Get("per_page")
+
+			if page == "" && perPage == "" {
+				continue
+			}
+
+			for _, segment := range segments[1:] {
+				switch strings.TrimSpace(segment) {
+				case `rel="next"`, `rel='next'`:
+					r.NextPage, _ = strconv.Atoi(page)
+				case `rel="prev"`, `rel='prev'`: //前一页
+					r.PrevPage, _ = strconv.Atoi(page)
+				case `rel="first"`, `rel='first'`: //第一页，这个好像总是 1 吧
+					r.FirstPage, _ = strconv.Atoi(page)
+				case `rel="last"`, `rel='last'`: //在 Header Link 属性中 有 next 表示下一页的page的值的，有last 表示最后一页的值的。
+					r.LastPage, _ = strconv.Atoi(page)
+				}
+			}
+		} // end for
+	} // end if Response.Header["Link"]
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
