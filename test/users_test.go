@@ -96,3 +96,33 @@ func TestGetUserFollowings1(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetUserNamespaces(t *testing.T) {
+	var opts = &gitee.NamespacesOptions{
+		Mode: "project",
+	}
+	names, response, err := client.Users.GetUserNamespaces(ctx, opts)
+	fmt.Println(names) //  project 类型的，只会获取2组数据
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestGetUserNamespace(t *testing.T) {
+	var opts = &gitee.NamespaceOptions{
+		Path: "mamh-java",
+	}
+	names, response, err := client.Users.GetUserNamespace(ctx, opts)
+	fmt.Println(names)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestGetUserNamespace1(t *testing.T) {
+	var opts = &gitee.NamespaceOptions{
+		Path: "mamh",
+	}
+	names, response, err := client.Users.GetUserNamespace(ctx, opts)
+	fmt.Println(names)
+	fmt.Println(response)
+	fmt.Println(err)
+}
