@@ -113,6 +113,50 @@ func (c Commit) String() string {
 	return Stringify(c)
 }
 
+// CommitsListOptions specifies the optional parameters to the
+// RepositoriesService.ListCommits method. 这个和 一样
+type CommitsListOptions struct {
+	// SHA or branch to start listing Commits from. 提交起始的SHA值或者分支名. 默认: 仓库的默认分支
+	SHA string `url:"sha,omitempty"`
+
+	// Path that should be touched by the returned Commits. 包含该文件的提交
+	Path string `url:"path,omitempty"`
+
+	// Author of by which to filter Commits. 提交作者的邮箱或个人空间地址(username/login)
+	Author string `url:"author,omitempty"`
+
+	// Since when should Commits be included in the response.提交的起始时间，时间格式为 ISO 8601
+	Since time.Time `url:"since,omitempty"`
+
+	// Until when should Commits be included in the response.提交的最后时间，时间格式为 ISO 8601
+	Until time.Time `url:"until,omitempty"`
+
+	ListOptions //当前的页码, 每页的数量，最大为 100
+}
+
+// ListCommits lists the commits of a repository.
+// 仓库的所有提交 GET https://gitee.com/api/v5/repos/{owner}/{repo}/commits
+func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var commits []*RepositoryCommit
+	resp, err := s.client.Do(ctx, req, &commits)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return commits, resp, nil
+}
+
 // GetCommit fetches the Commit object for a given SHA.
 // 仓库的某个提交: GET https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{sha}
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner string, repo string, sha string) (*RepositoryCommit, *Response, error) {
