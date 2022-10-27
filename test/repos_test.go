@@ -13,3 +13,10 @@ func TestListBranches(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetCommit(t *testing.T) {
+	commit, response, err := client.Repositories.GetCommit(ctx, "mamh-mixed", "go-gitee", "8896821c53eda6698ef5c75ba5182e547e8476f1")
+
+	fmt.Println(commit, response, err)
+
+}
