@@ -35,13 +35,23 @@ func TestGetUser(t *testing.T) {
 
 func TestGetUserKeys(t *testing.T) {
 	var opts = &gitee.ListOptions{
-		Page:    1,
-		PerPage: 10,
+		Page:    1,  // 这个key目前只有2个，这里一页就能获取全部的了
+		PerPage: 10, // perPage 表示每页的总数
 	}
-	keys, response, err := client.Users.GetUserKeys(ctx, opts)
-	fmt.Println(keys[0].String())
-	fmt.Println(*response)
-	fmt.Println(err)
+	for {
+		keys, response, err := client.Users.GetUserKeys(ctx, opts)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for index, key := range keys {
+			fmt.Println(index, len(keys), *key.ID, *key.Title)
+		}
+		if response.NextPage == 0 {
+			break
+		}
+		opts.Page = response.NextPage
+	}
 }
 
 func TestGetUserKey(t *testing.T) {
@@ -54,7 +64,7 @@ func TestGetUserKey(t *testing.T) {
 func TestGetUserFollowers(t *testing.T) {
 	var opts = &gitee.ListOptions{
 		Page:    90,  // page 表示从第几页 开始，一般从第 1 页开始，然后第 2 页，然后第 3 页，到最后一页
-		PerPage: 100, // perPage 表示每页的总是
+		PerPage: 100, // perPage 表示每页的总数
 	}
 	for { //分页 循环 获取 所有的，这里有 几百个值的，需要循环的
 		users, response, err := client.Users.GetUserFollowers(ctx, "y_project", opts)
