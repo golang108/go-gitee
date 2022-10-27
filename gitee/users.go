@@ -194,3 +194,71 @@ func (s *UsersService) GetUserFollowings(ctx context.Context, user string, opts 
 	return users, resp, nil
 
 }
+
+type NamespacesOptions struct {
+	Mode string `url:"mode,omitempty"` // 参与方式: project(所有参与仓库的namepsce)、intrant(所加入的namespace)、all(包含前两者)，默认(intrant)
+}
+
+// 获取授权用户的一个 Namespace
+type Namespace struct {
+	ID      *int64     `json:"id,omitempty"`
+	Type    *string    `json:"type,omitempty"`
+	Name    *string    `json:"name,omitempty"`
+	Path    *string    `json:"path,omitempty"`
+	HtmlUrl *string    `json:"html_url,omitempty"`
+	Parent  *Namespace `json:"parent,omitempty"`
+}
+
+func (n Namespace) String() string {
+	return Stringify(n)
+}
+
+// 列出授权用户所有的 Namespace GET https://gitee.com/api/v5/user/namespaces
+// mode 参与方式: project(所有参与仓库的namepsce)、intrant(所加入的namespace)、all(包含前两者)，默认(intrant)
+func (s *UsersService) GetUserNamespaces(ctx context.Context, opts *NamespacesOptions) ([]*Namespace, *Response, error) {
+	u, err := addOptions("user/namespaces", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var namespaces []*Namespace
+	resp, err := s.client.Do(ctx, req, &namespaces)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return namespaces, resp, nil
+
+}
+
+type NamespaceOptions struct {
+	Path string `url:"path,omitempty"` // path Namespace path 需要一个参数
+}
+
+// 获取授权用户的一个 Namespace GET https://gitee.com/api/v5/user/namespace
+// path Namespace path 需要一个参数
+func (s *UsersService) GetUserNamespace(ctx context.Context, opts *NamespaceOptions) (*Namespace, *Response, error) {
+	u, err := addOptions("user/namespace", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	namespace := new(Namespace)
+	resp, err := s.client.Do(ctx, req, namespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return namespace, resp, nil
+
+}
