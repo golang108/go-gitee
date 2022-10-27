@@ -72,3 +72,27 @@ func TestGetUserFollowers1(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetUserFollowings(t *testing.T) {
+	var opts = &gitee.ListOptions{
+		Page:    1,
+		PerPage: 10,
+	}
+	// 这里获取mamh这个账号关注了哪几个人
+	users, response, err := client.Users.GetUserFollowings(ctx, "mamh", opts)
+	fmt.Println(users)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestGetUserFollowings1(t *testing.T) {
+	var opts = &gitee.ListOptions{
+		Page:    1,
+		PerPage: 10,
+	}
+	// user参数设置空字符串，就是 当前授权账号 关注了哪几个人
+	users, response, err := client.Users.GetUserFollowings(ctx, "", opts)
+	fmt.Println(users)
+	fmt.Println(response)
+	fmt.Println(err)
+}
