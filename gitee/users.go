@@ -136,13 +136,43 @@ func (s *UsersService) GetUserKey(ctx context.Context, id int64) (*SshKey, *Resp
 }
 
 // 列出指定用户的关注者 GET https://gitee.com/api/v5/users/{username}/followers
-// 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers
+// 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers 这个获取的是 我被哪些人 关注了
 func (s *UsersService) GetUserFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/followers", user)
 	} else {
 		u = "user/followers"
+	}
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+
+}
+
+// 列出指定用户正在关注的用户 GET https://gitee.com/api/v5/users/{username}/following
+// 列出授权用户正关注的用户 GET https://gitee.com/api/v5/user/following  这是获取的是我关注的哪些人，或者某个账号下面他关注的其他人
+func (s *UsersService) GetUserFollowings(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/following", user)
+	} else {
+		u = "user/following"
 	}
 
 	u, err := addOptions(u, opts)
