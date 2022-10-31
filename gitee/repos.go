@@ -12,6 +12,80 @@ import (
 // gitee API docs: https://gitee.com/api/v5/repos
 type RepositoriesService service
 
+type Repository struct {
+	//"assignee": 1 item
+	//"assignees_number": integer 代码审查设置，审查人数
+	//"assigner": 18 properties
+	BlobsURL         *string    `json:"blobs_url,omitempty"`         //"blobs_url": string
+	BranchesURL      *string    `json:"branches_url,omitempty"`      //"branches_url": string
+	CanComment       *bool      `json:"can_comment,omitempty"`       //"can_comment": boolean 是否允许用户对仓库进行评论
+	CollaboratorsURL *string    `json:"collaborators_url,omitempty"` //"collaborators_url": string
+	CommentsURL      *string    `json:"comments_url,omitempty"`      //"comments_url": string
+	CommitsURL       *string    `json:"commits_url,omitempty"`       //"commits_url": string
+	ContributorsURL  *string    `json:"contributors_url,omitempty"`  //"contributors_url": string
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`        //"created_at": string
+	DefaultBranch    *string    `json:"default_branch,omitempty"`    //"default_branch": string 默认分支
+	Description      *string    `json:"description,omitempty"`       //"description": string 仓库描述
+	//"enterprise": 5 properties
+	Fork            *bool   `json:"fork,omitempty"`              //"fork": boolean 是否是fork仓库
+	ForksCount      *int    `json:"forks_count,omitempty"`       //"forks_count": integer 仓库fork数量
+	ForksURL        *string `json:"forks_url,omitempty"`         //"forks_url": string
+	FullName        *string `json:"full_name,omitempty"`         //"full_name": string
+	GVP             *bool   `json:"gvp,omitempty"`               //"gvp": boolean 是否是 GVP 仓库
+	HasIssues       *bool   `json:"has_issues,omitempty"`        //"has_issues": boolean 是否开启issue功能
+	HasPage         *bool   `json:"has_page,omitempty"`          //"has_page": boolean 是否开启了 Pages
+	HasWiki         *bool   `json:"has_wiki,omitempty"`          //"has_wiki": boolean 是否开启Wiki功能
+	Homepage        *string `json:"homepage,omitempty"`          //"homepage": string 主页
+	HooksURL        *string `json:"hooks_url,omitempty"`         //"hooks_url": string
+	HTMLURL         *string `json:"html_url,omitempty"`          //"html_url": string
+	HumanName       *string `json:"human_name,omitempty"`        //"human_name": string
+	ID              *int64  `json:"id,omitempty"`                //"id": integer
+	Internal        *bool   `json:"internal,omitempty"`          //"internal": string 是否内部开源
+	IssueComment    *bool   `json:"issue_comment,omitempty"`     //"issue_comment": boolean 是否允许用户对“关闭”状态的 Issue 进行评论
+	IssueCommentURL *string `json:"issue_comment_url,omitempty"` //"issue_comment_url": string
+	IssueURL        *string `json:"issues_url,omitempty"`        //"issues_url": string
+	KeysURL         *string `json:"keys_url,omitempty"`          //"keys_url": string
+	LabelsURL       *string `json:"labels_url,omitempty"`        //"labels_url": string
+	Language        *string `json:"language,omitempty"`          //"language": string 语言
+	License         *string `json:"license,omitempty"`           //"license": string 开源许可
+	//"members": Array[String] 仓库成员的username
+	MilestonesURL *string `json:"milestones_url,omitempty"` //"milestones_url": string
+	Name          *string `json:"name,omitempty"`           //"name": string 仓库名称
+	//"namespace": 5 properties
+	NotificationsURL *string `json:"notifications_url,omitempty"` //"notifications_url": string
+	OpenIssuesCount  *int    `json:"open_issues_count,omitempty"` //"open_issues_count": integer 开启的issue数量
+	Outsourced       *bool   `json:"outsourced,omitempty"`        //"outsourced": boolean 仓库类型（内部/外包）
+	Owner            *User   `json:"owner,omitempty"`             //"owner": 18 properties
+	Paas             *string `json:"paas,omitempty"`              //"paas": string
+	//"parent": 69 properties
+	Path *string `json:"path,omitempty"` //"path": string 仓库路径
+	//"permission": Object 操作权限
+	Private *bool `json:"private,omitempty"` //"private": boolean 是否私有
+	//"programs": 5 properties
+	//"project_creator": string 仓库创建者的 username
+	//"project_labels": 3 properties
+	Public              *bool      `json:"public,omitempty"`                //"public": boolean 是否公开
+	PullRequestsEnabled *bool      `json:"pull_requests_enabled,omitempty"` //"pull_requests_enabled": boolean 是否接受 Pull Request，协作开发
+	PullsURL            *string    `json:"pulls_url,omitempty"`             //"pulls_url": string
+	PushedAt            *Timestamp `json:"pushed_at,omitempty"`             //"pushed_at": string 最近一次代码推送时间
+	Recommend           *bool      `json:"recommend,omitempty"`             //"recommend": boolean 是否是推荐仓库
+	Relation            *string    `json:"relation,omitempty"`              //"relation": string 当前用户相对于仓库的角色
+	ReleasesURL         *string    `json:"releases_url,omitempty"`          //"releases_url": string
+	SSHURL              *string    `json:"ssh_url,omitempty"`               //"ssh_url": string
+	Stared              *bool      `json:"stared,omitempty"`                //"stared": boolean 是否 star
+	StargazersCount     *int       `json:"stargazers_count,omitempty"`      //"stargazers_count": integer 仓库star数量
+	StargazersURL       *string    `json:"stargazers_url,omitempty"`        //"stargazers_url": string
+	Status              *string    `json:"status,omitempty"`                //"status": string 仓库状态
+	TagsURL             *string    `json:"tags_url,omitempty"`              //"tags_url": string
+	//"testers": 1 item
+	TestersNumber *int       `json:"testers_number,omitempty"` //"testers_number": integer 代码审查设置，测试人数
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`     //"updated_at": string
+	URL           *string    `json:"url,omitempty"`            //"url": string
+	//"watched": boolean 是否 watch
+	//"watchers_count": integer 仓库watch数量
+
+}
+
 // Branch represents a repository branch
 type Branch struct {
 	Name          *string      `json:"name,omitempty"`
@@ -308,11 +382,85 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner string, repo 
 
 // TODO 开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
 
-// TODO 列出授权用户的所有仓库 GET https://gitee.com/api/v5/user/repos
-
 // TODO 创建一个仓库 POST https://gitee.com/api/v5/user/repos
 
-// TODO 获取某个用户的公开仓库 GET https://gitee.com/api/v5/users/{username}/repos
+type RepositoryListOptions struct {
+	// Visibility of repositories to list. Can be one of all, public, or private.
+	// Default: all  公开(public)、私有(private)或者所有(all)，默认: 所有(all)
+	Visibility string `url:"visibility,omitempty"`
+
+	// List repos of given affiliation[s].
+	// Comma-separated list of values. Can include:
+	// * owner: Repositories that are owned by the authenticated user.
+	// * collaborator: Repositories that the user has been added to as a
+	//   collaborator.
+	// * organization_member: Repositories that the user has access to through
+	//   being a member of an organization. This includes every repository on
+	//   every team that the user is on.
+	// Default: owner,collaborator,organization_member
+	// owner(授权用户拥有的仓库)、collaborator(授权用户为仓库成员)、
+	// organization_member(授权用户为仓库所在组织并有访问仓库权限)、
+	// enterprise_member(授权用户所在企业并有访问仓库权限)、
+	// admin(所有有权限的，包括所管理的组织中所有仓库、所管理的企业的所有仓库)。
+	// 可以用逗号分隔符组合。如: owner, organization_member 或 owner, collaborator, organization_member
+	Affiliation string `url:"affiliation,omitempty"`
+
+	// Type of repositories to list.
+	// Can be one of all, owner, public, private, member. Default: all
+	// Will cause a 422 error if used in the same request as visibility or
+	// affiliation.
+	// 筛选用户仓库: 其创建(owner)、个人(personal)、其为成员(member)、公开(public)、私有(private)，
+	//不能与 visibility 或 affiliation 参数一并使用，否则会报 422 错误
+	Type string `url:"type,omitempty"`
+
+	// How to sort the repository list. Can be one of created, updated, pushed,
+	// full_name. Default: full_name
+	// 排序方式: 创建时间(created)，更新时间(updated)，最后推送时间(pushed)，
+	// 仓库所属与名称(full_name)。默认: full_name
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort repositories. Can be one of asc or desc.
+	// Default: when using full_name: asc; otherwise desc
+	// 如果sort参数为full_name，用升序(asc)。否则降序(desc)
+	Direction string `url:"direction,omitempty"`
+
+	// 搜索关键字
+	Q string `url:"q,omitempty"`
+
+	ListOptions
+}
+
+// List the repositories for a user. Passing the empty string will list
+// repositories for the authenticated user.
+// 列出授权用户的所有仓库 GET https://gitee.com/api/v5/user/repos
+// 获取某个用户的公开仓库 GET https://gitee.com/api/v5/users/{username}/repos
+func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/repos", user)
+	} else {
+		u = "user/repos"
+	}
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var repos []*Repository
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
+
+}
 
 // TODO 获取一个组织的仓库 GET https://gitee.com/api/v5/orgs/{org}/repos
 
