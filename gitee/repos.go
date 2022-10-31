@@ -382,7 +382,36 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner string, repo 
 
 // TODO 开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
 
-// TODO 创建一个仓库 POST https://gitee.com/api/v5/user/repos
+type createRepoRequest struct { // TODO 补全
+}
+
+// Create a new repository. If an organization is specified, the new
+// repository will be created under that org. If the empty string is
+// specified, it will be created for the authenticated user.
+// 创建一个仓库 POST https://gitee.com/api/v5/user/repos
+// 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
+func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
+	var u string
+	if org != "" {
+		u = fmt.Sprintf("orgs/%v/repos", org)
+	} else {
+		u = "user/repos"
+	}
+	repoReq := &createRepoRequest{}
+
+	req, err := s.client.NewRequest("POST", u, repoReq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
 
 type RepositoryListOptions struct {
 	// Visibility of repositories to list. Can be one of all, public, or private.
@@ -463,8 +492,6 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opts *Repos
 }
 
 // TODO 获取一个组织的仓库 GET https://gitee.com/api/v5/orgs/{org}/repos
-
-// TODO 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
 
 // TODO 获取企业的所有仓库 GET https://gitee.com/api/v5/enterprises/{enterprise}/repos
 
