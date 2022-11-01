@@ -78,3 +78,29 @@ func TestList1(t *testing.T) {
 	fmt.Println("err", err)
 
 }
+
+func TestCreate(t *testing.T) {
+	opts := &gitee.RepositoryCreateOptions{
+		Name:        gitee.String("repo_name"), // 仓库名称
+		Path:        gitee.String("repo_Path"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
+		Description: gitee.String("repo_Description"),
+	}
+	repository, response, err := client.Repositories.Create(ctx, "", opts)
+	fmt.Println("repository", repository)
+
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+}
+
+func TestCreate1(t *testing.T) {
+	opts := &gitee.RepositoryCreateOptions{
+		Name:        gitee.String("repo_name"), // 仓库名称
+		Path:        gitee.String("repo_Path"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
+		Description: gitee.String("repo_Description"),
+	}
+	repository, response, err := client.Repositories.Create(ctx, "mamh-mixed", opts)
+	fmt.Println("repository", repository)
+
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+}
