@@ -401,7 +401,24 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner string, repo 
 
 // TODO 开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
 
-type createRepoRequest struct { // TODO 补全
+type RepositoryCreateOptions struct {
+	Name              *string `json:"name,omitempty"`               // 仓库名称
+	Path              *string `json:"path,omitempty"`               // 仓库路径
+	Description       *string `json:"description,omitempty"`        //仓库描述
+	Homepage          *string `json:"homepage,omitempty"`           //主页(eg: https://gitee.com) 一个有效的http链接
+	GitignoreTemplate *string `json:"gitignore_template,omitempty"` //Git Ignore模版
+	LicenseTemplate   *string `json:"license_template,omitempty"`   // License模版
+	Private           *bool   `json:"private,omitempty"`            //目前仅支持私有
+	HasIssues         *bool   `json:"has_issues,omitempty"`         //允许提Issue与否。默认: 允许(true)
+	HasWiki           *bool   `json:"has_wiki,omitempty"`           //提供Wiki与否。默认: 提供(true)
+	CanComment        *bool   `json:"can_comment,omitempty"`        //允许用户对仓库进行评论。默认： 允许(true)
+	AutoInit          *bool   `json:"auto_init,omitempty"`          //值为true时则会用README初始化仓库。默认: 不初始化(false)
+
+	//创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
+	Enterprise     *string `json:"enterprise,omitempty"`      //企业的路径(path/login)
+	Outsourced     *bool   `json:"outsourced,omitempty"`      //值为true值为外包仓库, false值为内部仓库。默认: 内部仓库(false)
+	ProjectCreator *string `json:"project_creator,omitempty"` //负责人的username
+	Members        *string `json:"members,omitempty"`         //用逗号分开的仓库成员。如: member1,member2
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -409,16 +426,15 @@ type createRepoRequest struct { // TODO 补全
 // specified, it will be created for the authenticated user.
 // 创建一个仓库 POST https://gitee.com/api/v5/user/repos
 // 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
-func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
+func (s *RepositoriesService) Create(ctx context.Context, org string, opt *RepositoryCreateOptions) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
 		u = fmt.Sprintf("orgs/%v/repos", org)
 	} else {
 		u = "user/repos"
 	}
-	repoReq := &createRepoRequest{}
 
-	req, err := s.client.NewRequest("POST", u, repoReq)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
