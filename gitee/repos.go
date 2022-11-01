@@ -12,78 +12,97 @@ import (
 // gitee API docs: https://gitee.com/api/v5/repos
 type RepositoriesService service
 
-type Repository struct {
-	//"assignee": 1 item
-	//"assignees_number": integer 代码审查设置，审查人数
-	//"assigner": 18 properties
-	BlobsURL         *string    `json:"blobs_url,omitempty"`         //"blobs_url": string
-	BranchesURL      *string    `json:"branches_url,omitempty"`      //"branches_url": string
-	CanComment       *bool      `json:"can_comment,omitempty"`       //"can_comment": boolean 是否允许用户对仓库进行评论
-	CollaboratorsURL *string    `json:"collaborators_url,omitempty"` //"collaborators_url": string
-	CommentsURL      *string    `json:"comments_url,omitempty"`      //"comments_url": string
-	CommitsURL       *string    `json:"commits_url,omitempty"`       //"commits_url": string
-	ContributorsURL  *string    `json:"contributors_url,omitempty"`  //"contributors_url": string
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`        //"created_at": string
-	DefaultBranch    *string    `json:"default_branch,omitempty"`    //"default_branch": string 默认分支
-	Description      *string    `json:"description,omitempty"`       //"description": string 仓库描述
-	//"enterprise": 5 properties
-	Fork            *bool   `json:"fork,omitempty"`              //"fork": boolean 是否是fork仓库
-	ForksCount      *int    `json:"forks_count,omitempty"`       //"forks_count": integer 仓库fork数量
-	ForksURL        *string `json:"forks_url,omitempty"`         //"forks_url": string
-	FullName        *string `json:"full_name,omitempty"`         //"full_name": string
-	GVP             *bool   `json:"gvp,omitempty"`               //"gvp": boolean 是否是 GVP 仓库
-	HasIssues       *bool   `json:"has_issues,omitempty"`        //"has_issues": boolean 是否开启issue功能
-	HasPage         *bool   `json:"has_page,omitempty"`          //"has_page": boolean 是否开启了 Pages
-	HasWiki         *bool   `json:"has_wiki,omitempty"`          //"has_wiki": boolean 是否开启Wiki功能
-	Homepage        *string `json:"homepage,omitempty"`          //"homepage": string 主页
-	HooksURL        *string `json:"hooks_url,omitempty"`         //"hooks_url": string
-	HTMLURL         *string `json:"html_url,omitempty"`          //"html_url": string
-	HumanName       *string `json:"human_name,omitempty"`        //"human_name": string
-	ID              *int64  `json:"id,omitempty"`                //"id": integer
-	Internal        *bool   `json:"internal,omitempty"`          //"internal": string 是否内部开源
-	IssueComment    *bool   `json:"issue_comment,omitempty"`     //"issue_comment": boolean 是否允许用户对“关闭”状态的 Issue 进行评论
-	IssueCommentURL *string `json:"issue_comment_url,omitempty"` //"issue_comment_url": string
-	IssueURL        *string `json:"issues_url,omitempty"`        //"issues_url": string
-	KeysURL         *string `json:"keys_url,omitempty"`          //"keys_url": string
-	LabelsURL       *string `json:"labels_url,omitempty"`        //"labels_url": string
-	Language        *string `json:"language,omitempty"`          //"language": string 语言
-	License         *string `json:"license,omitempty"`           //"license": string 开源许可
-	//"members": Array[String] 仓库成员的username
-	MilestonesURL *string `json:"milestones_url,omitempty"` //"milestones_url": string
-	Name          *string `json:"name,omitempty"`           //"name": string 仓库名称
-	//"namespace": 5 properties
-	NotificationsURL *string `json:"notifications_url,omitempty"` //"notifications_url": string
-	OpenIssuesCount  *int    `json:"open_issues_count,omitempty"` //"open_issues_count": integer 开启的issue数量
-	Outsourced       *bool   `json:"outsourced,omitempty"`        //"outsourced": boolean 仓库类型（内部/外包）
-	Owner            *User   `json:"owner,omitempty"`             //"owner": 18 properties
-	Paas             *string `json:"paas,omitempty"`              //"paas": string
-	//"parent": 69 properties
-	Path *string `json:"path,omitempty"` //"path": string 仓库路径
-	//"permission": Object 操作权限
-	Private *bool `json:"private,omitempty"` //"private": boolean 是否私有
-	//"programs": 5 properties
-	//"project_creator": string 仓库创建者的 username
-	//"project_labels": 3 properties
-	Public              *bool      `json:"public,omitempty"`                //"public": boolean 是否公开
-	PullRequestsEnabled *bool      `json:"pull_requests_enabled,omitempty"` //"pull_requests_enabled": boolean 是否接受 Pull Request，协作开发
-	PullsURL            *string    `json:"pulls_url,omitempty"`             //"pulls_url": string
-	PushedAt            *Timestamp `json:"pushed_at,omitempty"`             //"pushed_at": string 最近一次代码推送时间
-	Recommend           *bool      `json:"recommend,omitempty"`             //"recommend": boolean 是否是推荐仓库
-	Relation            *string    `json:"relation,omitempty"`              //"relation": string 当前用户相对于仓库的角色
-	ReleasesURL         *string    `json:"releases_url,omitempty"`          //"releases_url": string
-	SSHURL              *string    `json:"ssh_url,omitempty"`               //"ssh_url": string
-	Stared              *bool      `json:"stared,omitempty"`                //"stared": boolean 是否 star
-	StargazersCount     *int       `json:"stargazers_count,omitempty"`      //"stargazers_count": integer 仓库star数量
-	StargazersURL       *string    `json:"stargazers_url,omitempty"`        //"stargazers_url": string
-	Status              *string    `json:"status,omitempty"`                //"status": string 仓库状态
-	TagsURL             *string    `json:"tags_url,omitempty"`              //"tags_url": string
-	//"testers": 1 item
-	TestersNumber *int       `json:"testers_number,omitempty"` //"testers_number": integer 代码审查设置，测试人数
-	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`     //"updated_at": string
-	URL           *string    `json:"url,omitempty"`            //"url": string
-	//"watched": boolean 是否 watch
-	//"watchers_count": integer 仓库watch数量
+type Permission struct {
+	Pull  *bool `json:"pull,omitempty"`
+	Push  *bool `json:"push,omitempty"`
+	Admin *bool `json:"admin,omitempty"`
+}
 
+func (p Permission) String() string {
+	return Stringify(p)
+}
+
+type Enterprise struct { // TODO "enterprise": null
+}
+
+type Program struct { // TODO "Program": []
+}
+
+type Repository struct {
+	ID                  *int64      `json:"id,omitempty"`                    //"id": integer
+	FullName            *string     `json:"full_name,omitempty"`             //"full_name": string
+	HumanName           *string     `json:"human_name,omitempty"`            //"human_name": string
+	URL                 *string     `json:"url,omitempty"`                   //"url": string
+	Namespace           *Namespace  `json:"namespace,omitempty"`             //"namespace": 5 properties
+	Path                *string     `json:"path,omitempty"`                  //"path": string 仓库路径
+	Name                *string     `json:"name,omitempty"`                  //"name": string 仓库名称
+	Owner               *User       `json:"owner,omitempty"`                 //"owner": 18 properties
+	Aassigner           *User       `json:"assigner,omitempty"`              //"assigner": 18 properties
+	Description         *string     `json:"description,omitempty"`           //"description": string 仓库描述
+	Private             *bool       `json:"private,omitempty"`               //"private": boolean 是否私有
+	Public              *bool       `json:"public,omitempty"`                //"public": boolean 是否公开
+	Internal            *bool       `json:"internal,omitempty"`              //"internal": string 是否内部开源
+	Fork                *bool       `json:"fork,omitempty"`                  //"fork": boolean 是否是fork仓库
+	HTMLURL             *string     `json:"html_url,omitempty"`              //"html_url": string
+	SSHURL              *string     `json:"ssh_url,omitempty"`               //"ssh_url": string
+	ForksURL            *string     `json:"forks_url,omitempty"`             //"forks_url": string
+	KeysURL             *string     `json:"keys_url,omitempty"`              //"keys_url": string
+	CollaboratorsURL    *string     `json:"collaborators_url,omitempty"`     //"collaborators_url": string
+	HooksURL            *string     `json:"hooks_url,omitempty"`             //"hooks_url": string
+	BranchesURL         *string     `json:"branches_url,omitempty"`          //"branches_url": string
+	TagsURL             *string     `json:"tags_url,omitempty"`              //"tags_url": string
+	BlobsURL            *string     `json:"blobs_url,omitempty"`             //"blobs_url": string
+	StargazersURL       *string     `json:"stargazers_url,omitempty"`        //"stargazers_url": string
+	ContributorsURL     *string     `json:"contributors_url,omitempty"`      //"contributors_url": string
+	CommitsURL          *string     `json:"commits_url,omitempty"`           //"commits_url": string
+	CommentsURL         *string     `json:"comments_url,omitempty"`          //"comments_url": string
+	IssueCommentURL     *string     `json:"issue_comment_url,omitempty"`     //"issue_comment_url": string
+	IssueURL            *string     `json:"issues_url,omitempty"`            //"issues_url": string
+	PullsURL            *string     `json:"pulls_url,omitempty"`             //"pulls_url": string
+	MilestonesURL       *string     `json:"milestones_url,omitempty"`        //"milestones_url": string
+	NotificationsURL    *string     `json:"notifications_url,omitempty"`     //"notifications_url": string
+	LabelsURL           *string     `json:"labels_url,omitempty"`            //"labels_url": string
+	ReleasesURL         *string     `json:"releases_url,omitempty"`          //"releases_url": string
+	Recommend           *bool       `json:"recommend,omitempty"`             //"recommend": boolean 是否是推荐仓库
+	GVP                 *bool       `json:"gvp,omitempty"`                   //"gvp": boolean 是否是 GVP 仓库
+	Homepage            *string     `json:"homepage,omitempty"`              //"homepage": string 主页
+	Language            *string     `json:"language,omitempty"`              //"language": string 语言
+	ForksCount          *int        `json:"forks_count,omitempty"`           //"forks_count": integer 仓库fork数量
+	StargazersCount     *int        `json:"stargazers_count,omitempty"`      //"stargazers_count": integer 仓库star数量
+	WatchersCount       *int        `json:"watchers_count,omitempty"`        //"watchers_count": integer 仓库watch数量
+	DefaultBranch       *string     `json:"default_branch,omitempty"`        //"default_branch": string 默认分支
+	OpenIssuesCount     *int        `json:"open_issues_count,omitempty"`     //"open_issues_count": integer 开启的issue数量
+	HasIssues           *bool       `json:"has_issues,omitempty"`            //"has_issues": boolean 是否开启issue功能
+	HasWiki             *bool       `json:"has_wiki,omitempty"`              //"has_wiki": boolean 是否开启Wiki功能
+	IssueComment        *bool       `json:"issue_comment,omitempty"`         //"issue_comment": boolean 是否允许用户对“关闭”状态的 Issue 进行评论
+	CanComment          *bool       `json:"can_comment,omitempty"`           //"can_comment": boolean 是否允许用户对仓库进行评论
+	PullRequestsEnabled *bool       `json:"pull_requests_enabled,omitempty"` //"pull_requests_enabled": boolean 是否接受 Pull Request，协作开发
+	HasPage             *bool       `json:"has_page,omitempty"`              //"has_page": boolean 是否开启了 Pages
+	License             *string     `json:"license,omitempty"`               //"license": string 开源许可
+	Outsourced          *bool       `json:"outsourced,omitempty"`            //"outsourced": boolean 仓库类型（内部/外包）
+	ProjectCreator      *string     `json:"project_creator,omitempty"`       //"project_creator": string 仓库创建者的 username
+	Members             []*string   `json:"members,omitempty"`               //"members": Array[String] 仓库成员的username
+	PushedAt            *Timestamp  `json:"pushed_at,omitempty"`             //"pushed_at": string 最近一次代码推送时间
+	CreatedAt           *Timestamp  `json:"created_at,omitempty"`            //"created_at": string
+	UpdatedAt           *Timestamp  `json:"updated_at,omitempty"`            //"updated_at": string
+	Parent              *Repository `json:"parent,omitempty"`                //"parent": 69 properties
+	Paas                *string     `json:"paas,omitempty"`                  //"paas": string
+	Stared              *bool       `json:"stared,omitempty"`                //"stared": boolean 是否 star
+	Watched             *bool       `json:"watched,omitempty"`               //"watched": boolean 是否 watch
+	Permission          *Permission `json:"permission,omitempty"`            //"permission": Object 操作权限
+	Relation            *string     `json:"relation,omitempty"`              //"relation": string 当前用户相对于仓库的角色
+	AssigneesNumber     *int        `json:"assignees_number,omitempty"`      //"assignees_number": integer 代码审查设置，审查人数
+	TestersNumber       *int        `json:"testers_number,omitempty"`        //"testers_number": integer 代码审查设置，测试人数
+	Assignee            []*User     `json:"assignee,omitempty"`              //"assignee": 1 item
+	Testers             []*User     `json:"testers,omitempty"`               //"testers": 1 item
+	Status              *string     `json:"status,omitempty"`                //"status": string 仓库状态
+	Programs            []Program   `json:"programs,omitempty"`              //"programs": 5 properties
+	Enterprise          *Enterprise `json:"enterprise,omitempty"`            //"enterprise": 5 properties
+	ProjectLabels       []*string   `json:"project_labels,omitempty"`        //"project_labels": 3 properties
+}
+
+func (r Repository) String() string {
+	return Stringify(r)
 }
 
 // Branch represents a repository branch
