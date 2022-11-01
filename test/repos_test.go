@@ -67,3 +67,14 @@ func TestList(t *testing.T) {
 	fmt.Println("err", err)
 
 }
+
+func TestList1(t *testing.T) {
+	opts := &gitee.RepositoryListOptions{}
+	repository, response, err := client.Repositories.List(ctx, "elunez", opts)
+
+	fmt.Println("repository", repository)
+
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+
+}
