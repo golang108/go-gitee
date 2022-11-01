@@ -415,7 +415,7 @@ type RepositoryCreateOptions struct {
 	AutoInit          *bool   `json:"auto_init,omitempty"`          //值为true时则会用README初始化仓库。默认: 不初始化(false)
 
 	//创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
-	Enterprise     *string `json:"enterprise,omitempty"`      //企业的路径(path/login)
+	Enterprise     *string `json:"enterprise,omitempty"`      //企业的路径(path/login)  # 必填项
 	Outsourced     *bool   `json:"outsourced,omitempty"`      //值为true值为外包仓库, false值为内部仓库。默认: 内部仓库(false)
 	ProjectCreator *string `json:"project_creator,omitempty"` //负责人的username
 	Members        *string `json:"members,omitempty"`         //用逗号分开的仓库成员。如: member1,member2
@@ -426,10 +426,14 @@ type RepositoryCreateOptions struct {
 // specified, it will be created for the authenticated user.
 // 创建一个仓库 POST https://gitee.com/api/v5/user/repos
 // 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
-func (s *RepositoriesService) Create(ctx context.Context, org string, opt *RepositoryCreateOptions) (*Repository, *Response, error) {
+// 创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
+func (s *RepositoriesService) Create(ctx context.Context, orgOrenterprise string, opt *RepositoryCreateOptions) (*Repository, *Response, error) {
 	var u string
-	if org != "" {
-		u = fmt.Sprintf("orgs/%v/repos", org)
+	if orgOrenterprise != "" {
+		u = fmt.Sprintf("orgs/%v/repos", orgOrenterprise)
+		if opt.Enterprise != nil {
+			u = fmt.Sprintf("enterprises/%v/repos", orgOrenterprise)
+		}
 	} else {
 		u = "user/repos"
 	}
