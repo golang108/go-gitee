@@ -47,3 +47,23 @@ func TestListCommits(t *testing.T) {
 	}
 
 }
+
+func TestList(t *testing.T) {
+	opts := &gitee.RepositoryListOptions{}
+	repository, response, err := client.Repositories.List(ctx, "", opts)
+
+	fmt.Println("Namespace", repository[0].Namespace)
+	fmt.Println("Owner", repository[0].Owner)
+	fmt.Println("Aassigner", repository[0].Aassigner)
+	fmt.Println("Parent", repository[0].Parent)
+	fmt.Println("Permission", repository[0].Permission)
+	fmt.Println("Assignee", repository[0].Assignee[0])
+	fmt.Println("Testers", repository[0].Testers[0])
+	fmt.Println("Programs", repository[0].Programs)
+	fmt.Println("Enterprise", repository[0].Enterprise)
+	fmt.Println("ProjectLabels", repository[0].ProjectLabels)
+
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+
+}
