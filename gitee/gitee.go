@@ -236,24 +236,19 @@ func (ae *AcceptedError) Is(target error) bool {
 	return bytes.Compare(ae.Raw, v.Raw) == 0
 }
 
-type Error struct {
-	Resource string `json:"resource"` // resource on which the error occurred
-	Field    string `json:"field"`    // field on which the error occurred
-	Code     string `json:"code"`     // validation error code
-	Message  string `json:"message"`  // Message describing the error. Errors with Code == "custom" will always have this set.
-}
-
 type ErrorResponse struct {
-	Response *http.Response // HTTP response that caused this error
-	Errors   []Error        `json:"errors"` // more detail on individual errors
-
-	Message string `json:"message"` // error message
+	Response *http.Response         // HTTP response that caused this error
+	ErrorMap map[string]interface{} `json:"error"` // more detail on individual errors
 }
 
 func (r *ErrorResponse) Error() string {
-	return fmt.Sprintf("%v %v: %d %v %+v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, r.Errors)
+	return fmt.Sprintf("%v %v: %d: %v, %v",
+		r.Response.Request.Method,
+		sanitizeURL(r.Response.Request.URL),
+		r.Response.StatusCode,
+		r.Response.Status,
+		r.ErrorMap,
+	)
 }
 
 func CheckResponse(r *http.Response) error {
