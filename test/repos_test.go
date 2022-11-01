@@ -79,6 +79,26 @@ func TestList1(t *testing.T) {
 
 }
 
+func TestListOrgs(t *testing.T) {
+	opts := &gitee.RepositoryListOptions{}
+	repository, response, err := client.Repositories.ListOrgs(ctx, "mamh-mixed", opts)
+
+	fmt.Println("repository", repository)
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+
+}
+
+func TestListEnterprises(t *testing.T) {
+	opts := &gitee.RepositoryListOptions{}
+	repository, response, err := client.Repositories.ListEnterprises(ctx, "magesfc", opts)
+
+	fmt.Println("repository", repository)
+	fmt.Println("response", response)
+	fmt.Println("err", err)
+
+}
+
 func TestCreate(t *testing.T) {
 	opts := &gitee.RepositoryCreateOptions{
 		Name:        gitee.String("repo_name2"), // 仓库名称
@@ -108,8 +128,8 @@ func TestCreate1(t *testing.T) {
 
 func TestCreate2(t *testing.T) {
 	opts := &gitee.RepositoryCreateOptions{
-		Name:        gitee.String("magesfc"),   // 仓库名称
-		Path:        gitee.String("repo_Path"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
+		Name:        gitee.String("magesfc仓库名称"), // 仓库名称
+		Path:        gitee.String("repo_Path"),   //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
 		Description: gitee.String("repo_Description"),
 		Enterprise:  gitee.String("magesfc"),
 	}
