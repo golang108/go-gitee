@@ -238,16 +238,17 @@ func (ae *AcceptedError) Is(target error) bool {
 
 type ErrorResponse struct {
 	Response *http.Response         // HTTP response that caused this error
-	ErrorMap map[string]interface{} `json:"error"` // more detail on individual errors
+	ErrorMap map[string]interface{} `json:"error"`   // more detail on individual errors
+	Message  string                 `json:"message"` // error message
 }
 
 func (r *ErrorResponse) Error() string {
-	return fmt.Sprintf("%v %v: %d: %v, %v",
+	return fmt.Sprintf("%v %v: %d: %v, %v, %+v",
 		r.Response.Request.Method,
 		sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode,
 		r.Response.Status,
-		r.ErrorMap,
+		r.ErrorMap, r.Message,
 	)
 }
 
