@@ -530,8 +530,60 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opts *Repos
 
 }
 
-// TODO 获取一个组织的仓库 GET https://gitee.com/api/v5/orgs/{org}/repos
+// 获取一个组织的仓库 GET https://gitee.com/api/v5/orgs/{org}/repos
+func (s *RepositoriesService) ListOrgs(ctx context.Context, org string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
+	var u string
+	if org != "" {
+		u = fmt.Sprintf("orgs/%v/repos", org)
+	} else {
+		return nil, nil, fmt.Errorf("org is empty")
+	}
 
-// TODO 获取企业的所有仓库 GET https://gitee.com/api/v5/enterprises/{enterprise}/repos
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var repos []*Repository
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
+}
+
+// 获取企业的所有仓库 GET https://gitee.com/api/v5/enterprises/{enterprise}/repos
+func (s *RepositoriesService) ListEnterprises(ctx context.Context, enterprise string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
+	var u string
+	if enterprise != "" {
+		u = fmt.Sprintf("enterprises/%v/repos", enterprise)
+	} else {
+		return nil, nil, fmt.Errorf("enterprise is empty")
+	}
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var repos []*Repository
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
+}
 
 // TODO 创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
