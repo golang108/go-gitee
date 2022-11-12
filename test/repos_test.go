@@ -327,6 +327,23 @@ func TestCreateFile(t *testing.T) {
 
 }
 
+func TestUpdateFile(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc-test"
+	path := "go.mod"
+
+	opts := &gitee.RepositoryContentFileOptions{
+		Message: gitee.String("go.mod: update go.mod file"),
+		Content: []byte("指定的文件 的=="),
+		Branch:  gitee.String("master"),                                   // 分支名称。默认为仓库对默认分支
+		SHA:     gitee.String("7a680025f5489e7e6279ee169384a958c7edac61"), // 指定的文件 的 sha 可以和这里的不一样.文件的 Blob SHA，可通过 [获取仓库具体路径下的内容] API 获取
+	}
+
+	file, response, err := client.Repositories.UpdateFile(ctx, owner, repo, path, opts)
+	fmt.Println(file, response, err) // A file with this name already exists
+
+}
+
 func TestDeleteFile(t *testing.T) {
 	owner := "magesfc"
 	repo := "magesfc-test"
