@@ -401,6 +401,12 @@ func (r RepositoryComment) String() string {
 	return Stringify(r)
 }
 
+type CommentRequest struct {
+	Body     *string `json:"body"`     // 评论的内容
+	Path     *string `json:"path"`     //文件的相对路径
+	Position *int64  `json:"position"` //Diff的相对行数
+}
+
 type CommentsListOptions struct {
 	Order string `url:"order,omitempty"` //排序顺序: asc(default),desc
 
@@ -489,7 +495,24 @@ func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo str
 	return s.client.Do(ctx, req, nil)
 }
 
-// todo 创建Commit评论 POST https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{sha}/comments
+// CreateComment creates a comment for the given commit.
+//
+//  创建Commit评论 POST https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{sha}/comments
+func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, comment *CommentRequest) (*RepositoryComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
+	req, err := s.client.NewRequest("POST", u, comment)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	c := new(RepositoryComment)
+	resp, err := s.client.Do(ctx, req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, nil
+}
 
 func (c Commit) String() string {
 	return Stringify(c)
