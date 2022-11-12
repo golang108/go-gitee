@@ -119,6 +119,20 @@ func TestListCommitComments(t *testing.T) {
 	}
 }
 
+func TestGetComment(t *testing.T) {
+	comment, response, err := client.Repositories.GetComment(ctx, "mamh-mixed", "go-gitee", 14339904)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response,
+		*comment.ID,
+		*comment.User.Name,
+		*comment.CreatedAt,
+		*comment.Body,
+	)
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
