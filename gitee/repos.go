@@ -899,8 +899,8 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
 type RepositoryContentResponse struct {
-	Content *RepositoryContent `json:"content,omitempty"`
-	Commit  `json:"commit,omitempty"`
+	Content *RepositoryContent        `json:"content,omitempty"`
+	Commit  `json:"commit,omitempty"` // todo 这个 commit 结构体 少了 parents, parents是个列表 ，里面每个元素只要 sha 和 url 2个属性值
 }
 
 func (r RepositoryContentResponse) String() string {
