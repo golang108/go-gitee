@@ -243,6 +243,7 @@ func (p Protection) String() string {
 }
 
 type ProtectionRequest struct {
+	Wildcard    *string `json:"wildcard,omitempty"`     // 分支/通配符
 	NewWildcard *string `json:"new_wildcard,omitempty"` // 新分支/通配符(为空不修改)
 	Pusher      *string `json:"pusher,omitempty"`       // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
 	Merger      *string `json:"merger,omitempty"`       // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
