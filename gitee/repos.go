@@ -953,7 +953,25 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 	return updateResponse, resp, nil
 }
 
-// TODO 删除文件 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+// DeleteFile deletes a file from a repository and returns the commit.
+// Requires the blob SHA of the file to be deleted.
+//
+//  删除文件 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	req, err := s.client.NewRequest("DELETE", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	deleteResponse := new(RepositoryContentResponse)
+	resp, err := s.client.Do(ctx, req, deleteResponse)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return deleteResponse, resp, nil
+}
 
 // TODO 获取Pages信息 GET https://gitee.com/api/v5/repos/{owner}/{repo}/pages
 
