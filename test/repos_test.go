@@ -183,9 +183,9 @@ func TestRemoveBranchProtection(t *testing.T) {
 func TestUpdateBranchWildcardProtection(t *testing.T) {
 	owner := "mamh-mixed"
 	repo := "go-gitee"
-	wildcard := "main"
+	wildcard := "main_wildcard"
 	pr := &gitee.ProtectionRequest{
-		NewWildcard: gitee.String("main_new_wildcard"),
+		NewWildcard: gitee.String("main_new_wildcard"), // wildcard -> new_wildcard 重命名
 		Pusher:      gitee.String("admin"),
 		Merger:      gitee.String("admin"),
 	}
@@ -193,7 +193,7 @@ func TestUpdateBranchWildcardProtection(t *testing.T) {
 
 	fmt.Println(prot)
 	fmt.Println(response)
-	fmt.Println(err) //"message": "Operation is not allowed"
+	fmt.Println(err)
 
 }
 
@@ -210,6 +210,6 @@ func TestCreateBranchWildcardProtection(t *testing.T) {
 
 	fmt.Println(prot)
 	fmt.Println(response)
-	fmt.Println(err) //"message": "Operation is not allowed"
+	fmt.Println(err)
 
 }
