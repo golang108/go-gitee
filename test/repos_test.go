@@ -176,9 +176,11 @@ func TestRemoveBranchProtection(t *testing.T) {
 	branch := "main"
 
 	response, err := client.Repositories.RemoveBranchProtection(ctx, owner, repo, branch)
+	// RemoveBranchWildcardProtection 用这个反而可以删掉。这接口弄的真乱！
 
 	fmt.Println(response)
 	fmt.Println(err) //"message": "Operation is not allowed"
+	// "message": "404 Not Found"
 
 }
 
@@ -217,5 +219,19 @@ func TestCreateBranchWildcardProtection(t *testing.T) {
 
 	fmt.Println(response)
 	fmt.Println(err)
+
+}
+
+func TestRemoveBranchWildcardProtection(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+	branch := "main"
+
+	response, err := client.Repositories.RemoveBranchWildcardProtection(ctx, owner, repo, branch)
+	// UpdateBranchProtection 创建的 用 RemoveBranchProtection 不能删掉
+	// 用这个 RemoveBranchWildcardProtection 反而可以删掉。这接口弄的真乱！
+
+	fmt.Println(response)
+	fmt.Println(err) // "message": "Wildcard Not Found"
 
 }
