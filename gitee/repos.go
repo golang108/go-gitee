@@ -457,7 +457,23 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 	return comments, resp, nil
 }
 
-// todo 获取仓库的某条Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
+// GetComment gets a single comment from a repository.
+// 获取仓库的某条Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
+func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	c := new(RepositoryComment)
+	resp, err := s.client.Do(ctx, req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, nil
+}
 
 // todo 更新Commit评论 PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
 
