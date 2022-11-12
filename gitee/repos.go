@@ -2,6 +2,8 @@ package gitee
 
 import (
 	"context"
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -794,6 +796,30 @@ type RepositoryContent struct {
 	HTMLURL     *string `json:"html_url,omitempty"`
 	DownloadURL *string `json:"download_url,omitempty"`
 	Links       *Links  `json:"_links,omitempty"`
+}
+
+// GetContent returns the content of r, decoding it if necessary.
+func (r *RepositoryContent) GetContent() (string, error) {
+	var encoding string
+	if r.Encoding != nil {
+		encoding = *r.Encoding
+	}
+
+	switch encoding {
+	case "base64":
+		if r.Content == nil {
+			return "", errors.New("malformed response: base64 encoding of null content")
+		}
+		c, err := base64.StdEncoding.DecodeString(*r.Content)
+		return string(c), err
+	case "":
+		if r.Content == nil {
+			return "", nil
+		}
+		return *r.Content, nil
+	default:
+		return "", fmt.Errorf("unsupported content encoding: %v", encoding)
+	}
 }
 
 // GetReadme gets the Readme file for the repository.
