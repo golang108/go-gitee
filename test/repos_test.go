@@ -133,6 +133,15 @@ func TestGetComment(t *testing.T) {
 	)
 }
 
+func TestDeleteComment(t *testing.T) {
+	response, err := client.Repositories.DeleteComment(ctx, "mamh-mixed", "go-gitee", 14339904)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response)
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
