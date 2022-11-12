@@ -288,7 +288,18 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 删除仓库保护分支策略 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
+// RemoveBranchWildcardProtection removes the protection of a given wildcard.
+// TODO 这个方法要不要 和 上面那个 方法合并成一个呢？？？
+//  删除仓库保护分支策略 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
+func (s *RepositoriesService) RemoveBranchWildcardProtection(ctx context.Context, owner, repo, wildcard string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/setting", owner, repo, wildcard)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 新建仓库保护分支策略 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new
 
