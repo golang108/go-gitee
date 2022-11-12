@@ -13,6 +13,11 @@ import (
 // gitee API docs: https://gitee.com/api/v5/repos
 type RepositoriesService service
 
+type Links struct {
+	Self *string `json:"self,omitempty"`
+	HTML *string `json:"html,omitempty"`
+}
+
 type Permission struct {
 	Pull  *bool `json:"pull,omitempty"`
 	Push  *bool `json:"push,omitempty"`
@@ -224,7 +229,39 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	return br, resp, nil
 }
 
-// TODO 设置分支保护 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
+// Protection represents a repository branch's protection.
+type Protection struct {
+	Name          *string           `json:"name,omitempty"` // branch name
+	Commit        *RepositoryCommit `json:"commit,omitempty"`
+	Protected     *bool             `json:"protected,omitempty"`
+	ProtectionURL *string           `json:"protection_url,omitempty"`
+	Links         *Links            `json:"_links,omitempty"`
+}
+
+func (p Protection) String() string {
+	return Stringify(p)
+}
+
+// UpdateBranchProtection updates the protection of a given branch.
+// owner 仓库所属空间地址(企业、组织或个人的地址path)
+// repo 仓库路径(path)
+// branch 分支名称
+//  设置分支保护 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
+func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(Protection)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
+}
 
 // TODO 取消保护分支的设置 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
 
