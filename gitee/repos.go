@@ -275,6 +275,8 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 // repo 仓库路径(path)
 // wildcard 分支/通配符
 // preq 分支保护策略设置 结构体，里面用到 new_wildcard，pusher，merger 字段 和 CreateBranchWildcardProtection 公用一个
+// wildcard 设置分支/通配符.  感觉就是这个分支规则 起的一个名称,附带着通配的作用.
+// new_wildcard 这次操作不是更新吗，如果填写这个字段，就是重新起个名称,附带着通配的作用.
 // 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 func (s *RepositoriesService) UpdateBranchWildcardProtection(ctx context.Context, owner, repo, wildcard string,
 	preq *ProtectionRequest) (*Protection, *Response, error) {
@@ -321,7 +323,9 @@ func (s *RepositoriesService) RemoveBranchWildcardProtection(ctx context.Context
 // CreateBranchWildcardProtection create the protection of a given branch
 // owner 仓库所属空间地址(企业、组织或个人的地址path), 这个接口是新建一个 新的
 // repo  仓库路径(path)
-// preq   结构体，里面用到 wildcard，pusher，merger 字段
+// preq   结构体，里面用到 wildcard，pusher，merger 字段.
+// wildcard 设置分支/通配符.  感觉就是这个分支规则 起的一个名称,附带着通配的作用.
+// 例如：设置为“master”，则对名称为“master”的分支生效；设置为“*-stable“ 或 ”release*“，则对名称符合此通配符的所有保护分支生效
 // 新建仓库保护分支策略 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new
 func (s *RepositoriesService) CreateBranchWildcardProtection(ctx context.Context, owner, repo string,
 	preq *ProtectionRequest) (*Protection, *Response, error) {
