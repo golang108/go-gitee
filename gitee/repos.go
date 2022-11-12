@@ -380,7 +380,56 @@ func (s *RepositoriesService) CreateBranchWildcardProtection(ctx context.Context
 	return p, resp, nil
 }
 
-// todo 获取仓库的Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments
+// RepositoryComment represents a comment for a commit, file, or line in a repository.
+type RepositoryComment struct {
+	ID          *int64         `json:"id,omitempty"`
+	InReplyToID *int64         `json:"in_reply_to_id,omitempty"`
+	Body        *string        `json:"body"`
+	Source      *string        `json:"source,omitempty"`
+	User        *User          `json:"user,omitempty"` // User-mutable fields
+	CreatedAt   *time.Time     `json:"created_at,omitempty"`
+	UpdatedAt   *time.Time     `json:"updated_at,omitempty"`
+	Target      *CommentTarget `json:"target,omitempty"` // TODO这个获取的都是null，不知道是干什么用的
+}
+
+type CommentTarget struct {
+	Issue       *string `json:"issue,omitempty"`
+	PullRequest *string `json:"pull_request,omitempty"`
+}
+
+func (r RepositoryComment) String() string {
+	return Stringify(r)
+}
+
+type CommentsListOptions struct {
+	Order string `url:"order,omitempty"` //排序顺序: asc(default),desc
+
+	ListOptions //当前的页码, 每页的数量，最大为 100
+}
+
+// ListComments lists all the comments for the repository.
+//
+// 获取仓库的Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments
+func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo string, opts *CommentsListOptions) ([]*RepositoryComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var comments []*RepositoryComment
+	resp, err := s.client.Do(ctx, req, &comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return comments, resp, nil
+}
 
 // todo 获取单个Commit的评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{ref}/comments
 
