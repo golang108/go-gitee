@@ -233,6 +233,16 @@ func TestEnableKey(t *testing.T) {
 	fmt.Println(response) // 启动用成功是否 返回 都是  404 Not Found,  "message": "Deploy Key"
 }
 
+func TestDisableKey(t *testing.T) {
+	id := int64(3585098)
+	response, err := client.Repositories.DisableKey(ctx, "mamh-mixed", "go-gitee", id)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response) // 启动用成功是否 返回 都是  404 Not Found,  "message": "Deploy Key"
+}
+
 func TestGetKey(t *testing.T) {
 	id := int64(3584973)
 	key, response, err := client.Repositories.GetKey(ctx, "mamh-mixed", "go-gitee", id)
