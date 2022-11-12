@@ -717,9 +717,17 @@ func (s *RepositoriesService) ListAvailableKeys(ctx context.Context, owner strin
 	return keys, resp, nil
 }
 
-// TODO 启用仓库公钥  PUT https://gitee.com/api/v5/repos/{owner}/{repo}/keys/enable/{id}
+// 启用仓库公钥  PUT https://gitee.com/api/v5/repos/{owner}/{repo}/keys/enable/{id}
+func (s *RepositoriesService) EnableKey(ctx context.Context, owner string, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys/enable/%v", owner, repo, id)
 
-// TODO 停用仓库公钥 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/keys/enable/{id}
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil) // "message": "Deploy Key"
+}
 
 // GetKey fetches a single deploy key.
 //
