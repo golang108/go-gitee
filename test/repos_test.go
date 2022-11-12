@@ -211,6 +211,18 @@ func TestListKeys(t *testing.T) {
 
 }
 
+func TestGetKey(t *testing.T) {
+	id := int64(3584973)
+	key, response, err := client.Repositories.GetKey(ctx, "mamh-mixed", "go-gitee", id)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(key)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
