@@ -167,3 +167,15 @@ func TestUpdateBranchProtection(t *testing.T) {
 	fmt.Println(err)
 
 }
+
+func TestRemoveBranchProtection(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+	branch := "main"
+
+	response, err := client.Repositories.RemoveBranchProtection(ctx, owner, repo, branch)
+
+	fmt.Println(response)
+	fmt.Println(err) //"message": "Operation is not allowed"
+
+}
