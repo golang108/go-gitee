@@ -184,6 +184,21 @@ func TestUpdateComment(t *testing.T) {
 
 }
 
+func TestCreateKey(t *testing.T) {
+	kreq := &gitee.KeyRequest{
+		Key:   gitee.String("ssh-rsa"),
+		Title: gitee.String("public key title"),
+	}
+
+	key, response, err := client.Repositories.CreateKey(ctx, "mamh-mixed", "go-gitee", kreq)
+	if err != nil {
+		fmt.Println(err) // 指纹生成失败, 当前公钥是无效的
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(key)
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
