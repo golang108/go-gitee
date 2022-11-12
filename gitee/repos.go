@@ -775,7 +775,51 @@ func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo 
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 获取仓库README GET https://gitee.com/api/v5/repos/{owner}/{repo}/readme
+// RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
+// branch, or tag
+type RepositoryContentGetOptions struct {
+	Ref string `url:"ref,omitempty"`
+}
+
+// RepositoryContent represents a file or directory in a github repository.
+type RepositoryContent struct {
+	Type        *string `json:"type,omitempty"`
+	Encoding    *string `json:"encoding,omitempty"`
+	Size        *int    `json:"size,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Path        *string `json:"path,omitempty"`
+	Content     *string `json:"content,omitempty"`
+	SHA         *string `json:"sha,omitempty"`
+	URL         *string `json:"url,omitempty"`
+	HTMLURL     *string `json:"html_url,omitempty"`
+	DownloadURL *string `json:"download_url,omitempty"`
+	Links       *Links  `json:"_links,omitempty"`
+}
+
+// GetReadme gets the Readme file for the repository.
+//
+//  获取仓库README GET https://gitee.com/api/v5/repos/{owner}/{repo}/readme
+func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
+	opts *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	readme := new(RepositoryContent)
+	resp, err := s.client.Do(ctx, req, readme)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return readme, resp, nil
+}
 
 // TODO 获取仓库具体路径下的内容 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contents(/{path})
 
