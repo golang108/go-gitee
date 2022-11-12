@@ -800,6 +800,11 @@ type RepositoryContent struct {
 	Links       *Links  `json:"_links,omitempty"`
 }
 
+// String converts RepositoryContent to a string. It's primarily for testing.
+func (r RepositoryContent) String() string {
+	return Stringify(r)
+}
+
 // GetContent returns the content of r, decoding it if necessary.
 func (r *RepositoryContent) GetContent() (string, error) {
 	var encoding string
