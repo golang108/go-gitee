@@ -933,7 +933,25 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 	return createResponse, resp, nil
 }
 
-// TODO 更新文件 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+// UpdateFile updates a file in a repository at the given path and returns the
+// commit and file metadata. Requires the blob SHA of the file being updated.
+//
+//  更新文件 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	req, err := s.client.NewRequest("PUT", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	updateResponse := new(RepositoryContentResponse)
+	resp, err := s.client.Do(ctx, req, updateResponse)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return updateResponse, resp, nil
+}
 
 // TODO 删除文件 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
 
