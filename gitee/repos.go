@@ -229,6 +229,20 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	return br, resp, nil
 }
 
+type ProtectionSetting struct {
+	ID        *int64  `json:"id,omitempty"`
+	ProjectID *int64  `json:"project_id,omitempty"`
+	Wildcard  *string `json:"wildcard,omitempty"` // wildcard name
+	Strict    *bool   `json:"strict,omitempty"`   // 是否严格检查
+	Pusher    *string `json:"pusher,omitempty"`   // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
+	Merger    *string `json:"merger,omitempty"`   // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
+	//  contexts 还有个这个鸟属性，着文档写的真TMD垃圾
+}
+
+func (p ProtectionSetting) String() string {
+	return Stringify(p)
+}
+
 // Protection represents a repository branch's protection.
 type Protection struct {
 	Name          *string           `json:"name,omitempty"` // branch name
