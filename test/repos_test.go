@@ -164,6 +164,26 @@ func TestCreateComment(t *testing.T) {
 
 }
 
+func TestUpdateComment(t *testing.T) {
+	creq := &gitee.CommentRequest{
+		Body: gitee.String("update for id 14340395 comment, \n 0 3 14340395 系统提示 2022-11-12 19:17:47 +0800 CST body for comment test/repos_test.go, 18 hang\n"),
+	}
+	id := int64(14340395)
+
+	comment, response, err := client.Repositories.UpdateComment(ctx, "mamh-mixed", "go-gitee", id, creq)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response,
+		*comment.ID,
+		*comment.User.Name,
+		*comment.CreatedAt,
+		*comment.Body,
+	)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
