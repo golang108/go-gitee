@@ -903,6 +903,10 @@ type RepositoryContentResponse struct {
 	Commit  `json:"commit,omitempty"`
 }
 
+func (r RepositoryContentResponse) String() string {
+	return Stringify(r)
+}
+
 // RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.
 type RepositoryContentFileOptions struct {
 	Message   *string       `json:"message,omitempty"`
