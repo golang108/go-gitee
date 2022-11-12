@@ -264,6 +264,8 @@ type ProtectionRequest struct {
 }
 
 // UpdateBranchProtection updates the protection of a given branch.
+// 这个接口 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection 设置的 保护
+//       和 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new 设置的保护不是一个东西，
 // owner 仓库所属空间地址(企业、组织或个人的地址path)
 // repo 仓库路径(path)
 // branch 分支名称
