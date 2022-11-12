@@ -70,6 +70,31 @@ func TestListCommits(t *testing.T) {
 
 }
 
+func TestListComments(t *testing.T) {
+	var opts = &gitee.CommentsListOptions{
+		Order: "desc",
+	}
+	for {
+		comments, response, err := client.Repositories.ListComments(ctx, "mamh-mixed", "go-gitee", opts)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for index, comment := range comments {
+			fmt.Println(index, len(comments),
+				*comment.ID,
+				*comment.User.Name,
+				*comment.CreatedAt,
+				*comment.Body,
+			)
+		}
+		if response.NextPage == 0 {
+			break
+		}
+		opts.Page = response.NextPage
+	}
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
