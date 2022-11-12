@@ -293,14 +293,14 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 // new_wildcard 这次操作不是更新吗，如果填写这个字段，就是重新起个名称,附带着通配的作用.
 // 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 func (s *RepositoriesService) UpdateBranchWildcardProtection(ctx context.Context, owner, repo, wildcard string,
-	preq *ProtectionRequest) (*Protection, *Response, error) {
+	preq *ProtectionRequest) (*ProtectionSetting, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/setting", owner, repo, wildcard)
 	req, err := s.client.NewRequest("PUT", u, preq)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	p := new(Protection) //todo 返回值不一样
+	p := new(ProtectionSetting) // 返回值不一样 ProtectionSetting 和 Protection
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
@@ -342,14 +342,14 @@ func (s *RepositoriesService) RemoveBranchWildcardProtection(ctx context.Context
 // 例如：设置为“master”，则对名称为“master”的分支生效；设置为“*-stable“ 或 ”release*“，则对名称符合此通配符的所有保护分支生效
 // 新建仓库保护分支策略 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new
 func (s *RepositoriesService) CreateBranchWildcardProtection(ctx context.Context, owner, repo string,
-	preq *ProtectionRequest) (*Protection, *Response, error) {
+	preq *ProtectionRequest) (*ProtectionSetting, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/setting/new", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, preq)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	p := new(Protection)
+	p := new(ProtectionSetting)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
