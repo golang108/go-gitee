@@ -279,6 +279,38 @@ func TestGetReadme(t *testing.T) {
 
 }
 
+func TestGetContents1(t *testing.T) {
+	opts := &gitee.RepositoryContentGetOptions{
+		Ref: "main", // 分支、tag或commit。默认: 仓库的默认分支(通常是master)
+	}
+	filepath := "gitee" // 获取仓库下面的一个目录的内容, 返回值 第一个就会是nil
+	fileContent, directoryContent, response, err := client.Repositories.GetContents(ctx, "mamh-mixed", "go-gitee", filepath, opts)
+	if err != nil {
+		fmt.Println(err) // 404 Not Found, map[], Commit
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(fileContent)
+	fmt.Println(directoryContent)
+
+}
+
+func TestGetContents2(t *testing.T) {
+	opts := &gitee.RepositoryContentGetOptions{
+		Ref: "main", // 分支、tag或commit。默认: 仓库的默认分支(通常是master)
+	}
+	filepath := "gitee/repos.go" // 获取仓库下某个文件，这时候第二个参数就会是 []
+	fileContent, directoryContent, response, err := client.Repositories.GetContents(ctx, "mamh-mixed", "go-gitee", filepath, opts)
+	if err != nil {
+		fmt.Println(err) // 404 Not Found, map[], Commit
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(fileContent)
+	fmt.Println(directoryContent)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
