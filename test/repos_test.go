@@ -15,6 +15,28 @@ func TestListBranches(t *testing.T) {
 	fmt.Println(err)
 }
 
+func TestCreateBranch(t *testing.T) {
+	rreq := &gitee.BranchRequest{
+		Refs:       gitee.String("main"), // 从已有分支 创建新的分支
+		BranchName: gitee.String("master"),
+	}
+	branch, response, err := client.Repositories.CreateBranch(ctx, "mamh-mixed", "go-gitee", rreq)
+	fmt.Println(branch)
+	fmt.Println(response)
+	fmt.Println(err) // 分支名已存在
+}
+
+func TestCreateBranch1(t *testing.T) {
+	rreq := &gitee.BranchRequest{
+		Refs:       gitee.String("7a15f560525e17bc2b58e0b6c4bff6ba82e7a557"), // 从一个 commit id 创建新的分支
+		BranchName: gitee.String("master"),
+	}
+	branch, response, err := client.Repositories.CreateBranch(ctx, "mamh-mixed", "go-gitee", rreq)
+	fmt.Println(branch)
+	fmt.Println(response)
+	fmt.Println(err) // 分支名已存在
+}
+
 func TestGetBranch(t *testing.T) {
 	branch, response, err := client.Repositories.GetBranch(ctx, "mamh-mixed", "go-gitee", "main")
 	fmt.Println(branch)
