@@ -270,11 +270,11 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	return p, resp, nil
 }
 
-// UpdateBranchWildcardProtection updates the protection of a given branch.
+// UpdateBranchWildcardProtection updates the protection of a given branch. 这个接口是更改已有的 分支保护测试，
 // owner 仓库所属空间地址(企业、组织或个人的地址path)
 // repo 仓库路径(path)
 // wildcard 分支/通配符
-// preq 分支保护策略设置 请求体  这个2个 唯一的不同就是 一个是wildcard。然后会带一个请求体的
+// preq 分支保护策略设置 结构体，里面用到 new_wildcard，pusher，merger 字段 和 CreateBranchWildcardProtection 公用一个
 // 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 func (s *RepositoriesService) UpdateBranchWildcardProtection(ctx context.Context, owner, repo, wildcard string,
 	preq *ProtectionRequest) (*Protection, *Response, error) {
@@ -318,7 +318,27 @@ func (s *RepositoriesService) RemoveBranchWildcardProtection(ctx context.Context
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 新建仓库保护分支策略 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new
+// CreateBranchWildcardProtection create the protection of a given branch
+// owner 仓库所属空间地址(企业、组织或个人的地址path), 这个接口是新建一个 新的
+// repo  仓库路径(path)
+// preq   结构体，里面用到 wildcard，pusher，merger 字段
+// 新建仓库保护分支策略 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/setting/new
+func (s *RepositoriesService) CreateBranchWildcardProtection(ctx context.Context, owner, repo string,
+	preq *ProtectionRequest) (*Protection, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/setting/new", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, preq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(Protection)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
+}
 
 // todo 获取仓库的Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments
 
