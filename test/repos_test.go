@@ -210,7 +210,9 @@ func TestCreateBranchWildcardProtection(t *testing.T) {
 	}
 	prot, response, err := client.Repositories.CreateBranchWildcardProtection(ctx, owner, repo, pr)
 
-	fmt.Println(prot)
+	// 400 Bad Request, map[], 分支/通配符已经被使用
+	fmt.Println(prot) // gitee.ProtectionSetting{ID:1707235, ProjectID:25870304, Wildcard:"main_wildcard"}
+
 	fmt.Println(response)
 	fmt.Println(err)
 
