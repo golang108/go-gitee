@@ -477,7 +477,17 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 
 // todo 更新Commit评论 PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
 
-// todo 删除Commit评论 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
+// DeleteComment deletes a single comment from a repository.
+//
+//  删除Commit评论 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
+func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
+}
 
 // todo 创建Commit评论 POST https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{sha}/comments
 
