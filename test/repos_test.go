@@ -185,13 +185,15 @@ func TestUpdateBranchWildcardProtection(t *testing.T) {
 	repo := "go-gitee"
 	wildcard := "main_wildcard"
 	pr := &gitee.ProtectionRequest{
-		NewWildcard: gitee.String("main_new_wildcard"), // wildcard -> new_wildcard 重命名
+		NewWildcard: gitee.String("main_new_wildcard1"), // wildcard -> new_wildcard 重命名
 		Pusher:      gitee.String("admin"),
 		Merger:      gitee.String("admin"),
 	}
 	prot, response, err := client.Repositories.UpdateBranchWildcardProtection(ctx, owner, repo, wildcard, pr)
 
-	fmt.Println(prot)
+	// 400 Bad Request, map[], 分支/通配符已经被使用
+	fmt.Println(prot) // gitee.ProtectionSetting{ID:1707231, ProjectID:25870304, Wildcard:"main_new_wildcard1"}
+
 	fmt.Println(response)
 	fmt.Println(err)
 
