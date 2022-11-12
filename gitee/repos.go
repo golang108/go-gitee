@@ -693,7 +693,29 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 	return k, resp, nil
 }
 
-// TODO 获取仓库可部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/available
+// title可以用法，key内容不能重复, 把key停用之后就变到 可部署公钥列表里面了
+// 获取的 Key 结构体中 只有 key 和 id
+// 获取仓库可部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/available
+func (s *RepositoriesService) ListAvailableKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys/available", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var keys []*Key
+	resp, err := s.client.Do(ctx, req, &keys)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return keys, resp, nil
+}
 
 // TODO 启用仓库公钥  PUT https://gitee.com/api/v5/repos/{owner}/{repo}/keys/enable/{id}
 
