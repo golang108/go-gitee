@@ -159,7 +159,7 @@ func TestUpdateBranchProtection(t *testing.T) {
 	repo := "go-gitee"
 	branch := "main"
 
-	protection, response, err := client.Repositories.UpdateBranchProtection(ctx, owner, repo, branch)
+	protection, response, err := client.Repositories.UpdateBranchProtection(ctx, owner, repo, branch, nil)
 
 	fmt.Println(protection)
 	fmt.Println(*protection.Protected)
