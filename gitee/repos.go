@@ -263,7 +263,18 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	return p, resp, nil
 }
 
-// TODO 取消保护分支的设置 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
+// RemoveBranchProtection removes the protection of a given branch.
+//
+//  取消保护分支的设置 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
+func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 
