@@ -192,7 +192,7 @@ func TestCreateKey(t *testing.T) {
 
 	key, response, err := client.Repositories.CreateKey(ctx, "mamh-mixed", "go-gitee", kreq)
 	if err != nil {
-		fmt.Println(err) // 指纹生成失败, 当前公钥是无效的
+		fmt.Println(err) // 1. 指纹生成失败, 当前公钥是无效的. 2. 当前仓库已经启用此公钥
 		return
 	}
 	fmt.Println(response)
@@ -202,6 +202,18 @@ func TestCreateKey(t *testing.T) {
 func TestListKeys(t *testing.T) {
 	opts := &gitee.ListOptions{}
 	keys, response, err := client.Repositories.ListKeys(ctx, "mamh-mixed", "go-gitee", opts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(keys)
+
+}
+
+func TestListAvailableKeys(t *testing.T) {
+	opts := &gitee.ListOptions{}
+	keys, response, err := client.Repositories.ListAvailableKeys(ctx, "mamh-mixed", "go-gitee", opts)
 	if err != nil {
 		fmt.Println(err)
 		return
