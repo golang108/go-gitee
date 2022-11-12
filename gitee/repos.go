@@ -632,7 +632,29 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 	return comp, resp, nil
 }
 
-// TODO 获取仓库已部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys
+// ListKeys lists the deploy keys for a repository.
+//
+//  获取仓库已部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys
+func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var keys []*Key
+	resp, err := s.client.Do(ctx, req, &keys)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return keys, resp, nil
+}
 
 type KeyRequest struct {
 	Key   *string `json:"key"`   // 公钥内容
