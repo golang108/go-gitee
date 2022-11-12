@@ -242,14 +242,26 @@ func (p Protection) String() string {
 	return Stringify(p)
 }
 
+type ProtectionRequest struct {
+	NewWildcard *string `json:"new_wildcard,omitempty"` // 新分支/通配符(为空不修改)
+	Pusher      *string `json:"pusher,omitempty"`       // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
+	Merger      *string `json:"merger,omitempty"`       // admin: 仓库管理员, none: 禁止任何人合并; 用户: 个人的地址path(多个用户用 ';' 隔开)
+}
+
 // UpdateBranchProtection updates the protection of a given branch.
 // owner 仓库所属空间地址(企业、组织或个人的地址path)
 // repo 仓库路径(path)
 // branch 分支名称
-//  设置分支保护 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
-func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
+// preq 分支保护策略设置 请求体
+// 这个2个 唯一的不同就是 一个是wildcard。然后会带一个请求体的
+//     设置分支保护 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
+// 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
+func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	if preq != nil {
+		u = fmt.Sprintf("repos/%v/%v/branches/%v/setting", owner, repo, branch)
+	}
+	req, err := s.client.NewRequest("PUT", u, preq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -275,8 +287,6 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 
 	return s.client.Do(ctx, req, nil)
 }
-
-// TODO 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 
 // TODO 删除仓库保护分支策略 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
 
