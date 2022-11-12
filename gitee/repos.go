@@ -431,7 +431,31 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 	return comments, resp, nil
 }
 
-// todo 获取单个Commit的评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{ref}/comments
+// ListCommitComments lists all the comments for a given commit SHA.
+// owner 仓库所属空间地址(企业、组织或个人的地址path)
+// repo 仓库路径(path)
+// ref* Commit的Reference
+// 获取单个Commit的评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/commits/{ref}/comments
+func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, repo, ref string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, ref)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var comments []*RepositoryComment
+	resp, err := s.client.Do(ctx, req, &comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return comments, resp, nil
+}
 
 // todo 获取仓库的某条Commit评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/comments/{id}
 
