@@ -860,6 +860,8 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // easy to distinguish between both result types and to mimic the API as much
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
+// 获取仓库下某个文件，这时候第二个参数就会是 []
+// 获取仓库下面的一个目录的内容, 返回值 第一个就会是nil
 // path 文件的路径
 //  获取仓库具体路径下的内容 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contents(/{path})
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string,
