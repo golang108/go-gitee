@@ -252,21 +252,38 @@ type ProtectionRequest struct {
 // owner 仓库所属空间地址(企业、组织或个人的地址path)
 // repo 仓库路径(path)
 // branch 分支名称
-// preq 分支保护策略设置 请求体
-// 这个2个 唯一的不同就是 一个是wildcard。然后会带一个请求体的
 //     设置分支保护 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}/protection
-// 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
-func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
+func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
-	if preq != nil {
-		u = fmt.Sprintf("repos/%v/%v/branches/%v/setting", owner, repo, branch)
-	}
-	req, err := s.client.NewRequest("PUT", u, preq)
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	p := new(Protection)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
+}
+
+// UpdateBranchWildcardProtection updates the protection of a given branch.
+// owner 仓库所属空间地址(企业、组织或个人的地址path)
+// repo 仓库路径(path)
+// branch 分支名称
+// preq 分支保护策略设置 请求体  这个2个 唯一的不同就是 一个是wildcard。然后会带一个请求体的
+// 分支保护策略设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{wildcard}/setting
+func (s *RepositoriesService) UpdateBranchWildcardProtection(ctx context.Context, owner, repo, wildcard string,
+	preq *ProtectionRequest) (*Protection, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/setting", owner, repo, wildcard)
+	req, err := s.client.NewRequest("PUT", u, preq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(Protection) //todo 返回值不一样
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
