@@ -265,6 +265,20 @@ func TestDeleteKey(t *testing.T) {
 	fmt.Println(response)
 }
 
+func TestGetReadme(t *testing.T) {
+	opts := &gitee.RepositoryContentGetOptions{
+		Ref: "main", // 分支、tag或commit。默认: 仓库的默认分支(通常是master)
+	}
+	readme, response, err := client.Repositories.GetReadme(ctx, "mamh-mixed", "go-gitee", opts)
+	if err != nil {
+		fmt.Println(err) // 404 Not Found, map[], Commit
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(readme)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
