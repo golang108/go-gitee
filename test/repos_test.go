@@ -335,7 +335,7 @@ func TestDeleteFile(t *testing.T) {
 	opts := &gitee.RepositoryContentFileOptions{
 		Message: gitee.String("go.mod: delete go.mod file"),
 		Branch:  gitee.String("master"),                                   // 分支名称。默认为仓库对默认分支
-		SHA:     gitee.String("7a680025f5489e7e6279ee169384a958c7edac61"), // 指定的文件 的 sha 可以和这里的不一样.文件的 Blob SHA，可通过 [获取仓库具体路径下的内容] API 获取
+		SHA:     gitee.String("6b53779e48a646f8d24aecb4bc788c5237718c22"), // 可通过 [获取仓库具体路径下的内容] API 获取
 	}
 
 	file, response, err := client.Repositories.DeleteFile(ctx, owner, repo, path, opts)
