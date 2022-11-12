@@ -99,6 +99,20 @@ func TestListEnterprises(t *testing.T) {
 
 }
 
+func TestCompareCommits(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+	base := "7a15f560525e17bc2b58e0b6c4bff6ba82e7a557"
+	head := "d6b2bbde37dd77d7d9bc75363ff2b02ddad3ddaa"
+	comp, response, err := client.Repositories.CompareCommits(ctx, owner, repo, base, head)
+	for i, commit := range comp.Commits {
+		fmt.Println(i, *commit.SHA)
+	}
+	fmt.Println("base: ", *comp.MergeBaseCommit.SHA)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
 func TestCreate(t *testing.T) {
 	opts := &gitee.RepositoryCreateOptions{
 		Name:        gitee.String("repo_name2"), // 仓库名称
