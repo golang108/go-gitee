@@ -179,3 +179,20 @@ func TestRemoveBranchProtection(t *testing.T) {
 	fmt.Println(err) //"message": "Operation is not allowed"
 
 }
+
+func TestCreateBranchWildcardProtection(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+
+	pr := &gitee.ProtectionRequest{
+		Wildcard: gitee.String("main_wildcard"), // 注意这里 是 Wildcard 字段, 新建的时候 用的这个字段名，更新的时候用的NewWildcard
+		Pusher:   gitee.String("admin"),
+		Merger:   gitee.String("admin"),
+	}
+	prot, response, err := client.Repositories.CreateBranchWildcardProtection(ctx, owner, repo, pr)
+
+	fmt.Println(prot)
+	fmt.Println(response)
+	fmt.Println(err) //"message": "Operation is not allowed"
+
+}
