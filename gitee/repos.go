@@ -719,7 +719,19 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo str
 	return key, resp, nil
 }
 
-// TODO 删除一个仓库公钥 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/keys/{id}
+// DeleteKey deletes a deploy key.
+//
+//  删除一个仓库公钥 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/keys/{id}
+func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 获取仓库README GET https://gitee.com/api/v5/repos/{owner}/{repo}/readme
 
