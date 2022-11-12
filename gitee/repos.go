@@ -3,9 +3,11 @@ package gitee
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -780,7 +782,7 @@ func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo 
 // RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
 // branch, or tag
 type RepositoryContentGetOptions struct {
-	Ref string `url:"ref,omitempty"`
+	Ref string `url:"ref,omitempty"` //分支、tag或commit。默认: 仓库的默认分支(通常是master)
 }
 
 // RepositoryContent represents a file or directory in a github repository.
@@ -847,7 +849,46 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 	return readme, resp, nil
 }
 
-// TODO 获取仓库具体路径下的内容 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contents(/{path})
+// GetContents can return either the metadata and content of a single file
+// (when path references a file) or the metadata of all the files and/or
+// subdirectories of a directory (when path references a directory). To make it
+// easy to distinguish between both result types and to mimic the API as much
+// as possible, both result types will be returned but only one will contain a
+// value and the other will be nil.
+// path 文件的路径
+//  获取仓库具体路径下的内容 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contents(/{path})
+func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string,
+	opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
+	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
+	u, err = addOptions(u, opts)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	var rawJSON json.RawMessage
+	resp, err = s.client.Do(ctx, req, &rawJSON)
+	if err != nil {
+		return nil, nil, resp, err
+	}
+
+	fileUnmarshalError := json.Unmarshal(rawJSON, &fileContent)
+	if fileUnmarshalError == nil {
+		return fileContent, nil, resp, nil
+	}
+
+	directoryUnmarshalError := json.Unmarshal(rawJSON, &directoryContent)
+	if directoryUnmarshalError == nil {
+		return nil, directoryContent, resp, nil
+	}
+
+	return nil, nil, resp, fmt.Errorf("unmarshalling failed for both file and directory content: %s and %s", fileUnmarshalError, directoryUnmarshalError)
+}
 
 // TODO 新建文件 POST https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
 
