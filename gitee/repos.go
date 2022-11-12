@@ -897,7 +897,41 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 	return nil, nil, resp, fmt.Errorf("unmarshalling failed for both file and directory content: %s and %s", fileUnmarshalError, directoryUnmarshalError)
 }
 
-// TODO 新建文件 POST https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+// RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
+type RepositoryContentResponse struct {
+	Content *RepositoryContent `json:"content,omitempty"`
+	Commit  `json:"commit,omitempty"`
+}
+
+// RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.
+type RepositoryContentFileOptions struct {
+	Message   *string       `json:"message,omitempty"`
+	Content   []byte        `json:"content"` // unencoded
+	SHA       *string       `json:"sha,omitempty"`
+	Branch    *string       `json:"branch,omitempty"`
+	Author    *CommitAuthor `json:"author,omitempty"`
+	Committer *CommitAuthor `json:"committer,omitempty"`
+}
+
+// CreateFile creates a new file in a repository at the given path and returns
+// the commit and file metadata.
+//
+//  新建文件 POST https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
+func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	createResponse := new(RepositoryContentResponse)
+	resp, err := s.client.Do(ctx, req, createResponse)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return createResponse, resp, nil
+}
 
 // TODO 更新文件 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
 
