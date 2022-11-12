@@ -311,6 +311,22 @@ func TestGetContents2(t *testing.T) {
 
 }
 
+func TestCreateFile(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc-test"
+	path := "go.mod"
+
+	opts := &gitee.RepositoryContentFileOptions{
+		Message: gitee.String("go.mod: add go.mod file"),
+		Content: []byte("bW9kdWxlIGdpdGh1Yi5jb20vbWFnZXNmYy9tYWdlc2ZjLXRlc3QKCmdvIDEuMTY="),
+		Branch:  gitee.String("master"), // 分支名称。默认为仓库对默认分支
+	}
+
+	file, response, err := client.Repositories.CreateFile(ctx, owner, repo, path, opts)
+	fmt.Println(file, response, err) // A file with this name already exists
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
