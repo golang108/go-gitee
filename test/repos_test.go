@@ -223,6 +223,16 @@ func TestGetKey(t *testing.T) {
 
 }
 
+func TestDeleteKey(t *testing.T) {
+	id := int64(3584973)
+	response, err := client.Repositories.DeleteKey(ctx, "mamh-mixed", "go-gitee", id)
+	if err != nil {
+		fmt.Println(err) // 没有相关公钥
+		return
+	}
+	fmt.Println(response)
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
