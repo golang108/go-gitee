@@ -208,7 +208,27 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 	return branches, resp, nil
 }
 
-// TODO 创建分支 POST https://gitee.com/api/v5/repos/{owner}/{repo}/branches
+type BranchRequest struct { // 暂时命名 为 不带 Create 前缀的吧
+	Refs       *string `json:"refs,omitempty"`        // 起点名称, 默认：master
+	BranchName *string `json:"branch_name,omitempty"` // 新创建的分支名称
+}
+
+// 创建分支 POST https://gitee.com/api/v5/repos/{owner}/{repo}/branches
+func (s *RepositoriesService) CreateBranch(ctx context.Context, owner string, repo string, rreq *BranchRequest) (*Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
+	req, err := s.client.NewRequest("POST", u, rreq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	b := new(Branch)
+	resp, err := s.client.Do(ctx, req, b)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return b, resp, nil
+}
 
 // GetBranch gets the specified branch for a repository.
 // 获取单个分支 GET https://gitee.com/api/v5/repos/{owner}/{repo}/branches/{branch}
