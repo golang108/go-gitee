@@ -729,6 +729,18 @@ func (s *RepositoriesService) EnableKey(ctx context.Context, owner string, repo 
 	return s.client.Do(ctx, req, nil) // "message": "Deploy Key"
 }
 
+// 停用仓库公钥 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/keys/enable/{id}
+func (s *RepositoriesService) DisableKey(ctx context.Context, owner string, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys/enable/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // GetKey fetches a single deploy key.
 //
 //  获取仓库的单个公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/{id}
