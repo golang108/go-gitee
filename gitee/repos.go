@@ -634,7 +634,42 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 
 // TODO 获取仓库已部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys
 
-// TODO 为仓库添加公钥 POST https://gitee.com/api/v5/repos/{owner}/{repo}/keys
+type KeyRequest struct {
+	Key   *string `json:"key"`   // 公钥内容
+	Title *string `json:"title"` // 公钥名称
+}
+
+type Key struct {
+	ID        *int64     `json:"id,omitempty"`
+	Key       *string    `json:"key"`   // 公钥内容
+	Title     *string    `json:"title"` // 公钥名称
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+}
+
+func (k Key) String() string {
+	return Stringify(k)
+}
+
+// CreateKey adds a deploy key for a repository.
+//
+//  为仓库添加公钥 POST https://gitee.com/api/v5/repos/{owner}/{repo}/keys
+func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, kreq *KeyRequest) (*Key, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, kreq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	k := new(Key)
+	resp, err := s.client.Do(ctx, req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return k, resp, nil
+}
 
 // TODO 获取仓库可部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/available
 
