@@ -160,9 +160,11 @@ func TestUpdateBranchProtection(t *testing.T) {
 	branch := "main"
 
 	protection, response, err := client.Repositories.UpdateBranchProtection(ctx, owner, repo, branch)
-
+	//先执行 UpdateBranchProtection 创建一个名称是 main 的规则。
+	//然后再执行 CreateBranchWildcardProtection 会报错，重名了.反过来的话是可以的。
+	// 并且还会覆盖掉。先前创建 的报 “标准模式，作用于 0 个分支 规则没有生效？” -> “标准模式，作用于 1 个分支”
 	fmt.Println(protection)
-	fmt.Println(*protection.Protected)
+
 	fmt.Println(response)
 	fmt.Println(err)
 
@@ -204,7 +206,7 @@ func TestCreateBranchWildcardProtection(t *testing.T) {
 	repo := "go-gitee"
 
 	pr := &gitee.ProtectionRequest{
-		Wildcard: gitee.String("main_wildcard"), // 注意这里 是 Wildcard 字段, 新建的时候 用的这个字段名，更新的时候用的NewWildcard
+		Wildcard: gitee.String("main"), // 注意这里 是 Wildcard 字段, 新建的时候 用的这个字段名，更新的时候用的NewWildcard
 		Pusher:   gitee.String("admin"),
 		Merger:   gitee.String("admin"),
 	}
