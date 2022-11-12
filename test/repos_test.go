@@ -199,6 +199,18 @@ func TestCreateKey(t *testing.T) {
 	fmt.Println(key)
 }
 
+func TestListKeys(t *testing.T) {
+	opts := &gitee.ListOptions{}
+	keys, response, err := client.Repositories.ListKeys(ctx, "mamh-mixed", "go-gitee", opts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response)
+	fmt.Println(keys)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
