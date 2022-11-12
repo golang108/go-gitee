@@ -153,3 +153,17 @@ func TestCreate2(t *testing.T) {
 	fmt.Println("response", response)
 	fmt.Println("err", err)
 }
+
+func TestUpdateBranchProtection(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+	branch := "main"
+
+	protection, response, err := client.Repositories.UpdateBranchProtection(ctx, owner, repo, branch)
+
+	fmt.Println(protection)
+	fmt.Println(*protection.Protected)
+	fmt.Println(response)
+	fmt.Println(err)
+
+}
