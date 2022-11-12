@@ -142,6 +142,28 @@ func TestDeleteComment(t *testing.T) {
 	fmt.Println(response)
 }
 
+func TestCreateComment(t *testing.T) {
+	creq := &gitee.CommentRequest{
+		Body:     gitee.String("body for comment test/repos_test.go, 4 hang"),
+		Path:     gitee.String("test/repos_test.go"),
+		Position: gitee.Int64(4),
+	}
+	ref := "c764302e6da151e08608c08ab30e986b04b9064b"
+
+	comment, response, err := client.Repositories.CreateComment(ctx, "mamh-mixed", "go-gitee", ref, creq)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(response,
+		*comment.ID,
+		*comment.User.Name,
+		*comment.CreatedAt,
+		*comment.Body,
+	)
+
+}
+
 func TestList(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
 	repository, response, err := client.Repositories.List(ctx, "", opts)
