@@ -3,6 +3,7 @@ package gitee
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -311,7 +312,39 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner string, repo 
 	return c, resp, nil
 }
 
-// todo 两个Commits之间对比的版本差异 GET https://gitee.com/api/v5/repos/{owner}/{repo}/compare/{base}...{head}
+type CommitsComparison struct {
+	BaseCommit      *RepositoryCommit   `json:"base_commit,omitempty"`
+	MergeBaseCommit *RepositoryCommit   `json:"merge_base_commit,omitempty"`
+	Files           []*CommitFile       `json:"files,omitempty"`
+	Commits         []*RepositoryCommit `json:"commits,omitempty"`
+}
+
+func (c CommitsComparison) String() string {
+	return Stringify(c)
+}
+
+// CompareCommits compares a range of commits with each other.
+//
+// 两个Commits之间对比的版本差异 GET https://gitee.com/api/v5/repos/{owner}/{repo}/compare/{base}...{head}
+func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string) (*CommitsComparison, *Response, error) {
+	escapedBase := url.QueryEscape(base)
+	escapedHead := url.QueryEscape(head)
+
+	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	comp := new(CommitsComparison)
+	resp, err := s.client.Do(ctx, req, comp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return comp, resp, nil
+}
 
 // TODO 获取仓库已部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys
 
