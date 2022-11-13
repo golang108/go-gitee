@@ -24,6 +24,13 @@ gitee 的 golang 版本的 API 实现 模仿go-github实现的
     * [钩子(Webhooks)]()
 
 
+# TODO
 
 
+大部分 xxxOptions 传给 addOpttins 用的, 参数都是 指针. 结构体里面 都是 普通类型，拼接url使用的。
+
+
+大部分 xxxRequest 传给 NewRequest 用的, 参数也是 指针. 结构体里面 都是 指针类型， json 的。   有时候传给 NewRequest 也叫什么什么 Options
+
+后续希望统一一下命名，统一一下指针还是普通类型
 
