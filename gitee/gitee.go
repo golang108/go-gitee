@@ -1,3 +1,4 @@
+// Package gitee golang 版本的 gitee API 实现 模仿 go-github 实现的
 package gitee
 
 import (
