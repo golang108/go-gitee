@@ -1136,7 +1136,46 @@ func (s *RepositoriesService) UpdatePushConfig(ctx context.Context, owner, repo 
 	return pc, resp, nil
 }
 
-// TODO 获取仓库贡献者 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contributors
+// Contributor represents a repository contributor
+type Contributor struct {
+	Contributions *int    `json:"contributions,omitempty"`
+	Name          *string `json:"name,omitempty"`
+	Email         *string `json:"email,omitempty"`
+}
+
+func (r Contributor) String() string {
+	return Stringify(r)
+}
+
+type ListContributorsOptions struct {
+	Type string `url:"type,omitempty"` // 贡献者类型
+
+	ListOptions
+}
+
+// ListContributors lists contributors for a repository.
+//
+//  获取仓库贡献者 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contributors
+func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var contributor []*Contributor
+	resp, err := s.client.Do(ctx, req, &contributor)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return contributor, resp, nil
+}
 
 // TODO 列出仓库所有的tags GET https://gitee.com/api/v5/repos/{owner}/{repo}/tags
 
