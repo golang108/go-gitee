@@ -1087,7 +1087,33 @@ func (s *RepositoriesService) UpdateReviewer(ctx context.Context, owner, repo st
 	return r, resp, nil
 }
 
-// TODO 获取仓库推送规则设置 GET https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
+type PushConfig struct {
+	AuthorEmailSuffix         *string `json:"author_email_suffix,omitempty"`
+	CommitMessageRegex        *string `json:"commit_message_regex,omitempty"`
+	ExceptManager             *bool   `json:"except_manager,omitempty"`
+	MaxFileSize               *int    `json:"max_file_size,omitempty"`
+	RestrictAuthorEmailSuffix *bool   `json:"restrict_author_email_suffix,omitempty"`
+	RestrictCommitMessage     *bool   `json:"restrict_commit_message,omitempty"`
+	RestrictFileSize          *bool   `json:"restrict_file_size,omitempty"`
+	RestrictPushOwnCommit     *bool   `json:"restrict_push_own_commit,omitempty"`
+}
+
+// 获取仓库推送规则设置 GET https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
+func (s *RepositoriesService) GetPushConfig(ctx context.Context, owner, repo string) (*PushConfig, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/push_config", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	pc := new(PushConfig)
+	resp, err := s.client.Do(ctx, req, pc)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pc, resp, nil
+}
 
 // TODO 修改仓库推送规则设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
 
