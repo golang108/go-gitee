@@ -588,3 +588,12 @@ func TestEditRepository(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestDeletetRepository(t *testing.T) {
+	owner := "magesfc"
+	repo := "sample_repository"
+
+	response, err := client.Repositories.Delete(ctx, owner, repo)
+	fmt.Println(response)
+	fmt.Println(err) // Not Found Project
+}
