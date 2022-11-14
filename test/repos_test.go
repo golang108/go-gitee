@@ -560,3 +560,15 @@ func TestGetPagesInfo(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetRepository(t *testing.T) {
+	owner := "oschina"
+	repo := "git-osc"
+
+	repository, response, err := client.Repositories.Get(ctx, owner, repo)
+
+	fmt.Println(repository)
+
+	fmt.Println(response)
+	fmt.Println(err)
+}
