@@ -1048,8 +1048,6 @@ func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string
 	return resp, nil
 }
 
-// TODO 更新仓库设置 PATCH https://gitee.com/api/v5/repos/{owner}/{repo}
-
 // TODO 删除一个仓库 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}
 
 // TODO 修改代码审查设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/reviewer
@@ -1217,6 +1215,45 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	}
 
 	return repository, resp, nil
+}
+
+// EditRepositoryRequest 更新仓库设置 需要的 一个结构体，这个和  Repository 结构体类似，但是 Repository 里面有更多的字段.
+// 接口中 标记 formData 的 都要放到 结构体里面，作为json体内容发送请求的
+// TODO 结构体里面 字段 是否要使用 指针类型？？？
+type EditRepositoryRequest struct {
+	Name                 string `json:"name,omitempty"`                   //"name": string 仓库名称 必须要有的
+	Path                 string `json:"path,omitempty"`                   //"path": string 仓库路径
+	Description          string `json:"description,omitempty"`            //"description": string 仓库描述
+	Homepage             string `json:"homepage,omitempty"`               //"homepage": string 主页
+	HasIssues            bool   `json:"has_issues,omitempty"`             //"has_issues": boolean 是否开启issue功能
+	HasWiki              bool   `json:"has_wiki,omitempty"`               //"has_wiki": boolean 是否开启Wiki功能
+	CanComment           bool   `json:"can_comment,omitempty"`            //"can_comment": boolean 是否允许用户对仓库进行评论
+	IssueComment         bool   `json:"issue_comment,omitempty"`          //"issue_comment": boolean 是否允许用户对“关闭”状态的 Issue 进行评论
+	SecurityHoleEnabled  bool   `json:"security_hole_enabled,omitempty"`  //这个Issue涉及到安全/隐私问题，提交后不公开此Issue（可见范围：仓库成员, 企业成员）
+	Private              bool   `json:"private,omitempty"`                //"private": boolean 是否私有
+	DefaultBranch        string `json:"default_branch,omitempty"`         //"default_branch": string 默认分支
+	PullRequestsEnabled  bool   `json:"pull_requests_enabled,omitempty"`  //"pull_requests_enabled": boolean 是否接受 Pull Request，协作开发
+	OnlineEditEnabled    bool   `json:"online_edit_enabled,omitempty"`    //"online_edit_enabled": boolean 是否允许仓库文件在线编辑
+	LightweightPREnabled bool   `json:"lightweight_pr_enabled,omitempty"` //"lightweight_pr_enabled": boolean 是否接受轻量级 pull request
+}
+
+// Edit updates a repository.
+//
+//  更新仓库设置 PATCH https://gitee.com/api/v5/repos/{owner}/{repo}
+func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *EditRepositoryRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("PATCH", u, repository)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
 }
 
 // List the repositories for a user. Passing the empty string will list
