@@ -572,3 +572,19 @@ func TestGetRepository(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestEditRepository(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc-test"
+
+	erq := &gitee.EditRepositoryRequest{
+		Name:        "new-repo_name",
+		Description: "new description",
+	}
+	repository, response, err := client.Repositories.Edit(ctx, owner, repo, erq)
+
+	fmt.Println(repository)
+
+	fmt.Println(response)
+	fmt.Println(err)
+}
