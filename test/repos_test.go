@@ -611,3 +611,14 @@ func TestDeletetRepository(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err) // Not Found Project
 }
+
+func TestGetPushConfig(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	pushConfig, response, err := client.Repositories.GetPushConfig(ctx, owner, repo)
+
+	fmt.Println(pushConfig)
+	fmt.Println(response)
+	fmt.Println(err)
+
+}
