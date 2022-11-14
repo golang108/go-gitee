@@ -1119,7 +1119,22 @@ func (s *RepositoriesService) GetPushConfig(ctx context.Context, owner, repo str
 	return pc, resp, nil
 }
 
-// TODO 修改仓库推送规则设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
+// 修改仓库推送规则设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
+func (s *RepositoriesService) UpdatePushConfig(ctx context.Context, owner, repo string, config *PushConfig) (*PushConfig, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/push_config", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, config)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	pc := new(PushConfig)
+	resp, err := s.client.Do(ctx, req, pc)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pc, resp, nil
+}
 
 // TODO 获取仓库贡献者 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contributors
 
