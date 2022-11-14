@@ -622,3 +622,20 @@ func TestGetPushConfig(t *testing.T) {
 	fmt.Println(err)
 
 }
+
+func TestUpdatePushConfig(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	pushConfig, response, err := client.Repositories.GetPushConfig(ctx, owner, repo)
+
+	fmt.Println(pushConfig)
+	fmt.Println(response)
+	fmt.Println(err)
+
+	pushConfig.ExceptManager = gitee.Bool(false)
+
+	newConfig, response, err := client.Repositories.UpdatePushConfig(ctx, owner, repo, pushConfig)
+	fmt.Println(newConfig)
+	fmt.Println(response)
+	fmt.Println(err)
+}
