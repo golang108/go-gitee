@@ -1062,7 +1062,30 @@ func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string
 	return resp, nil
 }
 
-// TODO 修改代码审查设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/reviewer
+type UpdateReviewerRequest struct {
+	Assignees       string `json:"assignees"`       //审查人员username，可多个，半角逗号分隔，如：(username1,username2)
+	Testers         string `json:"testers"`         //测试人员username，可多个，半角逗号分隔，如：(username1,username2)
+	AssigneesNumber int    `json:"assignees_numbe"` //最少审查人数
+	TestersNumber   int    `json:"testers_number"`  //最少测试人数
+}
+
+// UpdateReviewer
+// 修改代码审查设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/reviewer
+func (s *RepositoriesService) UpdateReviewer(ctx context.Context, owner, repo string, opts *UpdateReviewerRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/reviewer", owner, repo)
+
+	req, err := s.client.NewRequest("PUT", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
 
 // TODO 获取仓库推送规则设置 GET https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
 
