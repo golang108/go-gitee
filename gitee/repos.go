@@ -166,6 +166,13 @@ type BasicCommit struct {
 	SHA *string `json:"sha,omitempty"`
 	URL *string `json:"url,omitempty"`
 }
+
+// TagCommit 用于 获取 tags 的 commit 结构体
+type TagCommit struct {
+	SHA  *string    `json:"sha,omitempty"`
+	Date *Timestamp `json:"date,omitempty"`
+}
+
 type Commit struct {
 	Author    *CommitAuthor `json:"author,omitempty"`
 	Committer *CommitAuthor `json:"committer,omitempty"`
@@ -1177,7 +1184,40 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 	return contributor, resp, nil
 }
 
-// TODO 列出仓库所有的tags GET https://gitee.com/api/v5/repos/{owner}/{repo}/tags
+// RepositoryTag represents a repository tag.
+type RepositoryTag struct {
+	Name    *string    `json:"name,omitempty"`
+	Message *string    `json:"message,omitempty"`
+	Commit  *TagCommit `json:"commit,omitempty"`
+}
+
+func (r RepositoryTag) String() string {
+	return Stringify(r)
+}
+
+// ListTags lists tags for the specified repository.
+// TODO 这个接口也没有分页
+//  列出仓库所有的tags GET https://gitee.com/api/v5/repos/{owner}/{repo}/tags
+func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var tags []*RepositoryTag
+	resp, err := s.client.Do(ctx, req, &tags)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return tags, resp, nil
+}
 
 // TODO 创建一个仓库的 Tag POST https://gitee.com/api/v5/repos/{owner}/{repo}/tags
 
