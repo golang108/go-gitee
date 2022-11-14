@@ -1048,8 +1048,6 @@ func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string
 	return resp, nil
 }
 
-// TODO 获取用户的某个仓库 GET https://gitee.com/api/v5/repos/{owner}/{repo}
-
 // TODO 更新仓库设置 PATCH https://gitee.com/api/v5/repos/{owner}/{repo}
 
 // TODO 删除一个仓库 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}
@@ -1201,6 +1199,24 @@ type RepositoryListOptions struct {
 	Q string `url:"q,omitempty"`
 
 	ListOptions
+}
+
+// Get fetches a repository.
+//
+//  获取用户的某个仓库 GET https://gitee.com/api/v5/repos/{owner}/{repo}
+func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	repository := new(Repository)
+	resp, err := s.client.Do(ctx, req, repository)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repository, resp, nil
 }
 
 // List the repositories for a user. Passing the empty string will list
