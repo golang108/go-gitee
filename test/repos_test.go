@@ -651,3 +651,14 @@ func TestListContributors(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+func TestListTags(t *testing.T) {
+	owner := "log4j"
+	repo := "pig"
+	opts := &gitee.ListOptions{}
+
+	tags, response, err := client.Repositories.ListTags(ctx, owner, repo, opts)
+	fmt.Println(tags)
+	fmt.Println(len(tags))
+	fmt.Println(response)
+	fmt.Println(err)
+}
