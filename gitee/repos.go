@@ -1048,8 +1048,6 @@ func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string
 	return resp, nil
 }
 
-// TODO 删除一个仓库 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}
-
 // TODO 修改代码审查设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/reviewer
 
 // TODO 获取仓库推送规则设置 GET https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
@@ -1254,6 +1252,19 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 	}
 
 	return r, resp, nil
+}
+
+// Delete a repository.
+//
+//  删除一个仓库 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}
+func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
 
 // List the repositories for a user. Passing the empty string will list
