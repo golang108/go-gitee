@@ -1001,7 +1001,31 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 	return site, resp, nil
 }
 
-// TODO 上传设置 Pages SSL 证书和域名 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/pages
+type UpdatePagesRequest struct {
+	Domain            *string `json:"domain"`              //自定义域名
+	SslCertificateCrt *string `json:"ssl_certificate_crt"` //证书文件内容（需进行BASE64编码）
+	SslCertificateKey *string `json:"ssl_certificate_key"` //私钥文件内容（需进行BASE64编码）
+}
+
+// TODO not test
+// UpdatePages updates Pages for the named repo.
+//
+//  上传设置 Pages SSL 证书和域名 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/pages
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *UpdatePagesRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+
+	req, err := s.client.NewRequest("PUT", u, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
 
 // TODO 请求建立Pages POST https://gitee.com/api/v5/repos/{owner}/{repo}/pages/builds
 
