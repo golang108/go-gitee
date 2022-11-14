@@ -977,7 +977,29 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path 
 	return deleteResponse, resp, nil
 }
 
-// TODO 获取Pages信息 GET https://gitee.com/api/v5/repos/{owner}/{repo}/pages
+type Pages struct {
+	URL    *string `json:"url,omitempty"`
+	Status *string `json:"status,omitempty"`
+}
+
+// GetPagesInfo fetches information about a Pages site.
+//
+//  获取Pages信息 GET https://gitee.com/api/v5/repos/{owner}/{repo}/pages
+func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	site := new(Pages)
+	resp, err := s.client.Do(ctx, req, site)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return site, resp, nil
+}
 
 // TODO 上传设置 Pages SSL 证书和域名 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/pages
 
