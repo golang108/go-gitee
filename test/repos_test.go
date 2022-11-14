@@ -547,3 +547,16 @@ func TestRemoveBranchWildcardProtection(t *testing.T) {
 	fmt.Println(err) // "message": "Wildcard Not Found"
 
 }
+
+func TestGetPagesInfo(t *testing.T) {
+	owner := "oschina"
+	repo := "git-osc"
+
+	info, response, err := client.Repositories.GetPagesInfo(ctx, owner, repo)
+
+	fmt.Println(*info.URL)
+	fmt.Println(*info.Status)
+
+	fmt.Println(response)
+	fmt.Println(err)
+}
