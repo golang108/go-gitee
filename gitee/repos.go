@@ -1098,6 +1098,10 @@ type PushConfig struct {
 	RestrictPushOwnCommit     *bool   `json:"restrict_push_own_commit,omitempty"`
 }
 
+func (r PushConfig) String() string {
+	return Stringify(r)
+}
+
 // 获取仓库推送规则设置 GET https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
 func (s *RepositoriesService) GetPushConfig(ctx context.Context, owner, repo string) (*PushConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/push_config", owner, repo)
