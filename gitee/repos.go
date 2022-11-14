@@ -1027,7 +1027,26 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 	return resp, nil
 }
 
-// TODO 请求建立Pages POST https://gitee.com/api/v5/repos/{owner}/{repo}/pages/builds
+// TODO not test, 需要实名认证的比较麻烦.
+// 报错1 "message": "仓库持有者未实名认证，不允许部署 pages"
+// 报错2 "message": "500 Internal Server Error"   对这个仓库执行 oschina/git-osc
+// RequestPageBuild requests a build of a gitee Pages site without needing to push new commit.
+//
+//  请求建立Pages POST https://gitee.com/api/v5/repos/{owner}/{repo}/pages/builds
+func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
 
 // TODO 获取用户的某个仓库 GET https://gitee.com/api/v5/repos/{owner}/{repo}
 
