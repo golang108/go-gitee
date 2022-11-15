@@ -681,7 +681,7 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo s
 	return keys, resp, nil
 }
 
-type KeyRequest struct {
+type KeyCreateRequest struct {
 	Key   *string `json:"key"`   // 公钥内容
 	Title *string `json:"title"` // 公钥名称
 }
@@ -701,7 +701,7 @@ func (k Key) String() string {
 // CreateKey adds a deploy key for a repository.
 //
 //  为仓库添加公钥 POST https://gitee.com/api/v5/repos/{owner}/{repo}/keys
-func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, kreq *KeyRequest) (*Key, *Response, error) {
+func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, kreq *KeyCreateRequest) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, kreq)
