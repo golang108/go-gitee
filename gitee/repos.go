@@ -1736,8 +1736,8 @@ func (s *RepositoriesService) CreateOpenGo(ctx context.Context, owner, repo stri
 	return s.client.Do(ctx, req, nil)
 }
 
-// CreateRepositoryRequest 创建一个仓库 需要的 json 参数
-type CreateRepositoryRequest struct {
+// RepositoryCreateRequest 创建一个仓库 需要的 json 参数
+type RepositoryCreateRequest struct {
 	Name              *string `json:"name,omitempty"`               // 仓库名称
 	Description       *string `json:"description,omitempty"`        //仓库描述
 	Homepage          *string `json:"homepage,omitempty"`           //主页(eg: https://gitee.com) 一个有效的http链接
@@ -1752,15 +1752,15 @@ type CreateRepositoryRequest struct {
 }
 
 // 创建组织仓库
-type CreateOrgRepositoryRequest struct {
-	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
+type RepositoryCreateOrgRequest struct {
+	*RepositoryCreateRequest // 匿名字段，复用这个结构图字段
 
 	Public *int `json:"public,omitempty"` //仓库开源类型。0(私有), 1(外部开源), 2(内部开源)，注：与private互斥，以public为主。
 }
 
 //创建企业仓库
-type CreateEntRepositoryRequest struct {
-	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
+type RepositoryCreateEntRequest struct {
+	*RepositoryCreateRequest // 匿名字段，复用这个结构图字段
 
 	//创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
 	Outsourced     *bool   `json:"outsourced,omitempty"`      //值为true值为外包仓库, false值为内部仓库。默认: 内部仓库(false)
@@ -1770,7 +1770,7 @@ type CreateEntRepositoryRequest struct {
 
 // Create a new repository. 创建仓库方法 分成3个吧。创建 组织仓库 和创建 企业 仓库的 参数 都不太一样
 // 创建一个仓库 POST https://gitee.com/api/v5/user/repos
-func (s *RepositoriesService) Create(ctx context.Context, opt *CreateRepositoryRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) Create(ctx context.Context, opt *RepositoryCreateRequest) (*Repository, *Response, error) {
 	u := "user/repos"
 
 	req, err := s.client.NewRequest("POST", u, opt)
@@ -1788,7 +1788,7 @@ func (s *RepositoriesService) Create(ctx context.Context, opt *CreateRepositoryR
 }
 
 // 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
-func (s *RepositoriesService) CreateOrgRepository(ctx context.Context, org string, opt *CreateOrgRepositoryRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) CreateOrgRepository(ctx context.Context, org string, opt *RepositoryCreateOrgRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
 
 	req, err := s.client.NewRequest("POST", u, opt)
@@ -1806,7 +1806,7 @@ func (s *RepositoriesService) CreateOrgRepository(ctx context.Context, org strin
 }
 
 // 创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
-func (s *RepositoriesService) CreateEntRepository(ctx context.Context, enterprise string, opt *CreateEntRepositoryRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) CreateEntRepository(ctx context.Context, enterprise string, opt *RepositoryCreateEntRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/repos", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, opt)
