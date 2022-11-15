@@ -1022,7 +1022,7 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 	return site, resp, nil
 }
 
-type UpdatePagesRequest struct {
+type RepositoryPagesUpdateRequest struct {
 	Domain            *string `json:"domain"`              //自定义域名
 	SslCertificateCrt *string `json:"ssl_certificate_crt"` //证书文件内容（需进行BASE64编码）
 	SslCertificateKey *string `json:"ssl_certificate_key"` //私钥文件内容（需进行BASE64编码）
@@ -1032,7 +1032,7 @@ type UpdatePagesRequest struct {
 // UpdatePages updates Pages for the named repo.
 //
 //  上传设置 Pages SSL 证书和域名 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/pages
-func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *UpdatePagesRequest) (*Response, error) {
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *RepositoryPagesUpdateRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
