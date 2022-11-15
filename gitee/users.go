@@ -136,7 +136,7 @@ func (s *UsersService) ListSshKeys(ctx context.Context, opts *ListOptions) ([]*S
 
 // 通过sshkey的id来获取公钥
 // 获取一个公钥 GET https://gitee.com/api/v5/user/keys/{id}  id=公钥 ID
-func (s *UsersService) GetUserKey(ctx context.Context, id int64) (*SshKey, *Response, error) {
+func (s *UsersService) GetSshKey(ctx context.Context, id int64) (*SshKey, *Response, error) {
 	var u string
 	u = fmt.Sprintf("user/keys/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
