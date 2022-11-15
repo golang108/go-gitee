@@ -134,7 +134,7 @@ type Branch struct {
 	Name          *string      `json:"name,omitempty"`
 	Commit        *BasicCommit `json:"commit,omitempty"` // 这里只有 sha，和url 2个属性
 	Protected     *bool        `json:"protected,omitempty"`
-	ProtectionUrl *string      `json:"protection_url,omitempty"`
+	ProtectionURL *string      `json:"protection_url,omitempty"`
 }
 
 func (r Branch) String() string {
