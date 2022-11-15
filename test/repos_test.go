@@ -726,7 +726,7 @@ func TestAddCollaborator(t *testing.T) {
 	owner := "magesfc"
 	repo := "magesfc"
 	me := "mamh"
-	acreq := &gitee.AddCollaboratorRequest{
+	acreq := &gitee.CollaboratorAddRequest{
 		Permission: "admin",
 	}
 	ci, response, err := client.Repositories.AddCollaborator(ctx, owner, repo, me, acreq)
