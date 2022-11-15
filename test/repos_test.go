@@ -820,3 +820,19 @@ func TestGetRelease(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestEditRelease(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+	id := int64(264806)
+	releaseReq := &gitee.EditReleaseRequest{
+		TagName:    "v10.10.10",
+		Name:       "new tag name",
+		Body:       "new Release 描述",
+		Prerelease: false,
+	}
+	rr, response, err := client.Repositories.EditRelease(ctx, owner, repo, id, releaseReq)
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
