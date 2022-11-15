@@ -1411,7 +1411,51 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 	return repos, resp, nil
 }
 
-// TODO Fork一个仓库 POST https://gitee.com/api/v5/repos/{owner}/{repo}/forks
+// RepositoryCreateForkOptions specifies the optional parameters to the
+type RepositoryCreateForkOptions struct {
+	Organization string `url:"organization,omitempty"` //组织空间地址，不填写默认Fork到用户个人空间地址
+	Name         string `url:"name,omitempty"`         //fork 后仓库名称。默认: 源仓库名称
+	Path         string `url:"path,omitempty"`         //fork 后仓库地址。默认: 源仓库地址
+}
+
+// CreateFork creates a fork of the specified repository.
+//
+// This method might return an *AcceptedError and a status code of
+// 202. This is because this is the status that GitHub returns to signify that
+// it is now computing creating the fork in a background task. In this event,
+// the Repository value will be returned, which includes the details about the pending fork.
+// A follow up request, after a delay of a second or so, should result
+// in a successful request.
+//
+//  Fork一个仓库 POST https://gitee.com/api/v5/repos/{owner}/{repo}/forks
+func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	fork := new(Repository)
+	resp, err := s.client.Do(ctx, req, fork)
+	if err != nil {
+		// Persist AcceptedError's metadata to the Repository object.
+		if aerr, ok := err.(*AcceptedError); ok { // TODO 待验证 这个 错误
+			if err := json.Unmarshal(aerr.Raw, fork); err != nil {
+				return fork, resp, err
+			}
+
+			return fork, resp, err
+		}
+		return nil, resp, err
+	}
+
+	return fork, resp, nil
+}
 
 // TODO 获取仓库的百度统计 key GET https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
 
