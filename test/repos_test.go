@@ -865,3 +865,12 @@ func TestGetReleaseByTag(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestCreateOpenGo(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+
+	response, err := client.Repositories.CreateOpenGo(ctx, owner, repo)
+	fmt.Println(response)
+	fmt.Println(err)
+}
