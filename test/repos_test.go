@@ -771,3 +771,16 @@ func TestCreateFork(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err) // 403 Forbidden, map[], 已经存在同名的仓库（忽略大小写），Fork 失败
 }
+
+func TestListTraffic(t *testing.T) {
+	owner := "mamh-mixed"
+	repo := "go-gitee"
+	opts := &gitee.TrafficDataRequest{
+		StartDay: "2022-11-01",
+		EndDay:   "2022-11-11",
+	}
+	tr, response, err := client.Repositories.ListTraffic(ctx, owner, repo, opts)
+	fmt.Println(tr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
