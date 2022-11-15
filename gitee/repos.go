@@ -1105,6 +1105,10 @@ type PushConfig struct {
 	RestrictPushOwnCommit     *bool   `json:"restrict_push_own_commit,omitempty"`
 }
 
+type PushConfigUpdateRequest struct {
+	*PushConfig
+}
+
 func (r PushConfig) String() string {
 	return Stringify(r)
 }
@@ -1127,7 +1131,7 @@ func (s *RepositoriesService) GetPushConfig(ctx context.Context, owner, repo str
 }
 
 // 修改仓库推送规则设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/push_config
-func (s *RepositoriesService) UpdatePushConfig(ctx context.Context, owner, repo string, config *PushConfig) (*PushConfig, *Response, error) {
+func (s *RepositoriesService) UpdatePushConfig(ctx context.Context, owner, repo string, config *PushConfigUpdateRequest) (*PushConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/push_config", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, config)
 	if err != nil {
