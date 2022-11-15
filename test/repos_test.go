@@ -834,12 +834,14 @@ func TestGetRelease(t *testing.T) {
 func TestEditRelease(t *testing.T) {
 	owner := "magesfc"
 	repo := "ruoyi_git"
-	id := int64(264806)
+	id := int64(264863)
 	releaseReq := &gitee.EditReleaseRequest{
-		TagName:    "v10.10.10",
-		Name:       "new tag name",
-		Body:       "new Release 描述",
-		Prerelease: false,
+		RepositoryReleaseRequest: &gitee.RepositoryReleaseRequest{
+			TagName:    gitee.String("v3.3.4"),
+			Name:       gitee.String("Release new 名称"),
+			Body:       gitee.String("Release new 描述"),
+			Prerelease: gitee.Bool(true),
+		},
 	}
 	rr, response, err := client.Repositories.EditRelease(ctx, owner, repo, id, releaseReq)
 	fmt.Println(rr)
