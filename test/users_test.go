@@ -113,11 +113,11 @@ func TestGetUserFollowings1(t *testing.T) {
 	fmt.Println(err)
 }
 
-func TestGetUserNamespaces(t *testing.T) {
+func TestListNamespaces(t *testing.T) {
 	var opts = &gitee.NamespacesOptions{
 		Mode: "project",
 	}
-	names, response, err := client.Users.GetUserNamespaces(ctx, opts)
+	names, response, err := client.Users.ListNamespaces(ctx, opts)
 	fmt.Println(names) //  project 类型的，只会获取2组数据
 	fmt.Println(response)
 	fmt.Println(err)
