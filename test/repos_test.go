@@ -466,13 +466,23 @@ func TestCreate1(t *testing.T) {
 	fmt.Println("err", err)
 }
 
-func TestCreate2(t *testing.T) {
-	opts := &gitee.CreateRepositoryRequest{
-		Name:        gitee.String("magesfc仓库名称"), // 仓库名称
-		Path:        gitee.String("repo_Path"),   //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
-		Description: gitee.String("repo_Description"),
+func TestCreateEntRepository(t *testing.T) {
+	opts := &gitee.CreateEntRepositoryRequest{
+		CreateRepositoryRequest: &gitee.CreateRepositoryRequest{
+			Name:        gitee.String("magesfc仓库名称"), // 仓库名称
+			Path:        gitee.String("repo_Path"),   //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
+			Description: gitee.String("repo_Description"),
+		},
+		Outsourced:     gitee.Bool(true),
+		ProjectCreator: gitee.String("mamh"),
+		Members:        gitee.String("mamh"),
 	}
-	repository, response, err := client.Repositories.Create(ctx, "magesfc", opts)
+	// 匿名字段 或者 这样来赋值
+	// opts.Name = gitee.String("magesfc仓库名称")
+	//opts.Path =  gitee.String("repo_Path")
+	//opts.Description = gitee.String("repo_Description")
+
+	repository, response, err := client.Repositories.CreateEntRepository(ctx, "magesfc", opts)
 	fmt.Println("repository", repository)
 
 	fmt.Println("response", response)
