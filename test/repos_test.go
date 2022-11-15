@@ -440,7 +440,7 @@ func TestCompareCommits(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
-	opts := &gitee.RepositoryCreateOptions{
+	opts := &gitee.CreateRepositoryRequest{
 		Name:        gitee.String("repo_name2"), // 仓库名称
 		Path:        gitee.String("repo_Path2"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
 		Description: gitee.String("repo_Description"),
@@ -454,7 +454,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestCreate1(t *testing.T) {
-	opts := &gitee.RepositoryCreateOptions{
+	opts := &gitee.CreateRepositoryRequest{
 		Name:        gitee.String("repo_name"), // 仓库名称
 		Path:        gitee.String("repo_Path"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
 		Description: gitee.String("repo_Description"),
@@ -467,11 +467,10 @@ func TestCreate1(t *testing.T) {
 }
 
 func TestCreate2(t *testing.T) {
-	opts := &gitee.RepositoryCreateOptions{
+	opts := &gitee.CreateRepositoryRequest{
 		Name:        gitee.String("magesfc仓库名称"), // 仓库名称
 		Path:        gitee.String("repo_Path"),   //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
 		Description: gitee.String("repo_Description"),
-		Enterprise:  gitee.String("magesfc"),
 	}
 	repository, response, err := client.Repositories.Create(ctx, "magesfc", opts)
 	fmt.Println("repository", repository)
