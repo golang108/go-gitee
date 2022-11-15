@@ -1284,7 +1284,18 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 	return users, resp, nil
 }
 
-// TODO 判断用户是否为仓库成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+//  判断用户是否为仓库成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	isCollab, err := parseBoolResponse(err)
+	return isCollab, resp, err
+}
 
 // TODO 添加仓库成员 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
 
