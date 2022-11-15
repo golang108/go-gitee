@@ -1260,7 +1260,29 @@ func (s *RepositoriesService) Clear(ctx context.Context, owner string, repo stri
 	return resp, nil
 }
 
-// TODO 获取仓库的所有成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators
+// ListCollaborators lists the GitHub users that have access to the repository.
+//
+//  获取仓库的所有成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators
+func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+}
 
 // TODO 判断用户是否为仓库成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
 
