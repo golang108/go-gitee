@@ -679,3 +679,12 @@ func TestCreateTag(t *testing.T) {
 	fmt.Println(err)
 
 }
+
+func TestClear(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	response, err := client.Repositories.Clear(ctx, owner, repo)
+
+	fmt.Println(response)
+	fmt.Println(err)
+}
