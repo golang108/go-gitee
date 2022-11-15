@@ -29,19 +29,19 @@ type BasicUser struct {
 	ID                *int64  `json:"id,omitempty"`
 	Login             *string `json:"login,omitempty"`
 	Name              *string `json:"name,omitempty"`
-	AvatarUrl         *string `json:"avatar_url,omitempty"`
-	Url               *string `json:"url,omitempty"`
-	HtmlUrl           *string `json:"html_url,omitempty"`
+	AvatarURL         *string `json:"avatar_url,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
 	Remark            *string `json:"remark,omitempty"`
-	FollowersUrl      *string `json:"followers_url,omitempty"`
-	FollowingUrl      *string `json:"following_url,omitempty"`
-	GistsUrl          *string `json:"gists_url,omitempty"`
-	StarredUrl        *string `json:"starred_url,omitempty"`
-	SubscriptionsUrl  *string `json:"subscriptions_url,omitempty"`
-	OrganizationsUrl  *string `json:"organizations_url,omitempty"`
-	ReposUrl          *string `json:"repos_url,omitempty"`
-	EventsUrl         *string `json:"events_url,omitempty"`
-	ReceivedEventsUrl *string `json:"received_events_url,omitempty"`
+	FollowersURL      *string `json:"followers_url,omitempty"`
+	FollowingURL      *string `json:"following_url,omitempty"`
+	GistsURL          *string `json:"gists_url,omitempty"`
+	StarredURL        *string `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  *string `json:"organizations_url,omitempty"`
+	ReposURL          *string `json:"repos_url,omitempty"`
+	EventsURL         *string `json:"events_url,omitempty"`
+	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
 	Type              *string `json:"type,omitempty"`
 }
 
@@ -50,19 +50,19 @@ type User struct {
 	ID                *int64     `json:"id,omitempty"`
 	Login             *string    `json:"login,omitempty"`
 	Name              *string    `json:"name,omitempty"`
-	AvatarUrl         *string    `json:"avatar_url,omitempty"`
-	Url               *string    `json:"url,omitempty"`
-	HtmlUrl           *string    `json:"html_url,omitempty"`
+	AvatarURL         *string    `json:"avatar_url,omitempty"`
+	URL               *string    `json:"url,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
 	Remark            *string    `json:"remark,omitempty"`
-	FollowersUrl      *string    `json:"followers_url,omitempty"`
-	FollowingUrl      *string    `json:"following_url,omitempty"`
-	GistsUrl          *string    `json:"gists_url,omitempty"`
-	StarredUrl        *string    `json:"starred_url,omitempty"`
-	SubscriptionsUrl  *string    `json:"subscriptions_url,omitempty"`
-	OrganizationsUrl  *string    `json:"organizations_url,omitempty"`
-	ReposUrl          *string    `json:"repos_url,omitempty"`
-	EventsUrl         *string    `json:"events_url,omitempty"`
-	ReceivedEventsUrl *string    `json:"received_events_url,omitempty"`
+	FollowersURL      *string    `json:"followers_url,omitempty"`
+	FollowingURL      *string    `json:"following_url,omitempty"`
+	GistsURL          *string    `json:"gists_url,omitempty"`
+	StarredURL        *string    `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string    `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  *string    `json:"organizations_url,omitempty"`
+	ReposURL          *string    `json:"repos_url,omitempty"`
+	EventsURL         *string    `json:"events_url,omitempty"`
+	ReceivedEventsURL *string    `json:"received_events_url,omitempty"`
 	Type              *string    `json:"type,omitempty"`
 	SiteAdmin         *bool      `json:"site_admin,omitempty"`
 	Blog              *string    `json:"blog,omitempty"`
@@ -119,7 +119,7 @@ type SshKey struct {
 	// 获取一个公钥
 	ID        *int64     `json:"id,omitempty"`
 	Key       *string    `json:"key,omitempty"`
-	Url       *string    `json:"url,omitempty"`
+	URL       *string    `json:"url,omitempty"`
 	Title     *string    `json:"title,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
@@ -239,7 +239,7 @@ type Namespace struct {
 	Type    *string    `json:"type,omitempty"`
 	Name    *string    `json:"name,omitempty"`
 	Path    *string    `json:"path,omitempty"`
-	HtmlUrl *string    `json:"html_url,omitempty"`
+	HTMLURL *string    `json:"html_url,omitempty"`
 	Parent  *Namespace `json:"parent,omitempty"`
 }
 
