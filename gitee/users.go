@@ -185,7 +185,7 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *Lis
 
 // 列出指定用户正在关注的用户 GET https://gitee.com/api/v5/users/{username}/following
 // 列出授权用户正关注的用户 GET https://gitee.com/api/v5/user/following  这是获取的是我关注的哪些人，或者某个账号下面他关注的其他人
-func (s *UsersService) GetUserFollowings(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
+func (s *UsersService) ListFollowings(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/following", user)
