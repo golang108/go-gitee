@@ -1688,7 +1688,23 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 获取仓库的最后更新的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/latest
+// GetLatestRelease fetches the latest published release for the repository.
+//
+//  获取仓库的最后更新的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/latest
+func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo string) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/latest", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	release := new(RepositoryRelease)
+	resp, err := s.client.Do(ctx, req, release)
+	if err != nil {
+		return nil, resp, err
+	}
+	return release, resp, nil
+}
 
 // TODO 根据Tag名称获取仓库的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/tags/{tag}
 
