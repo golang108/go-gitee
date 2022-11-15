@@ -700,3 +700,14 @@ func TestListCollaborators(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestIsCollaborator(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	me := "mamh"
+	isCollaborator, response, err := client.Repositories.IsCollaborator(ctx, owner, repo, me)
+
+	fmt.Println(isCollaborator)
+	fmt.Println(response)
+	fmt.Println(err)
+}
