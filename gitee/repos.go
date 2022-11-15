@@ -1457,7 +1457,19 @@ func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string
 	return fork, resp, nil
 }
 
-// TODO 获取仓库的百度统计 key GET https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+// TODO not test
+//  获取仓库的百度统计 key GET https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+func (s *RepositoriesService) GetBaiduStatisticKey(ctx context.Context, owner, repo string) (*string, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/baidu_statistic_key", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	key := new(string)
+	resp, err := s.client.Do(ctx, req, key)
+	return key, resp, nil
+}
 
 type BaiduStatisticRequest struct {
 	Key string `url:"key,omitempty"` //通过百度统计页面获取的 hm.js? 后面的 key
