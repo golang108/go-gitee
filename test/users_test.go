@@ -48,10 +48,10 @@ func TestListSshKeys(t *testing.T) {
 	}
 }
 
-func TestGetUserKey(t *testing.T) {
-	keys, response, err := client.Users.GetUserKey(ctx, 3544397)
+func TestGetSshKey(t *testing.T) {
+	keys, response, err := client.Users.GetSshKey(ctx, 3544397)
 	fmt.Println(keys)
-	fmt.Println(*response)
+	fmt.Println(response)
 	fmt.Println(err)
 }
 
