@@ -919,12 +919,12 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 }
 
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
-type RepositoryContentResponse struct {
+type RepositoryContentFile struct {
 	Content *RepositoryContent        `json:"content,omitempty"`
 	Commit  `json:"commit,omitempty"` // todo 这个 commit 结构体 少了 parents, parents是个列表 ，里面每个元素只要 sha 和 url 2个属性值
 }
 
-func (r RepositoryContentResponse) String() string {
+func (r RepositoryContentFile) String() string {
 	return Stringify(r)
 }
 
@@ -942,14 +942,14 @@ type RepositoryContentFileOptions struct {
 // the commit and file metadata.
 //
 //  新建文件 POST https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	createResponse := new(RepositoryContentResponse)
+	createResponse := new(RepositoryContentFile)
 	resp, err := s.client.Do(ctx, req, createResponse)
 	if err != nil {
 		return nil, resp, err
@@ -962,14 +962,14 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
 //  更新文件 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	updateResponse := new(RepositoryContentResponse)
+	updateResponse := new(RepositoryContentFile)
 	resp, err := s.client.Do(ctx, req, updateResponse)
 	if err != nil {
 		return nil, resp, err
@@ -982,14 +982,14 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 // Requires the blob SHA of the file to be deleted.
 //
 //  删除文件 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	deleteResponse := new(RepositoryContentResponse)
+	deleteResponse := new(RepositoryContentFile)
 	resp, err := s.client.Do(ctx, req, deleteResponse)
 	if err != nil {
 		return nil, resp, err
