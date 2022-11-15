@@ -78,12 +78,12 @@ func TestListFollowers(t *testing.T) {
 
 }
 
-func TestGetUserFollowers1(t *testing.T) {
+func TestListFollowers1(t *testing.T) {
 	var opts = &gitee.ListOptions{
 		Page:    1,
 		PerPage: 10,
 	}
-	users, response, err := client.Users.GetUserFollowers(ctx, "", opts)
+	users, response, err := client.Users.ListFollowers(ctx, "", opts)
 	fmt.Println(users)
 	fmt.Println(response)
 	fmt.Println(err)
