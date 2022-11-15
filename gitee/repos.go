@@ -1069,7 +1069,7 @@ func (s *RepositoriesService) BuildPages(ctx context.Context, owner, repo string
 	return resp, nil
 }
 
-type UpdateReviewerRequest struct {
+type RepositoryReviewerUpdateRequest struct {
 	Assignees       string `json:"assignees"`       //审查人员username，可多个，半角逗号分隔，如：(username1,username2)
 	Testers         string `json:"testers"`         //测试人员username，可多个，半角逗号分隔，如：(username1,username2)
 	AssigneesNumber int    `json:"assignees_numbe"` //最少审查人数
@@ -1078,7 +1078,7 @@ type UpdateReviewerRequest struct {
 
 // UpdateReviewer
 // 修改代码审查设置 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/reviewer
-func (s *RepositoriesService) UpdateReviewer(ctx context.Context, owner, repo string, opts *UpdateReviewerRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) UpdateReviewer(ctx context.Context, owner, repo string, opts *RepositoryReviewerUpdateRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/reviewer", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
