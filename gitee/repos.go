@@ -1604,7 +1604,30 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 	return releases, resp, nil
 }
 
-// TODO 创建仓库Release POST https://gitee.com/api/v5/repos/{owner}/{repo}/releases
+type RepositoryReleaseRequest struct {
+	TagName         string `json:"tag_name,omitempty"`         //Tag 名称, 提倡以v字母为前缀做为Release名称，例如v1.0或者v2.3.4
+	TargetCommitish string `json:"target_commitish,omitempty"` //分支名称或者commit SHA, 默认是当前默认分支
+	Name            string `json:"name,omitempty"`             //Release 名称
+	Body            string `json:"body,omitempty"`             //Release 描述
+	Prerelease      bool   `json:"prerelease,omitempty"`       //是否为预览版本。默认: false（非预览版本）
+}
+
+//  创建仓库Release POST https://gitee.com/api/v5/repos/{owner}/{repo}/releases
+func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, releaseReq *RepositoryReleaseRequest) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, releaseReq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(RepositoryRelease)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+	return r, resp, nil
+}
 
 // TODO 获取仓库的单个Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
 
