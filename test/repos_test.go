@@ -846,3 +846,11 @@ func TestDeleteRelease(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err) //404 Not Found, map[], 404 Not Found
 }
+func TestGetLatestRelease(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+	rr, response, err := client.Repositories.GetLatestRelease(ctx, owner, repo)
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
