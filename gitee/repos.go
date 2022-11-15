@@ -1365,7 +1365,33 @@ func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, rep
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 查看仓库成员的权限 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}/permission
+type CollaboratorsPermissionLevel struct {
+	User               // todo 要不要这里用个 匿名 字段 User 来表达 返回的部分属性字段
+	Permission *string `json:"permission,omitempty"`
+}
+
+func (r CollaboratorsPermissionLevel) String() string {
+	return Stringify(r)
+}
+
+// GetPermissionLevel retrieves the specific permission level a collaborator has for a given repository.
+//
+//  查看仓库成员的权限 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}/permission
+func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, repo, user string) (*CollaboratorsPermissionLevel, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators/%v/permission", owner, repo, user)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	rpl := new(CollaboratorsPermissionLevel)
+	resp, err := s.client.Do(ctx, req, rpl)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return rpl, resp, nil
+}
 
 // TODO 查看仓库的Forks GET https://gitee.com/api/v5/repos/{owner}/{repo}/forks
 
