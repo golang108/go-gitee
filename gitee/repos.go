@@ -1351,7 +1351,19 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 	return acr, resp, nil
 }
 
-// TODO 移除仓库成员 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+// RemoveCollaborator removes the specified  user as collaborator from the given repo.
+// Note: Does not return error if a valid user that is not a collaborator is removed.
+//
+//  移除仓库成员 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 查看仓库成员的权限 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}/permission
 
