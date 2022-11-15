@@ -784,12 +784,29 @@ func TestListTraffic(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
 func TestListReleases(t *testing.T) {
 	owner := "y_project"
 	repo := "RuoYi"
 	opts := &gitee.RepositoryReleaseListOptions{}
-	tr, response, err := client.Repositories.ListReleases(ctx, owner, repo, opts)
-	fmt.Println(tr)
+	rr, response, err := client.Repositories.ListReleases(ctx, owner, repo, opts)
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestCreateRelease(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+	releaseReq := &gitee.RepositoryReleaseRequest{
+		TagName:         "v2.3.4",
+		TargetCommitish: "master",
+		Name:            "Release 名称",
+		Body:            "Release 描述",
+		Prerelease:      true,
+	}
+	rr, response, err := client.Repositories.CreateRelease(ctx, owner, repo, releaseReq)
+	fmt.Println(rr)
 	fmt.Println(response)
 	fmt.Println(err)
 }
