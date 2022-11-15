@@ -747,3 +747,13 @@ func TestGetPermissionLevel(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestListForks(t *testing.T) {
+	owner := "y_project"
+	repo := "RuoYi"
+	opts := &gitee.RepositoryListForksOptions{}
+	f, response, err := client.Repositories.ListForks(ctx, owner, repo, opts)
+	fmt.Println(f)
+	fmt.Println(response)
+	fmt.Println(err)
+}
