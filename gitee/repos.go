@@ -1244,7 +1244,21 @@ func (s *RepositoriesService) CreateTag(ctx context.Context, owner string, repo 
 	return t, resp, nil
 }
 
-// TODO 清空一个仓库 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/clear
+//  清空一个仓库 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/clear
+func (s *RepositoriesService) Clear(ctx context.Context, owner string, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/clear", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
 
 // TODO 获取仓库的所有成员 GET https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators
 
