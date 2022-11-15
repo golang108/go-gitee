@@ -1604,7 +1604,7 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 	return releases, resp, nil
 }
 
-type RepositoryReleaseRequest struct {
+type CreateRepositoryReleaseRequest struct {
 	TagName         string `json:"tag_name,omitempty"`         //Tag 名称, 提倡以v字母为前缀做为Release名称，例如v1.0或者v2.3.4
 	TargetCommitish string `json:"target_commitish,omitempty"` //分支名称或者commit SHA, 默认是当前默认分支
 	Name            string `json:"name,omitempty"`             //Release 名称
@@ -1612,8 +1612,15 @@ type RepositoryReleaseRequest struct {
 	Prerelease      bool   `json:"prerelease,omitempty"`       //是否为预览版本。默认: false（非预览版本）
 }
 
+type EditReleaseRequest struct {
+	TagName    string `json:"tag_name,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Body       string `json:"body,omitempty"`
+	Prerelease bool   `json:"prerelease,omitempty"`
+}
+
 //  创建仓库Release POST https://gitee.com/api/v5/repos/{owner}/{repo}/releases
-func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, releaseReq *RepositoryReleaseRequest) (*RepositoryRelease, *Response, error) {
+func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, releaseReq *CreateRepositoryReleaseRequest) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, releaseReq)
@@ -1645,13 +1652,6 @@ func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string
 		return nil, resp, err
 	}
 	return release, resp, nil
-}
-
-type EditReleaseRequest struct {
-	TagName    string `json:"tag_name,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Body       string `json:"body,omitempty"`
-	Prerelease bool   `json:"prerelease,omitempty"`
 }
 
 // EditRelease edits a repository release.
