@@ -1297,8 +1297,8 @@ func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, u
 	return isCollab, resp, err
 }
 
-// RepositoryAddCollaboratorOptions specifies the optional parameters to the
-type AddCollaboratorRequest struct {
+// CollaboratorAddRequest specifies the optional parameters to the
+type CollaboratorAddRequest struct {
 	// Permission specifies the permission to grant the user on this repository.
 	// Possible values are:
 	//     成员权限: 拉代码(pull)，推代码(push)，管理员(admin)。默认: push
@@ -1319,7 +1319,7 @@ func (r CollaboratorInvitation) String() string {
 // to become a collaborator to the given repo.
 //
 //  添加仓库成员 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
-func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, acreq *AddCollaboratorRequest) (*CollaboratorInvitation, *Response, error) {
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, acreq *CollaboratorAddRequest) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("PUT", u, acreq)
 	if err != nil {
