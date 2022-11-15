@@ -651,6 +651,7 @@ func TestListContributors(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
 func TestListTags(t *testing.T) {
 	owner := "log4j"
 	repo := "pig"
@@ -661,4 +662,20 @@ func TestListTags(t *testing.T) {
 	fmt.Println(len(tags))
 	fmt.Println(response)
 	fmt.Println(err)
+}
+
+func TestCreateTag(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	ctq := &gitee.CreateTagRequest{
+		Refs:       "master",
+		TagName:    "v0.0.1",
+		TagMessage: "test create tags",
+	}
+	tag, response, err := client.Repositories.CreateTag(ctx, owner, repo, ctq)
+
+	fmt.Println(tag)
+	fmt.Println(response)
+	fmt.Println(err)
+
 }
