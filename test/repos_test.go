@@ -725,3 +725,14 @@ func TestAddCollaborator(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err) //404 Not Found, map[], User Not Found
 }
+
+func TestRemoveCollaborator(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	me := "mamh"
+
+	response, err := client.Repositories.RemoveCollaborator(ctx, owner, repo, me)
+	fmt.Println(response)
+	fmt.Println(err) //400 Bad Request, map[], Owner cannot withdraw from a project
+	//404 Not Found, map[], User
+}
