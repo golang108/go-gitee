@@ -233,7 +233,7 @@ func (n Namespace) String() string {
 
 // 列出授权用户所有的 Namespace GET https://gitee.com/api/v5/user/namespaces
 // mode 参与方式: project(所有参与仓库的namepsce)、intrant(所加入的namespace)、all(包含前两者)，默认(intrant)
-func (s *UsersService) GetUserNamespaces(ctx context.Context, opts *NamespacesOptions) ([]*Namespace, *Response, error) {
+func (s *UsersService) ListNamespaces(ctx context.Context, opts *NamespacesOptions) ([]*Namespace, *Response, error) {
 	u, err := addOptions("user/namespaces", opts)
 	if err != nil {
 		return nil, nil, err
