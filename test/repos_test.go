@@ -653,7 +653,7 @@ func TestUpdatePushConfig(t *testing.T) {
 func TestListContributors(t *testing.T) {
 	owner := "log4j"
 	repo := "pig"
-	opts := &gitee.ListContributorsOptions{}
+	opts := &gitee.ContributorListOptions{}
 	contributors, response, err := client.Repositories.ListContributors(ctx, owner, repo, opts)
 
 	fmt.Println(contributors)
