@@ -330,7 +330,7 @@ func TestCreateFile(t *testing.T) {
 	repo := "magesfc-test"
 	path := "go.mod"
 
-	opts := &gitee.RepositoryContentFileOptions{
+	opts := &gitee.RepositoryContentFileRequest{
 		Message: gitee.String("go.mod: add go.mod file"),
 		Content: []byte("bW9kdWxlIGdpdGh1Yi5jb20vbWFnZXNmYy9tYWdlc2ZjLXRlc3QKCmdvIDEuMTY="),
 		Branch:  gitee.String("master"), // 分支名称。默认为仓库对默认分支
@@ -346,7 +346,7 @@ func TestUpdateFile(t *testing.T) {
 	repo := "magesfc-test"
 	path := "go.mod"
 
-	opts := &gitee.RepositoryContentFileOptions{
+	opts := &gitee.RepositoryContentFileRequest{
 		Message: gitee.String("go.mod: update go.mod file"),
 		Content: []byte("指定的文件 的=="),
 		Branch:  gitee.String("master"),                                   // 分支名称。默认为仓库对默认分支
@@ -363,7 +363,7 @@ func TestDeleteFile(t *testing.T) {
 	repo := "magesfc-test"
 	path := "go.mod"
 
-	opts := &gitee.RepositoryContentFileOptions{
+	opts := &gitee.RepositoryContentFileRequest{
 		Message: gitee.String("go.mod: delete go.mod file"),
 		Branch:  gitee.String("master"),                                   // 分支名称。默认为仓库对默认分支
 		SHA:     gitee.String("6b53779e48a646f8d24aecb4bc788c5237718c22"), // 可通过 [获取仓库具体路径下的内容] API 获取
