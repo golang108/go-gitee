@@ -1890,16 +1890,20 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 // 接口中 标记 formData 的 都要放到 结构体里面，作为json体内容发送请求的
 // TODO 结构体里面 字段 是否要使用 指针类型？？？
 type EditRepositoryRequest struct {
-	Name                 string `json:"name,omitempty"`                   //"name": string 仓库名称 必须要有的
-	Path                 string `json:"path,omitempty"`                   //"path": string 仓库路径
-	Description          string `json:"description,omitempty"`            //"description": string 仓库描述
-	Homepage             string `json:"homepage,omitempty"`               //"homepage": string 主页
-	HasIssues            bool   `json:"has_issues,omitempty"`             //"has_issues": boolean 是否开启issue功能
-	HasWiki              bool   `json:"has_wiki,omitempty"`               //"has_wiki": boolean 是否开启Wiki功能
-	CanComment           bool   `json:"can_comment,omitempty"`            //"can_comment": boolean 是否允许用户对仓库进行评论
+	Name        string `json:"name,omitempty"`        //"name": string 仓库名称 必须要有的
+	Description string `json:"description,omitempty"` //"description": string 仓库描述
+	Homepage    string `json:"homepage,omitempty"`    //"homepage": string 主页
+	HasIssues   bool   `json:"has_issues,omitempty"`  //"has_issues": boolean 是否开启issue功能
+	HasWiki     bool   `json:"has_wiki,omitempty"`    //"has_wiki": boolean 是否开启Wiki功能
+	CanComment  bool   `json:"can_comment,omitempty"` //"can_comment": boolean 是否允许用户对仓库进行评论
+	//AutoInit          *bool   `json:"auto_init,omitempty"`          //值为true时则会用README初始化仓库。默认: 不初始化(false)
+	//GitignoreTemplate *string `json:"gitignore_template,omitempty"` //Git Ignore模版
+	//LicenseTemplate   *string `json:"license_template,omitempty"`   // License模版
+	Path    string `json:"path,omitempty"`    //"path": string 仓库路径
+	Private bool   `json:"private,omitempty"` //"private": boolean 是否私有
+	// 下面 是 多出来的  和 CreateRepositoryRequest 比较
 	IssueComment         bool   `json:"issue_comment,omitempty"`          //"issue_comment": boolean 是否允许用户对“关闭”状态的 Issue 进行评论
 	SecurityHoleEnabled  bool   `json:"security_hole_enabled,omitempty"`  //这个Issue涉及到安全/隐私问题，提交后不公开此Issue（可见范围：仓库成员, 企业成员）
-	Private              bool   `json:"private,omitempty"`                //"private": boolean 是否私有
 	DefaultBranch        string `json:"default_branch,omitempty"`         //"default_branch": string 默认分支
 	PullRequestsEnabled  bool   `json:"pull_requests_enabled,omitempty"`  //"pull_requests_enabled": boolean 是否接受 Pull Request，协作开发
 	OnlineEditEnabled    bool   `json:"online_edit_enabled,omitempty"`    //"online_edit_enabled": boolean 是否允许仓库文件在线编辑
