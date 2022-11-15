@@ -1647,7 +1647,33 @@ func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string
 	return release, resp, nil
 }
 
-// TODO 更新仓库Release PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+type EditReleaseRequest struct {
+	TagName    string `json:"tag_name,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Body       string `json:"body,omitempty"`
+	Prerelease bool   `json:"prerelease,omitempty"`
+}
+
+// EditRelease edits a repository release.
+//
+// Note that only a subset of the release fields are used.
+// See RepositoryRelease for more information.
+//
+//  更新仓库Release PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, releaseReq *EditReleaseRequest) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+	req, err := s.client.NewRequest("PATCH", u, releaseReq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(RepositoryRelease)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+	return r, resp, nil
+}
 
 // TODO 删除仓库Release DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
 
