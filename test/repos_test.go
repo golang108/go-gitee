@@ -405,9 +405,9 @@ func TestList1(t *testing.T) {
 
 }
 
-func TestListOrgs(t *testing.T) {
+func TestListOrganizations(t *testing.T) {
 	opts := &gitee.RepositoryListOptions{}
-	repository, response, err := client.Repositories.ListOrgs(ctx, "mamh-mixed", opts)
+	repository, response, err := client.Repositories.ListOrganizations(ctx, "mamh-mixed", opts)
 
 	fmt.Println("repository", repository)
 	fmt.Println("response", response)
