@@ -199,7 +199,7 @@ func TestUpdateComment(t *testing.T) {
 }
 
 func TestCreateKey(t *testing.T) {
-	kreq := &gitee.KeyRequest{
+	kreq := &gitee.KeyCreateRequest{
 		Key:   gitee.String("ssh-rsa"),
 		Title: gitee.String("public key title"),
 	}
