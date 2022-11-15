@@ -1459,7 +1459,23 @@ func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string
 
 // TODO 获取仓库的百度统计 key GET https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
 
-// TODO 设置/更新仓库的百度统计 key POST https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+type BaiduStatisticRequest struct {
+	Key string `url:"key,omitempty"` //通过百度统计页面获取的 hm.js? 后面的 key
+}
+
+// TODO not test
+// 设置/更新仓库的百度统计 key POST https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+func (s *RepositoriesService) CreateBaiduStatisticKey(ctx context.Context, owner, repo string, opts *BaiduStatisticRequest) (*string, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/baidu_statistic_key", owner, repo)
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	key := new(string)
+	resp, err := s.client.Do(ctx, req, key)
+	return key, resp, nil
+}
 
 // TODO 删除仓库的百度统计 key DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
 
