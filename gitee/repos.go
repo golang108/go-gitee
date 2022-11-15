@@ -1297,7 +1297,59 @@ func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, u
 	return isCollab, resp, err
 }
 
-// TODO 添加仓库成员 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+// RepositoryAddCollaboratorOptions specifies the optional parameters to the
+type AddCollaboratorRequest struct {
+	// Permission specifies the permission to grant the user on this repository.
+	// Possible values are:
+	//     成员权限: 拉代码(pull)，推代码(push)，管理员(admin)。默认: push
+	Permission string `json:"permission,omitempty"`
+}
+
+// CollaboratorInvitation represents an invitation created when adding a collaborator.
+type CollaboratorInvitation struct {
+	ID                *int64      `json:"id,omitempty"`
+	Login             *string     `json:"login,omitempty"`
+	Name              *string     `json:"name,omitempty"`
+	AvatarUrl         *string     `json:"avatar_url,omitempty"`
+	Url               *string     `json:"url,omitempty"`
+	HtmlUrl           *string     `json:"html_url,omitempty"`
+	Remark            *string     `json:"remark,omitempty"`
+	FollowersUrl      *string     `json:"followers_url,omitempty"`
+	FollowingUrl      *string     `json:"following_url,omitempty"`
+	GistsUrl          *string     `json:"gists_url,omitempty"`
+	StarredUrl        *string     `json:"starred_url,omitempty"`
+	SubscriptionsUrl  *string     `json:"subscriptions_url,omitempty"`
+	OrganizationsUrl  *string     `json:"organizations_url,omitempty"`
+	ReposUrl          *string     `json:"repos_url,omitempty"`
+	EventsUrl         *string     `json:"events_url,omitempty"`
+	ReceivedEventsUrl *string     `json:"received_events_url,omitempty"`
+	Type              *string     `json:"type,omitempty"`
+	Permissions       *Permission `json:"permissions,omitempty"`
+}
+
+func (r CollaboratorInvitation) String() string {
+	return Stringify(r)
+}
+
+// AddCollaborator sends an invitation to the specified gitee user
+// to become a collaborator to the given repo.
+//
+//  添加仓库成员 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, acreq *AddCollaboratorRequest) (*CollaboratorInvitation, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	req, err := s.client.NewRequest("PUT", u, acreq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	acr := new(CollaboratorInvitation)
+	resp, err := s.client.Do(ctx, req, acr)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return acr, resp, nil
+}
 
 // TODO 移除仓库成员 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/collaborators/{username}
 
