@@ -786,8 +786,8 @@ func TestListTraffic(t *testing.T) {
 }
 
 func TestListReleases(t *testing.T) {
-	owner := "y_project"
-	repo := "RuoYi"
+	owner := "magesfc"
+	repo := "ruoyi_git"
 	opts := &gitee.RepositoryReleaseListOptions{}
 	rr, response, err := client.Repositories.ListReleases(ctx, owner, repo, opts)
 	fmt.Println(rr)
@@ -806,6 +806,16 @@ func TestCreateRelease(t *testing.T) {
 		Prerelease:      true,
 	}
 	rr, response, err := client.Repositories.CreateRelease(ctx, owner, repo, releaseReq)
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
+func TestGetRelease(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+	id := int64(264806)
+	rr, response, err := client.Repositories.GetRelease(ctx, owner, repo, id)
 	fmt.Println(rr)
 	fmt.Println(response)
 	fmt.Println(err)
