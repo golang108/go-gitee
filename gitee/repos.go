@@ -1629,7 +1629,23 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 	return r, resp, nil
 }
 
-// TODO 获取仓库的单个Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+// GetRelease fetches a single release.
+//
+//  获取仓库的单个Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string, id int64) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	release := new(RepositoryRelease)
+	resp, err := s.client.Do(ctx, req, release)
+	if err != nil {
+		return nil, resp, err
+	}
+	return release, resp, nil
+}
 
 // TODO 更新仓库Release PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
 
