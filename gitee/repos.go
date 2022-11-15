@@ -1724,7 +1724,16 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 	return release, resp, nil
 }
 
-// TODO 开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
+//  开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
+func (s *RepositoriesService) CreateOpenGo(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/open", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
+}
 
 type RepositoryCreateOptions struct {
 	Name              *string `json:"name,omitempty"`               // 仓库名称
