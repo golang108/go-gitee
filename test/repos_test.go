@@ -808,7 +808,7 @@ func TestListReleases(t *testing.T) {
 func TestCreateRelease(t *testing.T) {
 	owner := "magesfc"
 	repo := "ruoyi_git"
-	releaseReq := &gitee.CreateRepositoryReleaseRequest{
+	releaseReq := &gitee.RepositoryReleaseCreateRequest{
 		RepositoryReleaseRequest: &gitee.RepositoryReleaseRequest{
 			TagName:    gitee.String("v2.3.41"),
 			Name:       gitee.String("Release 名称"),
@@ -837,7 +837,7 @@ func TestEditRelease(t *testing.T) {
 	owner := "magesfc"
 	repo := "ruoyi_git"
 	id := int64(264863)
-	releaseReq := &gitee.EditReleaseRequest{
+	releaseReq := &gitee.RepositoryReleaseEditRequest{
 		RepositoryReleaseRequest: &gitee.RepositoryReleaseRequest{
 			TagName:    gitee.String("v3.3.4"),
 			Name:       gitee.String("Release new 名称"),
