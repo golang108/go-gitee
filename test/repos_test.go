@@ -453,15 +453,17 @@ func TestCreate(t *testing.T) {
 	fmt.Println("err", err)
 }
 
-func TestCreate1(t *testing.T) {
-	opts := &gitee.CreateRepositoryRequest{
-		Name:        gitee.String("repo_name"), // 仓库名称
-		Path:        gitee.String("repo_Path"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
-		Description: gitee.String("repo_Description"),
+func TestCreateOrgRepository(t *testing.T) {
+	opts := &gitee.CreateOrgRepositoryRequest{
+		CreateRepositoryRequest: &gitee.CreateRepositoryRequest{
+			Name:        gitee.String("repo_name1"), // 仓库名称
+			Path:        gitee.String("repo_Path1"), //路径 (请注意：仓库路径即仓库访问 URL 地址，更改仓库路径将导致原克隆地址不可用)
+			Description: gitee.String("repo_Description"),
+		},
+		Public: gitee.Int(1), //仓库开源类型。0(私有), 1(外部开源), 2(内部开源)，注：与private互斥，以public为主。
 	}
-	repository, response, err := client.Repositories.Create(ctx, "mamh-mixed", opts)
+	repository, response, err := client.Repositories.CreateOrgRepository(ctx, "mamh-mixed", opts)
 	fmt.Println("repository", repository)
-
 	fmt.Println("response", response)
 	fmt.Println("err", err)
 }
