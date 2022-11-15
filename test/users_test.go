@@ -55,13 +55,13 @@ func TestGetSshKey(t *testing.T) {
 	fmt.Println(err)
 }
 
-func TestGetUserFollowers(t *testing.T) {
+func TestListFollowers(t *testing.T) {
 	var opts = &gitee.ListOptions{
 		Page:    90,  // page 表示从第几页 开始，一般从第 1 页开始，然后第 2 页，然后第 3 页，到最后一页
 		PerPage: 100, // perPage 表示每页的总数
 	}
 	for { //分页 循环 获取 所有的，这里有 几百个值的，需要循环的
-		users, response, err := client.Users.GetUserFollowers(ctx, "y_project", opts)
+		users, response, err := client.Users.ListFollowers(ctx, "y_project", opts)
 		if err != nil {
 			fmt.Println(err)
 			return
