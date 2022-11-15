@@ -1762,7 +1762,6 @@ type CreateEntRepositoryRequest struct {
 	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
 
 	//创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
-	Enterprise     *string `json:"enterprise,omitempty"`      //企业的路径(path/login)  # 必填项
 	Outsourced     *bool   `json:"outsourced,omitempty"`      //值为true值为外包仓库, false值为内部仓库。默认: 内部仓库(false)
 	ProjectCreator *string `json:"project_creator,omitempty"` //负责人的username
 	Members        *string `json:"members,omitempty"`         //用逗号分开的仓库成员。如: member1,member2
