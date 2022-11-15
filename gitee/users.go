@@ -47,36 +47,20 @@ type BasicUser struct {
 
 // User represents a gitee user.
 type User struct {
-	ID                *int64     `json:"id,omitempty"`
-	Login             *string    `json:"login,omitempty"`
-	Name              *string    `json:"name,omitempty"`
-	AvatarURL         *string    `json:"avatar_url,omitempty"`
-	URL               *string    `json:"url,omitempty"`
-	HTMLURL           *string    `json:"html_url,omitempty"`
-	Remark            *string    `json:"remark,omitempty"`
-	FollowersURL      *string    `json:"followers_url,omitempty"`
-	FollowingURL      *string    `json:"following_url,omitempty"`
-	GistsURL          *string    `json:"gists_url,omitempty"`
-	StarredURL        *string    `json:"starred_url,omitempty"`
-	SubscriptionsURL  *string    `json:"subscriptions_url,omitempty"`
-	OrganizationsURL  *string    `json:"organizations_url,omitempty"`
-	ReposURL          *string    `json:"repos_url,omitempty"`
-	EventsURL         *string    `json:"events_url,omitempty"`
-	ReceivedEventsURL *string    `json:"received_events_url,omitempty"`
-	Type              *string    `json:"type,omitempty"`
-	SiteAdmin         *bool      `json:"site_admin,omitempty"`
-	Blog              *string    `json:"blog,omitempty"`
-	Weibo             *string    `json:"weibo,omitempty"`
-	Bio               *string    `json:"bio,omitempty"`
-	PublicRepos       *int       `json:"public_repos,omitempty"`
-	PublicGists       *int       `json:"public_gists,omitempty"`
-	Followers         *int       `json:"followers,omitempty"`
-	Following         *int       `json:"following,omitempty"`
-	Stared            *int       `json:"stared,omitempty"`
-	Watched           *int       `json:"watched,omitempty"`
-	CreatedAt         *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
-	Email             *string    `json:"email,omitempty"`
+	*BasicUser
+	SiteAdmin   *bool      `json:"site_admin,omitempty"`
+	Blog        *string    `json:"blog,omitempty"`
+	Weibo       *string    `json:"weibo,omitempty"`
+	Bio         *string    `json:"bio,omitempty"`
+	PublicRepos *int       `json:"public_repos,omitempty"`
+	PublicGists *int       `json:"public_gists,omitempty"`
+	Followers   *int       `json:"followers,omitempty"`
+	Following   *int       `json:"following,omitempty"`
+	Stared      *int       `json:"stared,omitempty"`
+	Watched     *int       `json:"watched,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+	Email       *string    `json:"email,omitempty"`
 }
 
 // UserListOptions specifies optional parameters to the UsersService.ListAll
