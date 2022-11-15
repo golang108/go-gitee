@@ -757,3 +757,17 @@ func TestListForks(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestCreateFork(t *testing.T) {
+	owner := "y_project"
+	repo := "RuoYi"
+	opts := &gitee.RepositoryCreateForkOptions{
+		Organization: "magesfc",
+		Name:         "ruoyi",
+		Path:         "ruoyi_git",
+	}
+	f, response, err := client.Repositories.CreateFork(ctx, owner, repo, opts)
+	fmt.Println(f)
+	fmt.Println(response)
+	fmt.Println(err) // 403 Forbidden, map[], 已经存在同名的仓库（忽略大小写），Fork 失败
+}
