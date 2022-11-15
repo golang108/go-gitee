@@ -1489,7 +1489,18 @@ func (s *RepositoriesService) CreateBaiduStatisticKey(ctx context.Context, owner
 	return key, resp, nil
 }
 
-// TODO 删除仓库的百度统计 key DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+// TODO not test
+//  删除仓库的百度统计 key DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/baidu_statistic_key
+func (s *RepositoriesService) RemoveBaiduStatisticKey(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/baidu_statistic_key", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, nil
+}
 
 // TODO 获取最近30天的七日以内访问量 POST https://gitee.com/api/v5/repos/{owner}/{repo}/traffic-data
 
