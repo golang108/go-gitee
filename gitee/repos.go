@@ -1154,7 +1154,7 @@ func (r Contributor) String() string {
 	return Stringify(r)
 }
 
-type ListContributorsOptions struct {
+type ContributorListOptions struct {
 	Type string `url:"type,omitempty"` // 贡献者类型
 
 	ListOptions
@@ -1163,7 +1163,7 @@ type ListContributorsOptions struct {
 // ListContributors lists contributors for a repository.
 //
 //  获取仓库贡献者 GET https://gitee.com/api/v5/repos/{owner}/{repo}/contributors
-func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
+func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ContributorListOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 	u, err := addOptions(u, opts)
 	if err != nil {
