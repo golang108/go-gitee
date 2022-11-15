@@ -1611,17 +1611,17 @@ type RepositoryReleaseRequest struct {
 	Prerelease *bool   `json:"prerelease,omitempty"` //是否为预览版本。默认: false（非预览版本）
 }
 
-type CreateRepositoryReleaseRequest struct {
+type RepositoryReleaseCreateRequest struct {
 	*RepositoryReleaseRequest         //重复的字段 利用 匿名字段优化一下
 	TargetCommitish           *string `json:"target_commitish,omitempty"` //分支名称或者commit SHA, 默认是当前默认分支
 }
 
-type EditReleaseRequest struct {
+type RepositoryReleaseEditRequest struct {
 	*RepositoryReleaseRequest //重复的字段 利用 匿名字段优化一下
 }
 
 //  创建仓库Release POST https://gitee.com/api/v5/repos/{owner}/{repo}/releases
-func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, releaseReq *CreateRepositoryReleaseRequest) (*RepositoryRelease, *Response, error) {
+func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, releaseReq *RepositoryReleaseCreateRequest) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, releaseReq)
@@ -1661,7 +1661,7 @@ func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string
 // See RepositoryRelease for more information.
 //
 //  更新仓库Release PATCH https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
-func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, releaseReq *EditReleaseRequest) (*RepositoryRelease, *Response, error) {
+func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, releaseReq *RepositoryReleaseEditRequest) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, releaseReq)
 	if err != nil {
