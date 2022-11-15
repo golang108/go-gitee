@@ -1754,9 +1754,7 @@ type CreateRepositoryRequest struct {
 type CreateOrgRepositoryRequest struct {
 	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
 
-	// 创建组织仓库 多了这2个
-	Org    *string `json:"org,omitempty"`    //组织的路径(path/login)
-	Public *int    `json:"public,omitempty"` //仓库开源类型。0(私有), 1(外部开源), 2(内部开源)，注：与private互斥，以public为主。
+	Public *int `json:"public,omitempty"` //仓库开源类型。0(私有), 1(外部开源), 2(内部开源)，注：与private互斥，以public为主。
 }
 
 //创建企业仓库
