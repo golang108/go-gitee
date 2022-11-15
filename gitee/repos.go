@@ -1502,7 +1502,56 @@ func (s *RepositoriesService) RemoveBaiduStatisticKey(ctx context.Context, owner
 	return resp, nil
 }
 
-// TODO 获取最近30天的七日以内访问量 POST https://gitee.com/api/v5/repos/{owner}/{repo}/traffic-data
+type TrafficDataRequest struct {
+	StartDay string `json:"start_day,omitempty"` //访问量的开始时间，默认今天，格式：yyyy-MM-dd
+	EndDay   string `json:"end_day,omitempty"`   //访问量的结束时间，默认七天前，格式：yyyy-MM-dd
+}
+
+type TrafficData struct {
+	Counts  []TrafficCount  `json:"counts,omitempty"`
+	Summary *TrafficSummary `json:"summary,omitempty"`
+}
+
+func (r TrafficData) String() string {
+	return Stringify(r)
+}
+
+type TrafficCount struct {
+	Bucket *string `json:"bucket,omitempty"`
+	*TrafficSummary
+}
+
+func (r TrafficCount) String() string {
+	return Stringify(r)
+}
+
+type TrafficSummary struct {
+	IP          *int `json:"ip,omitempty"`
+	Pull        *int `json:"pull,omitempty"`
+	Push        *int `json:"push,omitempty"`
+	DownloadZip *int `json:"download_zip,omitempty"`
+}
+
+func (r TrafficSummary) String() string {
+	return Stringify(r)
+}
+
+//  获取最近30天的七日以内访问量 POST https://gitee.com/api/v5/repos/{owner}/{repo}/traffic-data
+func (s *RepositoriesService) ListTraffic(ctx context.Context, owner, repo string, opts *TrafficDataRequest) (*TrafficData, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/traffic-data", owner, repo)
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	traffic := new(TrafficData)
+	resp, err := s.client.Do(ctx, req, &traffic)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return traffic, resp, nil
+}
 
 // TODO 获取仓库的所有Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases
 
