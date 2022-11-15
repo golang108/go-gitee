@@ -688,3 +688,15 @@ func TestClear(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestListCollaborators(t *testing.T) {
+	owner := "log4j"
+	repo := "pig"
+	opts := &gitee.ListOptions{}
+	collaborators, response, err := client.Repositories.ListCollaborators(ctx, owner, repo, opts)
+
+	fmt.Println(collaborators)
+	fmt.Println(len(collaborators))
+	fmt.Println(response)
+	fmt.Println(err)
+}
