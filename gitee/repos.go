@@ -1790,19 +1790,46 @@ type CreateEntRepositoryRequest struct {
 	Members        *string `json:"members,omitempty"`         //用逗号分开的仓库成员。如: member1,member2
 }
 
-// Create a new repository. If an organization is specified, the new
-// repository will be created under that org. If the empty string is
-// specified, it will be created for the authenticated user.
+// Create a new repository. 创建仓库方法 分成3个吧。创建 组织仓库 和创建 企业 仓库的 参数 都不太一样
 // 创建一个仓库 POST https://gitee.com/api/v5/user/repos
-// 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
-// 创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
-func (s *RepositoriesService) Create(ctx context.Context, org string, opt *CreateRepositoryRequest) (*Repository, *Response, error) {
-	var u string
-	if org != "" {
-		u = fmt.Sprintf("orgs/%v/repos", org)
-	} else {
-		u = "user/repos"
+func (s *RepositoriesService) Create(ctx context.Context, opt *CreateRepositoryRequest) (*Repository, *Response, error) {
+	u := "user/repos"
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
+
+// 创建组织仓库 POST https://gitee.com/api/v5/orgs/{org}/repos
+func (s *RepositoriesService) CreateOrgRepository(ctx context.Context, org string, opt *CreateOrgRepositoryRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/repos", org)
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
+
+// 创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
+func (s *RepositoriesService) CreateEntRepository(ctx context.Context, enterprise string, opt *CreateEntRepositoryRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/repos", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
