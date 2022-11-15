@@ -808,7 +808,7 @@ func TestListReleases(t *testing.T) {
 func TestCreateRelease(t *testing.T) {
 	owner := "magesfc"
 	repo := "ruoyi_git"
-	releaseReq := &gitee.RepositoryReleaseRequest{
+	releaseReq := &gitee.CreateRepositoryReleaseRequest{
 		TagName:         "v2.3.4",
 		TargetCommitish: "master",
 		Name:            "Release 名称",
