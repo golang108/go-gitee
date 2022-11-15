@@ -23,7 +23,7 @@ import (
 func TestListBranches(t *testing.T) {
 	branches, response, err := client.Repositories.ListBranches(ctx, "mamh-java", "jenkins-jenkins")
 	for index, br := range branches {
-		fmt.Println(index, *br.Name, *br.Protected, *br.ProtectionUrl)
+		fmt.Println(index, *br.Name, *br.Protected, *br.ProtectionURL)
 	}
 	fmt.Println(response)
 	fmt.Println(err)
