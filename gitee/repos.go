@@ -1675,7 +1675,18 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 	return r, resp, nil
 }
 
-// TODO 删除仓库Release DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+// DeleteRelease delete a single release from a repository.
+//
+//  删除仓库Release DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/releases/{id}
+func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 获取仓库的最后更新的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/latest
 
