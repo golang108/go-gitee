@@ -446,9 +446,8 @@ func TestCreate(t *testing.T) {
 		Description: gitee.String("repo_Description"),
 		Homepage:    gitee.String("xxxxxxxxx"),
 	}
-	repository, response, err := client.Repositories.Create(ctx, "", opts)
+	repository, response, err := client.Repositories.Create(ctx, opts)
 	fmt.Println("repository", repository)
-
 	fmt.Println("response", response)
 	fmt.Println("err", err)
 }
