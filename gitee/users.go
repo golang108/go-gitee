@@ -155,7 +155,7 @@ func (s *UsersService) GetSshKey(ctx context.Context, id int64) (*SshKey, *Respo
 
 // 列出指定用户的关注者 GET https://gitee.com/api/v5/users/{username}/followers
 // 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers 这个获取的是 我被哪些人 关注了
-func (s *UsersService) GetUserFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
+func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/followers", user)
