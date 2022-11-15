@@ -677,7 +677,7 @@ func TestListTags(t *testing.T) {
 func TestCreateTag(t *testing.T) {
 	owner := "magesfc"
 	repo := "magesfc"
-	ctq := &gitee.CreateTagRequest{
+	ctq := &gitee.RepositoryTagCreateRequest{
 		Refs:       "master",
 		TagName:    "v0.0.1",
 		TagMessage: "test create tags",
