@@ -260,7 +260,7 @@ type NamespaceOptions struct {
 
 // 获取授权用户的一个 Namespace GET https://gitee.com/api/v5/user/namespace
 // path Namespace path 需要一个参数
-func (s *UsersService) GetUserNamespace(ctx context.Context, opts *NamespaceOptions) (*Namespace, *Response, error) {
+func (s *UsersService) GetNamespace(ctx context.Context, opts *NamespaceOptions) (*Namespace, *Response, error) {
 	u, err := addOptions("user/namespace", opts)
 	if err != nil {
 		return nil, nil, err
