@@ -736,3 +736,14 @@ func TestRemoveCollaborator(t *testing.T) {
 	fmt.Println(err) //400 Bad Request, map[], Owner cannot withdraw from a project
 	//404 Not Found, map[], User
 }
+
+func TestGetPermissionLevel(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	me := "mamh"
+
+	level, response, err := client.Repositories.GetPermissionLevel(ctx, owner, repo, me)
+	fmt.Println(level)
+	fmt.Println(response)
+	fmt.Println(err)
+}
