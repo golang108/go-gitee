@@ -644,7 +644,12 @@ func TestUpdatePushConfig(t *testing.T) {
 
 	pushConfig.ExceptManager = gitee.Bool(false)
 
-	newConfig, response, err := client.Repositories.UpdatePushConfig(ctx, owner, repo, pushConfig)
+	modify := &gitee.PushConfigUpdateRequest{
+		PushConfig: pushConfig,
+	}
+	modify.ExceptManager = gitee.Bool(true)
+
+	newConfig, response, err := client.Repositories.UpdatePushConfig(ctx, owner, repo, modify)
 	fmt.Println(newConfig)
 	fmt.Println(response)
 	fmt.Println(err)
