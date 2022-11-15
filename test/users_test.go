@@ -123,21 +123,21 @@ func TestListNamespaces(t *testing.T) {
 	fmt.Println(err)
 }
 
-func TestGetUserNamespace(t *testing.T) {
+func TestGetNamespace(t *testing.T) {
 	var opts = &gitee.NamespaceOptions{
 		Path: "mamh-java",
 	}
-	names, response, err := client.Users.GetUserNamespace(ctx, opts)
+	names, response, err := client.Users.GetNamespace(ctx, opts)
 	fmt.Println(names)
 	fmt.Println(response)
 	fmt.Println(err)
 }
 
-func TestGetUserNamespace1(t *testing.T) {
+func TestGetNamespace1(t *testing.T) {
 	var opts = &gitee.NamespaceOptions{
 		Path: "mamh",
 	}
-	names, response, err := client.Users.GetUserNamespace(ctx, opts)
+	names, response, err := client.Users.GetNamespace(ctx, opts)
 	fmt.Println(names)
 	fmt.Println(response)
 	fmt.Println(err)
