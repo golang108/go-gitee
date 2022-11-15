@@ -99,6 +99,8 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 	return uResp, resp, nil
 }
 
+// TODO 更新授权用户的资料 PATCH https://gitee.com/api/v5/user
+
 type SshKey struct {
 	// 获取一个公钥
 	ID        *int64     `json:"id,omitempty"`
@@ -134,6 +136,10 @@ func (s *UsersService) ListSshKeys(ctx context.Context, opts *ListOptions) ([]*S
 
 }
 
+// TDO 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
+
+// TODO 添加一个公钥 POST https://gitee.com/api/v5/user/keys
+
 // 通过sshkey的id来获取公钥
 // 获取一个公钥 GET https://gitee.com/api/v5/user/keys/{id}  id=公钥 ID
 func (s *UsersService) GetSshKey(ctx context.Context, id int64) (*SshKey, *Response, error) {
@@ -152,6 +158,8 @@ func (s *UsersService) GetSshKey(ctx context.Context, id int64) (*SshKey, *Respo
 
 	return keys, resp, nil
 }
+
+// TODO 删除一个公钥 DELETE https://gitee.com/api/v5/user/keys/{id}
 
 // 列出指定用户的关注者 GET https://gitee.com/api/v5/users/{username}/followers
 // 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers 这个获取的是 我被哪些人 关注了
@@ -280,3 +288,11 @@ func (s *UsersService) GetNamespace(ctx context.Context, opts *NamespaceOptions)
 	return namespace, resp, nil
 
 }
+
+// TODO 检查授权用户是否关注了一个用户 GET https://gitee.com/api/v5/user/following/{username}
+
+// TODO 关注一个用户 PUT https://gitee.com/api/v5/user/following/{username}
+
+// TODO 取消关注一个用户 DELETE https://gitee.com/api/v5/user/following/{username}
+
+// TODO 检查指定用户是否关注目标用户 GET https://gitee.com/api/v5/users/{username}/following/{target_user}
