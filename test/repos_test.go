@@ -809,11 +809,13 @@ func TestCreateRelease(t *testing.T) {
 	owner := "magesfc"
 	repo := "ruoyi_git"
 	releaseReq := &gitee.CreateRepositoryReleaseRequest{
-		TagName:         "v2.3.4",
-		TargetCommitish: "master",
-		Name:            "Release 名称",
-		Body:            "Release 描述",
-		Prerelease:      true,
+		RepositoryReleaseRequest: &gitee.RepositoryReleaseRequest{
+			TagName:    gitee.String("v2.3.41"),
+			Name:       gitee.String("Release 名称"),
+			Body:       gitee.String("Release 描述"),
+			Prerelease: gitee.Bool(true),
+		},
+		TargetCommitish: gitee.String("master"),
 	}
 	rr, response, err := client.Repositories.CreateRelease(ctx, owner, repo, releaseReq)
 	fmt.Println(rr)
