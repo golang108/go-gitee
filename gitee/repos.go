@@ -1219,7 +1219,30 @@ func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo s
 	return tags, resp, nil
 }
 
-// TODO 创建一个仓库的 Tag POST https://gitee.com/api/v5/repos/{owner}/{repo}/tags
+type CreateTagRequest struct {
+	Refs       string `json:"refs,omitempty"`        //起点名称, 默认：master
+	TagName    string `json:"tag_name,omitempty"`    //新创建的标签名称
+	TagMessage string `json:"tag_message,omitempty"` //Tag 描述, 默认为空
+}
+
+// CreateTag creates a tag object.
+//
+//  创建一个仓库的 Tag POST https://gitee.com/api/v5/repos/{owner}/{repo}/tags
+func (s *RepositoriesService) CreateTag(ctx context.Context, owner string, repo string, ctq *CreateTagRequest) (*RepositoryTag, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
+	req, err := s.client.NewRequest("POST", u, ctq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	t := new(RepositoryTag)
+	resp, err := s.client.Do(ctx, req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
+}
 
 // TODO 清空一个仓库 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/clear
 
