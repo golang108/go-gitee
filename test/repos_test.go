@@ -836,3 +836,13 @@ func TestEditRelease(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestDeleteRelease(t *testing.T) {
+	owner := "magesfc"
+	repo := "ruoyi_git"
+	id := int64(264806)
+
+	response, err := client.Repositories.DeleteRelease(ctx, owner, repo, id)
+	fmt.Println(response)
+	fmt.Println(err) //404 Not Found, map[], 404 Not Found
+}
