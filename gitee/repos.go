@@ -1706,7 +1706,23 @@ func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo 
 	return release, resp, nil
 }
 
-// TODO 根据Tag名称获取仓库的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/tags/{tag}
+// GetReleaseByTag fetches a release with the specified tag.
+//
+//  根据Tag名称获取仓库的Release GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases/tags/{tag}
+func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/tags/%s", owner, repo, tag)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	release := new(RepositoryRelease)
+	resp, err := s.client.Do(ctx, req, release)
+	if err != nil {
+		return nil, resp, err
+	}
+	return release, resp, nil
+}
 
 // TODO 开通Gitee Go POST https://gitee.com/api/v5/repos/{owner}/{repo}/open
 
