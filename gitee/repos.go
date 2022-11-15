@@ -929,7 +929,7 @@ func (r RepositoryContentFile) String() string {
 }
 
 // RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.
-type RepositoryContentFileOptions struct {
+type RepositoryContentFileRequest struct {
 	Message   *string       `json:"message,omitempty"`
 	Content   []byte        `json:"content"` // unencoded
 	SHA       *string       `json:"sha,omitempty"`
@@ -942,7 +942,7 @@ type RepositoryContentFileOptions struct {
 // the commit and file metadata.
 //
 //  新建文件 POST https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
+func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileRequest) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -962,7 +962,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
 //  更新文件 PUT https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
+func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileRequest) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
@@ -982,7 +982,7 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 // Requires the blob SHA of the file to be deleted.
 //
 //  删除文件 DELETE https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentFile, *Response, error) {
+func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileRequest) (*RepositoryContentFile, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opts)
 	if err != nil {
