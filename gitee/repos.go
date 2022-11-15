@@ -1934,13 +1934,14 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opts *Repos
 
 }
 
+// ListOrganizations 获取一个组织下的仓库
 // 获取一个组织的仓库 GET https://gitee.com/api/v5/orgs/{org}/repos
-func (s *RepositoriesService) ListOrgs(ctx context.Context, org string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
+func (s *RepositoriesService) ListOrganizations(ctx context.Context, org string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if org != "" {
 		u = fmt.Sprintf("orgs/%v/repos", org)
 	} else {
-		return nil, nil, fmt.Errorf("org is empty")
+		return nil, nil, fmt.Errorf("organization name is empty")
 	}
 
 	u, err := addOptions(u, opts)
