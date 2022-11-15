@@ -711,3 +711,17 @@ func TestIsCollaborator(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestAddCollaborator(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	me := "mamh"
+	acreq := &gitee.AddCollaboratorRequest{
+		Permission: "admin",
+	}
+	ci, response, err := client.Repositories.AddCollaborator(ctx, owner, repo, me, acreq)
+
+	fmt.Println(ci)
+	fmt.Println(response)
+	fmt.Println(err) //404 Not Found, map[], User Not Found
+}
