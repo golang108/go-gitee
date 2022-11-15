@@ -784,3 +784,12 @@ func TestListTraffic(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+func TestListReleases(t *testing.T) {
+	owner := "y_project"
+	repo := "RuoYi"
+	opts := &gitee.RepositoryReleaseListOptions{}
+	tr, response, err := client.Repositories.ListReleases(ctx, owner, repo, opts)
+	fmt.Println(tr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
