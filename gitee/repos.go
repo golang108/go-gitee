@@ -1553,7 +1553,56 @@ func (s *RepositoriesService) ListTraffic(ctx context.Context, owner, repo strin
 	return traffic, resp, nil
 }
 
-// TODO 获取仓库的所有Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases
+// RepositoryRelease represents a GitHub release in a repository.
+type RepositoryRelease struct {
+	ID              *int64          `json:"id,omitempty"`
+	TagName         *string         `json:"tag_name,omitempty"`
+	TargetCommitish *string         `json:"target_commitish,omitempty"`
+	Prerelease      *bool           `json:"prerelease,omitempty"`
+	Name            *string         `json:"name,omitempty"`
+	Body            *string         `json:"body,omitempty"`
+	Author          *BasicUser      `json:"author,omitempty"`
+	CreatedAt       *Timestamp      `json:"created_at,omitempty"`
+	Assets          []*ReleaseAsset `json:"assets,omitempty"`
+}
+
+// ReleaseAsset represents a GitHub release asset in a repository.
+type ReleaseAsset struct {
+	BrowserDownloadURL *string `json:"browser_download_url,omitempty"`
+}
+
+func (r RepositoryRelease) String() string {
+	return Stringify(r)
+}
+
+type RepositoryReleaseListOptions struct {
+	Direction string `url:"direction,omitempty"`
+
+	ListOptions
+}
+
+// ListReleases lists the releases for a repository.
+//
+//  获取仓库的所有Releases GET https://gitee.com/api/v5/repos/{owner}/{repo}/releases
+func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opts *RepositoryReleaseListOptions) ([]*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var releases []*RepositoryRelease
+	resp, err := s.client.Do(ctx, req, &releases)
+	if err != nil {
+		return nil, resp, err
+	}
+	return releases, resp, nil
+}
 
 // TODO 创建仓库Release POST https://gitee.com/api/v5/repos/{owner}/{repo}/releases
 
