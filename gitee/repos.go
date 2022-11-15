@@ -1752,17 +1752,7 @@ type CreateRepositoryRequest struct {
 
 // 创建组织仓库
 type CreateOrgRepositoryRequest struct {
-	Name              *string `json:"name,omitempty"`               // 仓库名称
-	Description       *string `json:"description,omitempty"`        //仓库描述
-	Homepage          *string `json:"homepage,omitempty"`           //主页(eg: https://gitee.com) 一个有效的http链接
-	HasIssues         *bool   `json:"has_issues,omitempty"`         //允许提Issue与否。默认: 允许(true)
-	HasWiki           *bool   `json:"has_wiki,omitempty"`           //提供Wiki与否。默认: 提供(true)
-	CanComment        *bool   `json:"can_comment,omitempty"`        //允许用户对仓库进行评论。默认： 允许(true)
-	AutoInit          *bool   `json:"auto_init,omitempty"`          //值为true时则会用README初始化仓库。默认: 不初始化(false)
-	GitignoreTemplate *string `json:"gitignore_template,omitempty"` //Git Ignore模版
-	LicenseTemplate   *string `json:"license_template,omitempty"`   // License模版
-	Path              *string `json:"path,omitempty"`               // 仓库路径
-	Private           *bool   `json:"private,omitempty"`            //目前仅支持私有
+	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
 
 	// 创建组织仓库 多了这2个
 	Org    *string `json:"org,omitempty"`    //组织的路径(path/login)
@@ -1771,17 +1761,7 @@ type CreateOrgRepositoryRequest struct {
 
 //创建企业仓库
 type CreateEntRepositoryRequest struct {
-	Name              *string `json:"name,omitempty"`               // 仓库名称
-	Description       *string `json:"description,omitempty"`        //仓库描述
-	Homepage          *string `json:"homepage,omitempty"`           //主页(eg: https://gitee.com) 一个有效的http链接
-	HasIssues         *bool   `json:"has_issues,omitempty"`         //允许提Issue与否。默认: 允许(true)
-	HasWiki           *bool   `json:"has_wiki,omitempty"`           //提供Wiki与否。默认: 提供(true)
-	CanComment        *bool   `json:"can_comment,omitempty"`        //允许用户对仓库进行评论。默认： 允许(true)
-	AutoInit          *bool   `json:"auto_init,omitempty"`          //值为true时则会用README初始化仓库。默认: 不初始化(false)
-	GitignoreTemplate *string `json:"gitignore_template,omitempty"` //Git Ignore模版
-	LicenseTemplate   *string `json:"license_template,omitempty"`   // License模版
-	Path              *string `json:"path,omitempty"`               // 仓库路径
-	Private           *bool   `json:"private,omitempty"`            //目前仅支持私有
+	*CreateRepositoryRequest // 匿名字段，复用这个结构图字段
 
 	//创建企业仓库 POST https://gitee.com/api/v5/enterprises/{enterprise}/repos
 	Enterprise     *string `json:"enterprise,omitempty"`      //企业的路径(path/login)  # 必填项
