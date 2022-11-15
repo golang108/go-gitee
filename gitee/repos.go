@@ -1307,24 +1307,8 @@ type AddCollaboratorRequest struct {
 
 // CollaboratorInvitation represents an invitation created when adding a collaborator.
 type CollaboratorInvitation struct {
-	ID                *int64      `json:"id,omitempty"`
-	Login             *string     `json:"login,omitempty"`
-	Name              *string     `json:"name,omitempty"`
-	AvatarUrl         *string     `json:"avatar_url,omitempty"`
-	Url               *string     `json:"url,omitempty"`
-	HtmlUrl           *string     `json:"html_url,omitempty"`
-	Remark            *string     `json:"remark,omitempty"`
-	FollowersUrl      *string     `json:"followers_url,omitempty"`
-	FollowingUrl      *string     `json:"following_url,omitempty"`
-	GistsUrl          *string     `json:"gists_url,omitempty"`
-	StarredUrl        *string     `json:"starred_url,omitempty"`
-	SubscriptionsUrl  *string     `json:"subscriptions_url,omitempty"`
-	OrganizationsUrl  *string     `json:"organizations_url,omitempty"`
-	ReposUrl          *string     `json:"repos_url,omitempty"`
-	EventsUrl         *string     `json:"events_url,omitempty"`
-	ReceivedEventsUrl *string     `json:"received_events_url,omitempty"`
-	Type              *string     `json:"type,omitempty"`
-	Permissions       *Permission `json:"permissions,omitempty"`
+	*BasicUser              // 用个匿名字段 减少 这里 重复的属性
+	Permissions *Permission `json:"permissions,omitempty"`
 }
 
 func (r CollaboratorInvitation) String() string {
@@ -1366,7 +1350,7 @@ func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, rep
 }
 
 type CollaboratorsPermissionLevel struct {
-	User               // todo 要不要这里用个 匿名 字段 User 来表达 返回的部分属性字段
+	*BasicUser         // 用个匿名字段 减少 这里 重复的属性
 	Permission *string `json:"permission,omitempty"`
 }
 
