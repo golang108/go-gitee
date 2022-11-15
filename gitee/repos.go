@@ -1377,7 +1377,39 @@ func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, rep
 	return rpl, resp, nil
 }
 
-// TODO 查看仓库的Forks GET https://gitee.com/api/v5/repos/{owner}/{repo}/forks
+// RepositoryListForksOptions specifies the optional parameters to the
+// RepositoriesService.ListForks method.
+type RepositoryListForksOptions struct {
+	// How to sort the forks list. Possible values are: newest, oldest,
+	// watchers. Default is "newest". 排序方式: fork的时间(newest, oldest)，star的人数(stargazers)
+	Sort string `url:"sort,omitempty"`
+
+	ListOptions
+}
+
+// ListForks lists the forks of the specified repository.
+//
+//  查看仓库的Forks GET https://gitee.com/api/v5/repos/{owner}/{repo}/forks
+func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var repos []*Repository
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
+}
 
 // TODO Fork一个仓库 POST https://gitee.com/api/v5/repos/{owner}/{repo}/forks
 
