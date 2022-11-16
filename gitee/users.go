@@ -114,6 +114,11 @@ func (k SSHKey) String() string {
 	return Stringify(k)
 }
 
+type KeyCreateRequest struct {
+	Key   *string `json:"key"`   // 公钥内容
+	Title *string `json:"title"` // 公钥名称
+}
+
 // 获取当前授权用户的sshkey，这个能获取多个的，一个列表
 // 列出授权用户的所有公钥 GET https://gitee.com/api/v5/user/keys
 // 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
