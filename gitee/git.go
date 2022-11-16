@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// GitService handles communication with the git data related
+// methods of the gitee API.
+type GitService service
