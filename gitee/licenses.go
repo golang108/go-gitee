@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// LicensesService handles communication with the license related
+// methods of the gitee API.
+type LicensesService service
