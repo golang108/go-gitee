@@ -117,7 +117,7 @@ func (k SshKey) String() string {
 // 获取当前授权用户的sshkey，这个能获取多个的，一个列表
 // 列出授权用户的所有公钥 GET https://gitee.com/api/v5/user/keys
 // 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
-func (s *UsersService) ListSshKeys(ctx context.Context, user string, opts *ListOptions) ([]*SshKey, *Response, error) {
+func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*SshKey, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/keys", user)
