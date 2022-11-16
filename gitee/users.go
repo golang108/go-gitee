@@ -353,10 +353,29 @@ func (s *UsersService) GetNamespace(ctx context.Context, opts *NamespaceOptions)
 
 }
 
-// TODO 检查授权用户是否关注了一个用户 GET https://gitee.com/api/v5/user/following/{username}
+// IsFollowing checks if "user" is following "target". Passing the empty
+// string for "user" will check if the authenticated user is following "target".
+//
+//  检查授权用户是否关注了一个用户 GET https://gitee.com/api/v5/user/following/{username}
+//  检查指定用户是否关注目标用户 GET https://gitee.com/api/v5/users/{username}/following/{target_user}
+func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bool, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/following/%v", user, target)
+	} else {
+		u = fmt.Sprintf("user/following/%v", target)
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	following, err := parseBoolResponse(err)
+	return following, resp, err
+}
 
 // TODO 关注一个用户 PUT https://gitee.com/api/v5/user/following/{username}
 
 // TODO 取消关注一个用户 DELETE https://gitee.com/api/v5/user/following/{username}
-
-// TODO 检查指定用户是否关注目标用户 GET https://gitee.com/api/v5/users/{username}/following/{target_user}
