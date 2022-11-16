@@ -660,7 +660,7 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 // ListKeys lists the deploy keys for a repository.
 //
 //  获取仓库已部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys
-func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
+func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*SSHKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -672,7 +672,7 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo s
 		return nil, nil, err
 	}
 
-	var keys []*Key
+	var keys []*SSHKey
 	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
@@ -681,27 +681,10 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo s
 	return keys, resp, nil
 }
 
-type KeyCreateRequest struct {
-	Key   *string `json:"key"`   // 公钥内容
-	Title *string `json:"title"` // 公钥名称
-}
-
-type Key struct {
-	ID        *int64     `json:"id,omitempty"`
-	Key       *string    `json:"key"`   // 公钥内容
-	Title     *string    `json:"title"` // 公钥名称
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-}
-
-func (k Key) String() string {
-	return Stringify(k)
-}
-
 // CreateKey adds a deploy key for a repository.
 //
 //  为仓库添加公钥 POST https://gitee.com/api/v5/repos/{owner}/{repo}/keys
-func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, kreq *KeyCreateRequest) (*Key, *Response, error) {
+func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, kreq *KeyCreateRequest) (*SSHKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, kreq)
@@ -709,7 +692,7 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 		return nil, nil, err
 	}
 
-	k := new(Key)
+	k := new(SSHKey)
 	resp, err := s.client.Do(ctx, req, k)
 	if err != nil {
 		return nil, resp, err
@@ -721,7 +704,7 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 // title可以用法，key内容不能重复, 把key停用之后就变到 可部署公钥列表里面了
 // 获取的 Key 结构体中 只有 key 和 id
 // 获取仓库可部署的公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/available
-func (s *RepositoriesService) ListAvailableKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
+func (s *RepositoriesService) ListAvailableKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*SSHKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/available", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -733,7 +716,7 @@ func (s *RepositoriesService) ListAvailableKeys(ctx context.Context, owner strin
 		return nil, nil, err
 	}
 
-	var keys []*Key
+	var keys []*SSHKey
 	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
@@ -769,7 +752,7 @@ func (s *RepositoriesService) DisableKey(ctx context.Context, owner string, repo
 // GetKey fetches a single deploy key.
 //
 //  获取仓库的单个公钥 GET https://gitee.com/api/v5/repos/{owner}/{repo}/keys/{id}
-func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo string, id int64) (*Key, *Response, error) {
+func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo string, id int64) (*SSHKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -777,7 +760,7 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo str
 		return nil, nil, err
 	}
 
-	key := new(Key)
+	key := new(SSHKey)
 	resp, err := s.client.Do(ctx, req, key)
 	if err != nil {
 		return nil, resp, err
