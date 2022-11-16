@@ -69,6 +69,7 @@ type Client struct {
 	Git           *GitService
 	Gists         *GistsService
 	Activity      *ActivityService
+	Licenses      *LicensesService
 }
 
 type service struct {
@@ -109,6 +110,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Git = (*GitService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
+	c.Licenses = (*LicensesService)(&c.common)
 
 	return c
 
