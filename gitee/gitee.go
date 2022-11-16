@@ -65,6 +65,7 @@ type Client struct {
 	Miscellaneous *MiscellaneousService
 	Gitignores    *GitignoresService
 	Issues        *IssuesService
+	Git           *GitService
 }
 
 type service struct {
@@ -101,6 +102,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Miscellaneous = (*MiscellaneousService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
+	c.Git = (*GitService)(&c.common)
 
 	return c
 
