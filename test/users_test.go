@@ -33,7 +33,7 @@ func TestListSshKeys(t *testing.T) {
 		PerPage: 10, // perPage 表示每页的总数
 	}
 	for {
-		keys, response, err := client.Users.ListSshKeys(ctx, opts)
+		keys, response, err := client.Users.ListSshKeys(ctx, "", opts)
 		if err != nil {
 			fmt.Println(err)
 			return
