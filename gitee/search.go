@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// SearchService provides access to the search related functions
+// in the gitee API.
+type SearchService service
