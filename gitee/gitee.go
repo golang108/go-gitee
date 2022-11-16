@@ -62,6 +62,7 @@ type Client struct {
 	Search        *SearchService
 	PullRequests  *PullRequestsService
 	Organizations *OrganizationsService
+	Miscellaneous *MiscellaneousService
 }
 
 type service struct {
@@ -95,6 +96,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Search = (*SearchService)(&c.common)
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
+	c.Miscellaneous = (*MiscellaneousService)(&c.common)
 
 	return c
 
