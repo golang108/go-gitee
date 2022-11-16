@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// EnterprisesService provides access to the enterprises related functions
+// in the gitee API.
+type EnterprisesService service
