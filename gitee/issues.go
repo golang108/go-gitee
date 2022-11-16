@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// IssuesService handles communication with the issue related
+// methods of the gitee API.
+type IssuesService service
