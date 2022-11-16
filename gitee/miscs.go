@@ -61,3 +61,32 @@ func (s *MiscellaneousService) Markdown(ctx context.Context, text string, opts *
 
 	return buf.String(), resp, nil
 }
+
+// UserEmail represents user's email address
+type UserEmail struct {
+	Email *string `json:"email,omitempty"`
+}
+
+// GetEmails lists all email addresses for the authenticated user.
+//
+//  获取授权用户的全部邮箱 GET https://gitee.com/api/v5/emails
+func (s *MiscellaneousService) GetEmail(ctx context.Context, opts *ListOptions) (*UserEmail, *Response, error) {
+	u := "emails"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	emails := new(UserEmail)
+	resp, err := s.client.Do(ctx, req, &emails)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return emails, resp, nil
+}
