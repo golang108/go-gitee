@@ -59,6 +59,7 @@ type Client struct {
 	// Services used for talking to different parts of the gitee API.
 	Users        *UsersService
 	Repositories *RepositoriesService
+	Search       *SearchService
 }
 
 type service struct {
@@ -89,6 +90,7 @@ func NewClient(httpClient *http.Client) *Client {
 
 	c.Users = (*UsersService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
+	c.Search = (*SearchService)(&c.common)
 	return c
 
 }
