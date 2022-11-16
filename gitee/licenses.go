@@ -50,3 +50,21 @@ func (s *LicensesService) License(ctx context.Context, owner, repo string) (*Rep
 
 	return r, resp, nil
 }
+
+// List popular open source licenses.
+//
+// 列出可使用的开源许可协议 GET https://gitee.com/api/v5/licenses
+func (s *LicensesService) List(ctx context.Context) ([]string, *Response, error) {
+	req, err := s.client.NewRequest("GET", "licenses", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var licenses []string
+	resp, err := s.client.Do(ctx, req, &licenses)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return licenses, resp, nil
+}
