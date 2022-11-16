@@ -14,3 +14,6 @@
 
 package gitee
 
+// GitignoresService provides access to the gitignore related functions in the
+// gitee API.
+type GitignoresService service
