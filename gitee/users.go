@@ -99,7 +99,31 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 	return uResp, resp, nil
 }
 
-// TODO 更新授权用户的资料 PATCH https://gitee.com/api/v5/user
+type UserEditRequest struct {
+	Name  *string `json:"name,omitempty"` //
+	Blog  *string `json:"blog,omitempty"`
+	Weibo *string `json:"weibo,omitempty"`
+	Bio   *string `json:"bio,omitempty"`
+}
+
+// Edit the authenticated user.
+//
+//  更新授权用户的资料 PATCH https://gitee.com/api/v5/user
+func (s *UsersService) Edit(ctx context.Context, user *UserEditRequest) (*User, *Response, error) {
+	u := "user"
+	req, err := s.client.NewRequest("PATCH", u, user)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	uResp := new(User)
+	resp, err := s.client.Do(ctx, req, uResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return uResp, resp, nil
+}
 
 type SSHKey struct {
 	// 获取一个公钥
