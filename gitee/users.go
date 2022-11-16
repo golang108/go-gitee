@@ -187,7 +187,19 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*SSHKey, *Response
 	return keys, resp, nil
 }
 
-// TODO 删除一个公钥 DELETE https://gitee.com/api/v5/user/keys/{id}
+// DeleteKey deletes a public key.
+//
+//  删除一个公钥 DELETE https://gitee.com/api/v5/user/keys/{id}
+func (s *UsersService) DeleteKey(ctx context.Context, id int64) (*Response, error) {
+	u := fmt.Sprintf("user/keys/%v", id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // 列出指定用户的关注者 GET https://gitee.com/api/v5/users/{username}/followers
 // 列出授权用户的关注者 GET https://gitee.com/api/v5/user/followers 这个获取的是 我被哪些人 关注了
