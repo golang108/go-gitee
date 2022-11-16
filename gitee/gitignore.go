@@ -15,6 +15,7 @@
 package gitee
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 )
@@ -67,5 +68,23 @@ func (s *GitignoresService) Get(ctx context.Context, licenseName string) (*Gitig
 		return nil, resp, err
 	}
 
+	return ignore, resp, nil
+}
+
+// 获取一个 .gitignore 模板原始文件 GET https://gitee.com/api/v5/gitignore/templates/{name}/raw
+func (s *GitignoresService) GetRaw(ctx context.Context, licenseName string) (string, *Response, error) {
+	u := fmt.Sprintf("gitignore/templates/%s/raw", licenseName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
+	if err != nil {
+		return "", resp, err
+	}
+	ignore := buf.String()
 	return ignore, resp, nil
 }
