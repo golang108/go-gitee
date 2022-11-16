@@ -45,3 +45,27 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 
 	return stargazers, resp, nil
 }
+
+// ListWatchers lists watchers of a particular repo.
+//
+// 列出 watch 了仓库的用户 GET https://gitee.com/api/v5/repos/{owner}/{repo}/subscribers
+func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var watchers []*User
+	resp, err := s.client.Do(ctx, req, &watchers)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return watchers, resp, nil
+}
