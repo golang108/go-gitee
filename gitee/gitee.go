@@ -57,10 +57,11 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the gitee API.
-	Users        *UsersService
-	Repositories *RepositoriesService
-	Search       *SearchService
-	PullRequests *PullRequestsService
+	Users         *UsersService
+	Repositories  *RepositoriesService
+	Search        *SearchService
+	PullRequests  *PullRequestsService
+	Organizations *OrganizationsService
 }
 
 type service struct {
@@ -93,6 +94,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.PullRequests = (*PullRequestsService)(&c.common)
+	c.Organizations = (*OrganizationsService)(&c.common)
+
 	return c
 
 }
