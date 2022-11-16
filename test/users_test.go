@@ -149,3 +149,10 @@ func TestFollow(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestUnfollow(t *testing.T) {
+	user := "y_project"
+	response, err := client.Users.Unfollow(ctx, user)
+	fmt.Println(response)
+	fmt.Println(err)
+}
