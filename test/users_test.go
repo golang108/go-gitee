@@ -49,7 +49,7 @@ func TestListSshKeys(t *testing.T) {
 }
 
 func TestGetSshKey(t *testing.T) {
-	keys, response, err := client.Users.GetSshKey(ctx, 3544397)
+	keys, response, err := client.Users.GetKey(ctx, 3544397)
 	fmt.Println(keys)
 	fmt.Println(response)
 	fmt.Println(err)
