@@ -142,3 +142,10 @@ func TestGetNamespace1(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestFollow(t *testing.T) {
+	user := "y_project"
+	response, err := client.Users.Follow(ctx, user)
+	fmt.Println(response)
+	fmt.Println(err)
+}
