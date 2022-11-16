@@ -13,3 +13,5 @@
 //limitations under the License.
 
 package gitee
+
+// TODO 获取仓库所有任务标签 GET https://gitee.com/api/v5/repos/{owner}/{repo}/labels
