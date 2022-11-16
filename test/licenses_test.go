@@ -18,3 +18,10 @@ func TestGetLicense(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetLicenseRaw(t *testing.T) {
+	rr, response, err := client.Licenses.GetRaw(ctx, "Apache-2.0")
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
