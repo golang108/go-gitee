@@ -17,3 +17,5 @@ package gitee
 // IssuesService handles communication with the issue related
 // methods of the gitee API.
 type IssuesService service
+
+// TODO 获取仓库所有Issue的评论 GET https://gitee.com/api/v5/repos/{owner}/{repo}/issues/comments
