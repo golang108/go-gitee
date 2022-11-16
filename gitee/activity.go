@@ -14,6 +14,34 @@
 
 package gitee
 
+import (
+	"context"
+	"fmt"
+)
+
 // ActivityService handles communication with the activity related
 // methods of the gitee API.
 type ActivityService service
+
+// ListStargazers lists people who have starred the specified repo.
+// 列出 star 了仓库的用户 GET https://gitee.com/api/v5/repos/{owner}/{repo}/stargazers
+func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var stargazers []*User
+	resp, err := s.client.Do(ctx, req, &stargazers)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return stargazers, resp, nil
+}
