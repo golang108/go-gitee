@@ -376,6 +376,17 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 	return following, resp, err
 }
 
-// TODO 关注一个用户 PUT https://gitee.com/api/v5/user/following/{username}
+// Follow will cause the authenticated user to follow the specified user.
+//
+//  关注一个用户 PUT https://gitee.com/api/v5/user/following/{username}
+func (s *UsersService) Follow(ctx context.Context, user string) (*Response, error) {
+	u := fmt.Sprintf("user/following/%v", user)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
 
 // TODO 取消关注一个用户 DELETE https://gitee.com/api/v5/user/following/{username}
