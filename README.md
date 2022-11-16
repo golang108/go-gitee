@@ -10,7 +10,7 @@ gitee 的 golang 版本的 API 实现 模仿go-github实现的
 
 * API 文档
     * [动态通知(Activity)]()
-    * [邮箱(Emails)]()
+    * [邮箱(Emails)](gitee/miscs.go) 接口全部实现
     * [企业(Enterprises)]()
     * [任务(Issues)]()
     * [标签(Labels)]()
