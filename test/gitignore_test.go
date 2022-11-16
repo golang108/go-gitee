@@ -18,3 +18,10 @@ func TestGetGitignore(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetGitignoreRaw(t *testing.T) {
+	rr, response, err := client.Gitignores.GetRaw(ctx, "C")
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
