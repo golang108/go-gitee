@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// GistsService handles communication with the Gist related
+// methods of the gitee API.
+type GistsService service
