@@ -143,7 +143,25 @@ func (s *UsersService) ListSshKeys(ctx context.Context, user string, opts *ListO
 
 }
 
-// TODO 添加一个公钥 POST https://gitee.com/api/v5/user/keys
+// CreateKey adds a public key for the authenticated user.
+//
+//  添加一个公钥 POST https://gitee.com/api/v5/user/keys
+func (s *UsersService) CreateKey(ctx context.Context, key *KeyCreateRequest) (*SshKey, *Response, error) {
+	u := "user/keys"
+
+	req, err := s.client.NewRequest("POST", u, key)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	k := new(SshKey)
+	resp, err := s.client.Do(ctx, req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return k, resp, nil
+}
 
 // 通过sshkey的id来获取公钥
 // 获取一个公钥 GET https://gitee.com/api/v5/user/keys/{id}  id=公钥 ID
