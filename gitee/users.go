@@ -116,8 +116,15 @@ func (k SshKey) String() string {
 
 // 获取当前授权用户的sshkey，这个能获取多个的，一个列表
 // 列出授权用户的所有公钥 GET https://gitee.com/api/v5/user/keys
-func (s *UsersService) ListSshKeys(ctx context.Context, opts *ListOptions) ([]*SshKey, *Response, error) {
-	u, err := addOptions("user/keys", opts)
+// 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
+func (s *UsersService) ListSshKeys(ctx context.Context, user string, opts *ListOptions) ([]*SshKey, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/keys", user)
+	} else {
+		u = "user/keys"
+	}
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -135,8 +142,6 @@ func (s *UsersService) ListSshKeys(ctx context.Context, opts *ListOptions) ([]*S
 	return keys, resp, nil
 
 }
-
-// TDO 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
 
 // TODO 添加一个公钥 POST https://gitee.com/api/v5/user/keys
 
