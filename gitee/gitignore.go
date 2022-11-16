@@ -14,6 +14,26 @@
 
 package gitee
 
+import "context"
+
 // GitignoresService provides access to the gitignore related functions in the
 // gitee API.
 type GitignoresService service
+
+// List all available Gitignore templates.
+//
+// 列出可使用的 .gitignore 模板 GET https://gitee.com/api/v5/gitignore/templates
+func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
+	req, err := s.client.NewRequest("GET", "gitignore/templates", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var availableTemplates []string
+	resp, err := s.client.Do(ctx, req, &availableTemplates)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return availableTemplates, resp, nil
+}
