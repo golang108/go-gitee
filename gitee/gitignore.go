@@ -14,7 +14,10 @@
 
 package gitee
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // GitignoresService provides access to the gitignore related functions in the
 // gitee API.
@@ -36,4 +39,33 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 	}
 
 	return availableTemplates, resp, nil
+}
+
+type Gitignore struct {
+	License *string `json:"license,omitempty"`
+	Source  *string `json:"source,omitempty"`
+}
+
+func (l Gitignore) String() string {
+	return Stringify(l)
+}
+
+// Get extended metadata for one gitignore.
+//
+// 获取一个 .gitignore 模板 GET https://gitee.com/api/v5/gitignore/templates/{name}
+func (s *GitignoresService) Get(ctx context.Context, licenseName string) (*Gitignore, *Response, error) {
+	u := fmt.Sprintf("gitignore/templates/%s", licenseName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	ignore := new(Gitignore)
+	resp, err := s.client.Do(ctx, req, ignore)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return ignore, resp, nil
 }
