@@ -47,7 +47,7 @@ type MarkdownRequest struct {
 // Markdown renders an arbitrary Markdown document.
 //
 // 渲染 Markdown 文本 POST https://gitee.com/api/v5/markdown
-func (s *MiscellaneousService) Markdown(ctx context.Context, text string, opts *MarkdownRequest) (string, *Response, error) {
+func (s *MiscellaneousService) Markdown(ctx context.Context, opts *MarkdownRequest) (string, *Response, error) {
 	req, err := s.client.NewRequest("POST", "markdown", opts)
 	if err != nil {
 		return "", nil, err
