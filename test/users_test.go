@@ -143,6 +143,15 @@ func TestGetNamespace1(t *testing.T) {
 	fmt.Println(err)
 }
 
+func TestIsFollowing(t *testing.T) {
+	user := "mamh" // under mamh the following list there is y_project
+	target := "y_project"
+	b, response, err := client.Users.IsFollowing(ctx, user, target)
+	fmt.Println(b)
+	fmt.Println(response)
+	fmt.Println(err)
+}
+
 func TestFollow(t *testing.T) {
 	user := "y_project"
 	response, err := client.Users.Follow(ctx, user)
