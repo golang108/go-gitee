@@ -68,3 +68,33 @@ func (s *LicensesService) List(ctx context.Context) ([]string, *Response, error)
 
 	return licenses, resp, nil
 }
+
+// License represents an open source license.
+type License struct {
+	License *string `json:"license,omitempty"`
+	Source  *string `json:"source,omitempty"`
+}
+
+func (l License) String() string {
+	return Stringify(l)
+}
+
+// Get extended metadata for one license.
+//
+// 获取一个开源许可协议 GET https://gitee.com/api/v5/licenses/{license}
+func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
+	u := fmt.Sprintf("licenses/%s", licenseName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	license := new(License)
+	resp, err := s.client.Do(ctx, req, license)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return license, resp, nil
+}
