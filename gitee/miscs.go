@@ -14,7 +14,10 @@
 
 package gitee
 
-import "context"
+import (
+	"bytes"
+	"context"
+)
 
 // MiscellaneousService 杂项
 type MiscellaneousService service
@@ -35,4 +38,26 @@ func (s *MiscellaneousService) ListEmojis(ctx context.Context) (map[string]strin
 	}
 
 	return emoji, resp, nil
+}
+
+type MarkdownRequest struct {
+	Text *string `json:"text,omitempty"`
+}
+
+// Markdown renders an arbitrary Markdown document.
+//
+// 渲染 Markdown 文本 POST https://gitee.com/api/v5/markdown
+func (s *MiscellaneousService) Markdown(ctx context.Context, text string, opts *MarkdownRequest) (string, *Response, error) {
+	req, err := s.client.NewRequest("POST", "markdown", opts)
+	if err != nil {
+		return "", nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	resp, err := s.client.Do(ctx, req, buf)
+	if err != nil {
+		return "", resp, err
+	}
+
+	return buf.String(), resp, nil
 }
