@@ -22,3 +22,10 @@ func TestMarkdown(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetEmail(t *testing.T) {
+	rr, response, err := client.Miscellaneous.GetEmail(ctx, nil)
+	fmt.Println(*rr.Email)
+	fmt.Println(response)
+	fmt.Println(err)
+}
