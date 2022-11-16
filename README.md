@@ -18,9 +18,9 @@ gitee 的 golang 版本的 API 实现 模仿go-github实现的
     * [杂项(Miscellaneous)]()
     * [组织(Organizations)]()
     * [PR操作(Pull Requests)]()
-    * [仓库(Repositories)]()
+    * [仓库(Repositories)](gitee/repos.go) 接口全部实现
     * [搜索(Search)]()
-    * [用户账号(Users)]()
+    * [用户账号(Users)](gitee/users.go) 接口全部实现
     * [钩子(Webhooks)]()
 
 
