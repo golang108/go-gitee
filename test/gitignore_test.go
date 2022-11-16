@@ -11,3 +11,10 @@ func TestListgitignore(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetGitignore(t *testing.T) {
+	rr, response, err := client.Gitignores.Get(ctx, "C")
+	fmt.Println(rr)
+	fmt.Println(response)
+	fmt.Println(err)
+}
