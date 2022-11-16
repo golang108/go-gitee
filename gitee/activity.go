@@ -13,3 +13,7 @@
 //limitations under the License.
 
 package gitee
+
+// ActivityService handles communication with the activity related
+// methods of the gitee API.
+type ActivityService service
