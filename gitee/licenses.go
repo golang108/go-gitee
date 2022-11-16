@@ -15,6 +15,7 @@
 package gitee
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 )
@@ -96,5 +97,23 @@ func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License
 		return nil, resp, err
 	}
 
+	return license, resp, nil
+}
+
+// 获取一个开源许可协议原始文件 GET https://gitee.com/api/v5/licenses/{license}/raw
+func (s *LicensesService) GetRaw(ctx context.Context, licenseName string) (string, *Response, error) {
+	u := fmt.Sprintf("licenses/%s/raw", licenseName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
+	if err != nil {
+		return "", resp, err
+	}
+	license := buf.String()
 	return license, resp, nil
 }
