@@ -389,4 +389,15 @@ func (s *UsersService) Follow(ctx context.Context, user string) (*Response, erro
 	return s.client.Do(ctx, req, nil)
 }
 
-// TODO 取消关注一个用户 DELETE https://gitee.com/api/v5/user/following/{username}
+// Unfollow will cause the authenticated user to unfollow the specified user.
+//
+//  取消关注一个用户 DELETE https://gitee.com/api/v5/user/following/{username}
+func (s *UsersService) Unfollow(ctx context.Context, user string) (*Response, error) {
+	u := fmt.Sprintf("user/following/%v", user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
