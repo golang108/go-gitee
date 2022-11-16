@@ -15,7 +15,7 @@ gitee 的 golang 版本的 API 实现 模仿go-github实现的
     * [任务(Issues)]()
     * [标签(Labels)]()
     * [里程碑(Milestones)]()
-    * [杂项(Miscellaneous)]()
+    * [杂项(Miscellaneous)](gitee/miscs.go) 接口全部实现
     * [组织(Organizations)]()
     * [PR操作(Pull Requests)]()
     * [仓库(Repositories)](gitee/repos.go) 接口全部实现
