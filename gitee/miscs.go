@@ -41,7 +41,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 		return nil, nil, err
 	}
 
-	r := &RepositoryLicense{}
+	r := new(RepositoryLicense)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
