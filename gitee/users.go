@@ -101,7 +101,7 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 
 // TODO 更新授权用户的资料 PATCH https://gitee.com/api/v5/user
 
-type SshKey struct {
+type SSHKey struct {
 	// 获取一个公钥
 	ID        *int64     `json:"id,omitempty"`
 	Key       *string    `json:"key,omitempty"`
@@ -110,14 +110,14 @@ type SshKey struct {
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
-func (k SshKey) String() string {
+func (k SSHKey) String() string {
 	return Stringify(k)
 }
 
 // 获取当前授权用户的sshkey，这个能获取多个的，一个列表
 // 列出授权用户的所有公钥 GET https://gitee.com/api/v5/user/keys
 // 列出指定用户的所有公钥 GET https://gitee.com/api/v5/users/{username}/keys
-func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*SshKey, *Response, error) {
+func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*SSHKey, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/keys", user)
@@ -133,7 +133,7 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 		return nil, nil, err
 	}
 
-	var keys []*SshKey
+	var keys []*SSHKey
 	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
@@ -146,7 +146,7 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 // CreateKey adds a public key for the authenticated user.
 //
 //  添加一个公钥 POST https://gitee.com/api/v5/user/keys
-func (s *UsersService) CreateKey(ctx context.Context, key *KeyCreateRequest) (*SshKey, *Response, error) {
+func (s *UsersService) CreateKey(ctx context.Context, key *KeyCreateRequest) (*SSHKey, *Response, error) {
 	u := "user/keys"
 
 	req, err := s.client.NewRequest("POST", u, key)
@@ -154,7 +154,7 @@ func (s *UsersService) CreateKey(ctx context.Context, key *KeyCreateRequest) (*S
 		return nil, nil, err
 	}
 
-	k := new(SshKey)
+	k := new(SSHKey)
 	resp, err := s.client.Do(ctx, req, k)
 	if err != nil {
 		return nil, resp, err
@@ -165,7 +165,7 @@ func (s *UsersService) CreateKey(ctx context.Context, key *KeyCreateRequest) (*S
 
 // 通过sshkey的id来获取公钥
 // 获取一个公钥 GET https://gitee.com/api/v5/user/keys/{id}  id=公钥 ID
-func (s *UsersService) GetKey(ctx context.Context, id int64) (*SshKey, *Response, error) {
+func (s *UsersService) GetKey(ctx context.Context, id int64) (*SSHKey, *Response, error) {
 	var u string
 	u = fmt.Sprintf("user/keys/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -173,7 +173,7 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*SshKey, *Response
 		return nil, nil, err
 	}
 
-	var keys *SshKey
+	var keys *SSHKey
 	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
