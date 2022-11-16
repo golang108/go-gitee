@@ -893,3 +893,13 @@ func TestCreateOpenGo(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestListHooks(t *testing.T) {
+	owner := "magesfc"
+	repo := "magesfc"
+	opts := &gitee.ListOptions{}
+	hooks, response, err := client.Repositories.ListHooks(ctx, owner, repo, opts)
+	fmt.Println(hooks)
+	fmt.Println(response)
+	fmt.Println(err)
+}
