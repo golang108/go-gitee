@@ -8,7 +8,7 @@ import (
 
 func TestListOrganizations1(t *testing.T) {
 	opts := &gitee.OrganizationListOptions{
-		Admin: true,
+		Admin: gitee.Bool(false),
 	}
 	orgs, response, err := client.Organizations.List(ctx, "mamh", opts)
 
