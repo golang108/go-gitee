@@ -19,7 +19,13 @@ func TestListOrganizations1(t *testing.T) {
 }
 
 func TestListOrgMemberships(t *testing.T) {
-	opts := &gitee.ListOptions{}
+	opts := &gitee.MembershipListOptions{
+		Active: gitee.Bool(false),
+		ListOptions: gitee.ListOptions{
+			Page:    1,
+			PerPage: 20,
+		},
+	}
 	member, response, err := client.Organizations.ListOrgMemberships(ctx, opts)
 
 	fmt.Println(member)
