@@ -91,8 +91,13 @@ func (o Membership) String() string {
 	return Stringify(o)
 }
 
+type MembershipListOptions struct {
+	Active *bool `url:"active,omitempty"` // 根据成员是否已激活进行筛选资料，缺省返回所有资料
+	ListOptions
+}
+
 // 列出授权用户在所属组织的成员资料 GET https://gitee.com/api/v5/user/memberships/orgs
-func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *ListOptions) ([]*Membership, *Response, error) {
+func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *MembershipListOptions) ([]*Membership, *Response, error) {
 	u := "user/memberships/orgs"
 	u, err := addOptions(u, opts)
 	if err != nil {
