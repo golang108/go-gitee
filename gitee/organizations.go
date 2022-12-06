@@ -41,8 +41,7 @@ func (o Organization) String() string {
 }
 
 type OrganizationListOptions struct {
-	Admin bool `url:"admin,omitempty"` // 贡献者类型
-
+	Admin *bool `url:"admin,omitempty"` // 只列出授权用户管理的组织
 	ListOptions
 }
 
