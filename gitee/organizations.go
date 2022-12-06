@@ -116,3 +116,27 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *Mem
 
 	return memberships, resp, nil
 }
+
+// 获取授权用户在一个组织的成员资料 GET https://gitee.com/api/v5/user/memberships/orgs/{org}
+// 获取授权用户所属组织的一个成员 GET https://gitee.com/api/v5/orgs/{org}/memberships/{username}
+func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org string) (*Membership, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("orgs/%v/memberships/%v", org, user)
+	} else {
+		u = fmt.Sprintf("user/memberships/orgs/%v", org)
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	membership := new(Membership)
+	resp, err := s.client.Do(ctx, req, membership)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return membership, resp, nil
+}
