@@ -40,12 +40,18 @@ func (o Organization) String() string {
 	return Stringify(o)
 }
 
+type OrganizationListOptions struct {
+	Admin bool `url:"admin,omitempty"` // 贡献者类型
+
+	ListOptions
+}
+
 // List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
 // 列出授权用户所属的组织 GET https://gitee.com/api/v5/user/orgs
 // 列出用户所属的组织    GET https://gitee.com/api/v5/users/{username}/orgs
-func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
+func (s *OrganizationsService) List(ctx context.Context, user string, opts *OrganizationListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/orgs", user)
