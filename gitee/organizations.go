@@ -70,3 +70,39 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opts *List
 
 	return orgs, resp, nil
 }
+
+type Membership struct {
+	URL             *string       `json:"url,omitempty"`
+	Active          *bool         `json:"active,omitempty"`
+	Remark          *string       `json:"remark,omitempty"`
+	Role            *string       `json:"role,omitempty"`
+	OrganizationURL *string       `json:"organization_url,omitempty"`
+	Organization    *Organization `json:"organization,omitempty"`
+	User            *User         `json:"user,omitempty"`
+}
+
+func (o Membership) String() string {
+	return Stringify(o)
+}
+
+// 列出授权用户在所属组织的成员资料 GET https://gitee.com/api/v5/user/memberships/orgs
+func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *ListOptions) ([]*Membership, *Response, error) {
+	u := "user/memberships/orgs"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var memberships []*Membership
+	resp, err := s.client.Do(ctx, req, &memberships)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return memberships, resp, nil
+}
