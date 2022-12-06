@@ -15,3 +15,12 @@ func TestListOrganizations1(t *testing.T) {
 	fmt.Println(err)
 
 }
+
+func TestListOrgMemberships(t *testing.T) {
+	opts := &gitee.ListOptions{}
+	member, response, err := client.Organizations.ListOrgMemberships(ctx, opts)
+
+	fmt.Println(member)
+	fmt.Println(response)
+	fmt.Println(err)
+}
