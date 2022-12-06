@@ -140,3 +140,27 @@ func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org s
 
 	return membership, resp, nil
 }
+
+type MembershipEditRequest struct {
+	Remark *string `json:"remark,omitempty"` //在组织中的备注信息
+}
+
+// 更新授权用户在一个组织的成员资料 PATCH https://gitee.com/api/v5/user/memberships/orgs/{org}
+func (s *OrganizationsService) EditOrgMembership(ctx context.Context, org string, membership *MembershipEditRequest) (*Membership, *Response, error) {
+	var u string
+
+	u = fmt.Sprintf("user/memberships/orgs/%v", org)
+
+	req, err := s.client.NewRequest("PATCH", u, membership)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	m := new(Membership)
+	resp, err := s.client.Do(ctx, req, m)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return m, resp, nil
+}
