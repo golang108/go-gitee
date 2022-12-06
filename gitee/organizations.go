@@ -14,6 +14,59 @@
 
 package gitee
 
+import (
+	"context"
+	"fmt"
+)
+
 // OrganizationsService provides access to the organization related functions
 // in the gitee API.
 type OrganizationsService service
+
+type Organization struct {
+	ID          *int64  `json:"id,omitempty"`
+	Login       *string `json:"login,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	URL         *string `json:"url,omitempty"`
+	AvatarURL   *string `json:"avatar_url,omitempty"`
+	ReposURL    *string `json:"repos_url,omitempty"`
+	EventsURL   *string `json:"events_url,omitempty"`
+	MembersURL  *string `json:"members_url,omitempty"`
+	Description *string `json:"description,omitempty"`
+	FollowCount *int64  `json:"follow_count,omitempty"`
+}
+
+func (o Organization) String() string {
+	return Stringify(o)
+}
+
+// List the organizations for a user. Passing the empty string will list
+// organizations for the authenticated user.
+//
+// 列出授权用户所属的组织 GET https://gitee.com/api/v5/user/orgs
+// 列出用户所属的组织    GET https://gitee.com/api/v5/users/{username}/orgs
+func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("users/%v/orgs", user)
+	} else {
+		u = "user/orgs"
+	}
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var orgs []*Organization
+	resp, err := s.client.Do(ctx, req, &orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgs, resp, nil
+}
