@@ -32,3 +32,21 @@ func TestListOrgMemberships(t *testing.T) {
 	fmt.Println(response)
 	fmt.Println(err)
 }
+
+func TestGetOrgMembership(t *testing.T) {
+	user := ""
+	org := "mamh-mixed"
+	member, response, err := client.Organizations.GetOrgMembership(ctx, user, org)
+
+	fmt.Println(member)
+	fmt.Println(response)
+	fmt.Println(err)
+
+	user2 := "mamh"
+	org2 := "mamh-mixed"
+	member2, response2, err2 := client.Organizations.GetOrgMembership(ctx, user2, org2)
+
+	fmt.Println(member2)
+	fmt.Println(response2)
+	fmt.Println(err2)
+}
