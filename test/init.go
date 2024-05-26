@@ -16,7 +16,7 @@ package test
 
 import (
 	"context"
-	"github.com/mamh-mixed/go-gitee/gitee"
+	"github.com/golang108/go-gitee/gitee"
 	"golang.org/x/oauth2"
 	"os"
 )
