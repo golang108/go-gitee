@@ -1,4 +1,4 @@
-module github.com/mamh-mixed/go-gitee
+module github.com/golang108/go-gitee
 
 go 1.16
 
